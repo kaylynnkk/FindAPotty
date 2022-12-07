@@ -47,7 +47,7 @@ db.profiles.insertMany([
   
 ]);
 
-// Run a find command to view items sold on April 4th, 2014.
+// Run a find command to view profiles visited restroom on December 6th - 7th, 2022.
 db.profiles.find({ date: { $gte: new Date('2022-12-06'), $lt: new Date('2022-12-07') } });
 
 

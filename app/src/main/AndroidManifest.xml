@@ -36,7 +36,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="FindPotty"
+            android:label="FindAPotty"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

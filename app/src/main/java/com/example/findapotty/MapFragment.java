@@ -1,21 +1,27 @@
 package com.example.findapotty;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.findapotty.databinding.FragmentMapBinding;
@@ -24,10 +30,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,8 +46,8 @@ public class MapFragment extends Fragment {
     MapView mMapView;
     private GoogleMap googleMap;
 
-    private FragmentMapBinding binding;
     private EditText mSearchText;
+    private View bottomSheet;
     private static final String TAG = "MapFragment";
 
     @Override
@@ -74,12 +83,28 @@ public class MapFragment extends Fragment {
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
+                // zoom in/out button
                 googleMap.getUiSettings().setZoomControlsEnabled(true);
 
-                googleMap.setOnCameraMoveCanceledListener(new GoogleMap.OnCameraMoveCanceledListener() {
+//                googleMap.setOnCameraMoveCanceledListener(new GoogleMap.OnCameraMoveCanceledListener() {
+//                    @Override
+//                    public void onCameraMoveCanceled() {
+//                        Log.d(TAG, "zoom level: " + googleMap.getCameraPosition().zoom);
+//                    }
+//                });
+
+                // add marker on long press on map
+                googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
-                    public void onCameraMoveCanceled() {
-                        Log.d(TAG, "zoom level: " + googleMap.getCameraPosition().zoom);
+                    public void onMapLongClick(@NonNull LatLng latLng) {
+                        googleMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title("Marker")
+                            .icon(bitmapDescriptorFromVector(getActivity(), R.drawable.map_marker_long_press))
+                            );
+                        moveCamera(latLng, googleMap.getCameraPosition().zoom);
+
+                        showDialog();
                     }
                 });
 
@@ -94,7 +119,6 @@ public class MapFragment extends Fragment {
 
     private void init() {
         Log.d(TAG, "init: initializing");
-
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
@@ -105,7 +129,7 @@ public class MapFragment extends Fragment {
 
                     Log.d(TAG, "onEditorAction: " + mSearchText.getText().toString());
 
-                    //execute our method for searching
+                    //locate the address
                     geoLocate();
                 }
                 return false;
@@ -151,7 +175,7 @@ public class MapFragment extends Fragment {
             moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), zoomLevel);
 
         } else{
-            Toast.makeText(getActivity(), "Unable to find this place", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Unable to fetch the entered address", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -161,5 +185,20 @@ public class MapFragment extends Fragment {
                 new CameraPosition.Builder().target(latLng).zoom(zoom).build()
             )
         );
+    }
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    private void showDialog() {
+        BottomSheetDialog dialog = new BottomSheetDialog(getActivity(), R.style.CustomBottomSheetDialog);
+        dialog.setContentView(R.layout.botttom_sheet);
+        dialog.show();
     }
 }

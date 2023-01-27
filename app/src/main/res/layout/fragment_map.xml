@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapFragment">
+
+    <RelativeLayout
+        android:id="@+id/search_bar"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@drawable/white_border"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toTopOf="@id/mapView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ic_magnify"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/ic_magnify" />
+
+        <EditText
+            android:id="@+id/input_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/ic_magnify"
+            android:hint="Enter Address, City or Zip Code"
+            android:imeOptions="actionSearch"
+            android:inputType="textNoSuggestions"
+            android:maxLines="1"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+
+    </RelativeLayout>
+
+    <!--fragment
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/mapView"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:ignore="MissingConstraints"
+        tools:layout="@layout/fragment_map"
+        /-->
+
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_bar"
+        android:contentDescription="map"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

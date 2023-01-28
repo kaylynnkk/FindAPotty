@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
-            android:id="@+id/search_bar"
+            android:id="@+id/rr_page_search_bar"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:background="@drawable/white_border"
@@ -65,7 +65,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_bar"
+            app:layout_constraintTop_toBottomOf="@id/rr_page_search_bar"
             android:contentDescription="map"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

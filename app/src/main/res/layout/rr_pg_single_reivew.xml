@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp"
+    android:id="@+id/restroom_review_item">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_centerInParent="true">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/rr_rv_username_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.16"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/rr_rv_username_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.56"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/rr_rv_ratingbar_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.27"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/rr_rv_review_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.37"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/rr_rv_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.05"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/rr_rv_avatar"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/rr_rv_top" />
+
+        <TextView
+            android:id="@+id/rr_rv_username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/rr_rv_avatar"
+            android:text="Username"
+            android:textColor="#000"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toTopOf="@+id/rr_rv_ratingbar_top"
+            app:layout_constraintEnd_toStartOf="@+id/rr_rv_username_end"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/rr_rv_username_start"
+            app:layout_constraintTop_toTopOf="@+id/rr_rv_top"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <RatingBar
+            android:id="@+id/rr_rv_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:ratingBarStyleSmall"
+            android:numStars="5"
+            android:rating="3.4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/rr_rv_ratingbar_top" />
+
+        <TextView
+            android:id="@+id/rr_rv_review"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="blahblah"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toStartOf="@+id/rr_rv_username_end"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/rr_rv_review_top" />
+
+        <ImageView
+            android:id="@+id/rr_rv_photos"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/rr_rv_username_end"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rr_rv_review"
+            android:background="@color/design_default_color_primary"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</RelativeLayout>

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/rr_pg_h_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.02" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/rr_pg_v_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.03" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/rr_page_v_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.97" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/rr_page_search_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.06" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/rr_page_rrphotos_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.31" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/rr_pg_h_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.41" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/rr_pg_h_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.35" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/rr_page_h_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.98" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/rr_page_rrdesc_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.46" />
+
+            <RelativeLayout
+                android:id="@+id/rr_page_search_bar"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/white_border"
+                android:elevation="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/rr_page_search_bottom"
+                app:layout_constraintEnd_toStartOf="@+id/rr_page_v_end"
+                app:layout_constraintStart_toStartOf="@+id/rr_pg_v_start"
+                app:layout_constraintTop_toTopOf="@+id/rr_pg_h_top">
+
+                <ImageView
+                    android:id="@+id/ic_magnify"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/ic_magnify" />
+
+                <EditText
+                    android:id="@+id/input_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@+id/ic_magnify"
+                    android:hint="Search Reviews"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textNoSuggestions"
+                    android:maxLines="1"
+                    android:textColor="#000"
+                    android:textSize="12sp"
+                    android:background="@android:color/transparent"
+                    />
+
+
+            </RelativeLayout>
+
+
+            <ImageView
+                android:id="@+id/rr_pg_rr_photos"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/rr_page_rrphotos_bottom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/rr_page_search_bottom"
+                app:srcCompat="@drawable/common_google_signin_btn_text_light" />
+
+            <TextView
+                android:id="@+id/rr_pg_rrname"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center_vertical"
+                android:text="restroom name"
+                app:layout_constraintBottom_toTopOf="@+id/rr_pg_h_1"
+                app:layout_constraintEnd_toStartOf="@+id/rr_page_v_end"
+                app:layout_constraintStart_toStartOf="@+id/rr_pg_v_start"
+                app:layout_constraintTop_toTopOf="@+id/rr_page_rrphotos_bottom"
+                android:textStyle="bold"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/rr_pg_rraddress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="1234 address ave city, state"
+                app:layout_constraintEnd_toStartOf="@+id/rr_page_v_end"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/rr_pg_v_start"
+                app:layout_constraintTop_toBottomOf="@+id/rr_pg_rrname" />
+
+            <RatingBar
+                android:id="@+id/rr_pg_avg_rating"
+                style="?android:ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:numStars="5"
+                android:rating="3.4"
+                app:layout_constraintBottom_toTopOf="@+id/rr_pg_h_2"
+                app:layout_constraintStart_toStartOf="@+id/rr_pg_v_start"
+                app:layout_constraintTop_toBottomOf="@+id/rr_pg_rraddress" />
+
+            <TextView
+                android:id="@+id/rr_pg_review_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="12 Reviews"
+                app:layout_constraintBottom_toTopOf="@+id/rr_pg_h_2"
+                app:layout_constraintStart_toEndOf="@+id/rr_pg_avg_rating"
+                app:layout_constraintTop_toBottomOf="@+id/rr_pg_rraddress" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="70dp"
+                android:layout_height="0dp"
+                android:text="Sort"
+                app:layout_constraintBottom_toTopOf="@+id/rr_page_rrdesc_bottom"
+                app:layout_constraintStart_toStartOf="@+id/rr_pg_v_start"
+                app:layout_constraintTop_toTopOf="@+id/rr_pg_h_2"
+                android:gravity="center"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rr_pg_review_section"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/rr_page_h_bottom"
+                app:layout_constraintEnd_toStartOf="@+id/rr_page_v_end"
+                app:layout_constraintStart_toStartOf="@+id/rr_pg_v_start"
+                app:layout_constraintTop_toTopOf="@+id/rr_page_rrdesc_bottom" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/rr_page_add_review"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:contentDescription="add review"
+                app:layout_constraintBottom_toTopOf="@+id/rr_page_h_bottom"
+                app:layout_constraintEnd_toStartOf="@+id/rr_page_v_end"
+                app:srcCompat="@drawable/nav_add_24" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </RelativeLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

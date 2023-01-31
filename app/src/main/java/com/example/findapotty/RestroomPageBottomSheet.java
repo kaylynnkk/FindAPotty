@@ -30,6 +30,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
     private ImageView rr_photo;
     private View view;
     private RecyclerView recyclerView;
+    private RestroomReviewRecyclerViewAdaptor adaptor;
 
     @NonNull
     @Override
@@ -44,11 +45,11 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 
         recyclerView = view.findViewById(R.id.rr_pg_review_section);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        RestroomReviewRecyclerViewAdaptor adaptor = new RestroomReviewRecyclerViewAdaptor(getContext(), restroomReviews);
+        adaptor = new RestroomReviewRecyclerViewAdaptor(getContext(), restroomReviews);
         recyclerView.setAdapter(adaptor);
 
         initReviews();
-        addReviewListener(adaptor);
+        addReviewListener();
 
 
 
@@ -63,7 +64,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
     }
     
     // unusable
-    private void addReviewListener(RestroomReviewRecyclerViewAdaptor adaptor){
+    private void addReviewListener(){
         FloatingActionButton btn = view.findViewById(R.id.rr_page_add_review);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +72,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                 Log.d(TAG, "onClick: add review");
                 restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "1243r4tgg g5"));
                 adaptor.notifyItemInserted(restroomReviews.size()-1);
+                recyclerView.smoothScrollToPosition(restroomReviews.size()-1);
             }
         });
     }

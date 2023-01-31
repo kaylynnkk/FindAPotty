@@ -47,17 +47,6 @@
 
         </RelativeLayout>
 
-        <!--fragment
-            xmlns:map="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/mapView"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            tools:ignore="MissingConstraints"
-            tools:layout="@layout/fragment_map"
-            /-->
-
-
         <com.google.android.gms.maps.MapView
             android:id="@+id/mapView"
             android:layout_width="0dp"
@@ -69,16 +58,6 @@
             android:contentDescription="map"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!--FrameLayout
-        android:id="@+id/sheet"
-        android:layout_width="match_parent"
-        android:layout_height="450dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-
-
-    </FrameLayout-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -6,17 +6,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -28,7 +26,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
     private static final String TAG = "RestroomPageBottomSheet";
     private ArrayList<RestroomReview> restroomReviews = new ArrayList<>();
     private ImageView rr_photo;
-    private View view;
+    private View rootView;
     private RecyclerView recyclerView;
     private RestroomReviewRecyclerViewAdaptor adaptor;
 
@@ -40,16 +38,18 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         super.onCreateDialog(savedInstanceState);
         BottomSheetDialog dialog = new BottomSheetDialog(getActivity(), R.style.CustomBottomSheetDialog);
 
-        view = LayoutInflater.from(getContext()).inflate(R.layout.bottom_sheet_restroom_page, null);
-        dialog.setContentView(view);
+        rootView = LayoutInflater.from(getContext()).inflate(R.layout.bottom_sheet_restroom_page, null);
+        dialog.setContentView(rootView);
 
-        recyclerView = view.findViewById(R.id.rr_pg_review_section);
+        recyclerView = rootView.findViewById(R.id.rr_pg_review_section);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adaptor = new RestroomReviewRecyclerViewAdaptor(getContext(), restroomReviews);
         recyclerView.setAdapter(adaptor);
 
+
         initReviews();
         addReviewListener();
+        editPageListener();
 
 
 
@@ -63,7 +63,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void addReviewListener(){
-        FloatingActionButton btn = view.findViewById(R.id.rr_page_add_review);
+        FloatingActionButton btn = rootView.findViewById(R.id.rr_page_add_review);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,6 +83,18 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                 float ratio = rr_photo.getHeight() / rr_photo.getWidth();
                 float scale = getContext().getResources().getDisplayMetrics().density;
 
+            }
+        });
+    }
+
+    public void editPageListener() {
+
+        rootView.findViewById(R.id.rr_pg_edit_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                NavController controller = Navigation.findNavController(view);
+                NavController controller = NavHostFragment.findNavController(RestroomPageBottomSheet.this);
+                controller.navigate(R.id.action_navg_rr_pg_fragment_to_navg_rr_pg_edit_fragment);
             }
         });
     }

@@ -58,11 +58,11 @@ public class MapFragment extends Fragment {
 
         mMapView.onResume(); // needed to get the map to display immediately
 
-        try {
-            MapsInitializer.initialize(getActivity().getApplicationContext());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            MapsInitializer.initialize(getActivity().getApplicationContext());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         mSearchText = rootView.findViewById(R.id.input_search);
         mMapView.getMapAsync(new OnMapReadyCallback() {

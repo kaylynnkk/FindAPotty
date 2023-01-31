@@ -44,10 +44,11 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 
         recyclerView = view.findViewById(R.id.rr_pg_review_section);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new RestroomReviewRecyclerViewAdaptor(getContext(), restroomReviews));
+        RestroomReviewRecyclerViewAdaptor adaptor = new RestroomReviewRecyclerViewAdaptor(getContext(), restroomReviews);
+        recyclerView.setAdapter(adaptor);
 
         initReviews();
-        addReviewListener();
+        addReviewListener(adaptor);
 
 
 
@@ -62,13 +63,14 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
     }
     
     // unusable
-    private void addReviewListener(){
+    private void addReviewListener(RestroomReviewRecyclerViewAdaptor adaptor){
         FloatingActionButton btn = view.findViewById(R.id.rr_page_add_review);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: add review");
                 restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "1243r4tgg g5"));
+                adaptor.notifyItemInserted(restroomReviews.size()-1);
             }
         });
     }

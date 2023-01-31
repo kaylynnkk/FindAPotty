@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 
     private static final String TAG = "RestroomPageBottomSheet";
-    private ArrayList<RestroomReview> restroomReviews = new ArrayList<RestroomReview>();
+    private ArrayList<RestroomReview> restroomReviews = new ArrayList<>();
     private ImageView rr_photo;
     private View view;
     private RecyclerView recyclerView;
@@ -56,23 +56,21 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         return dialog;
     }
 
-
     private void initReviews(){
-        restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "Trondheim"));
-        restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "Trondheim"));
-        restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "Trondheim"));
+        restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "Trondheim1"));
+        restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "Trondheim2"));
+        restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "Trondheim3"));
     }
-    
-    // unusable
+
     private void addReviewListener(){
         FloatingActionButton btn = view.findViewById(R.id.rr_page_add_review);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: add review");
-                restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "1243r4tgg g5"));
-                adaptor.notifyItemInserted(restroomReviews.size()-1);
-                recyclerView.smoothScrollToPosition(restroomReviews.size()-1);
+                restroomReviews.add(0, new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "1243r4tgg g5"));
+                adaptor.notifyItemInserted(0);
+                recyclerView.smoothScrollToPosition(0);
             }
         });
     }

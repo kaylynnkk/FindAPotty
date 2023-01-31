@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/overall_navigation"
+    app:startDestination="@id/loginFragment2">
+    <fragment
+        android:id="@+id/loginFragment2"
+        android:name="com.example.findapotty.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment2_to_nav_search"
+            app:destination="@id/nav_search" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_search"
+        android:name="com.example.findapotty.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_mapFragment2_to_restroomPageBottomSheet2"
+            app:destination="@id/restroomPageBottomSheet2" />
+    </fragment>
+    <dialog
+        android:id="@+id/restroomPageBottomSheet2"
+        android:name="com.example.findapotty.RestroomPageBottomSheet"
+        android:label="bottom_sheet_restroom_page"
+        tools:layout="@layout/bottom_sheet_restroom_page" />
+    <fragment
+        android:id="@+id/nav_feed"
+        android:name="com.example.findapotty.FeedFragment"
+        android:label="fragment_feed"
+        tools:layout="@layout/fragment_feed" />
+    <fragment
+        android:id="@+id/nav_add"
+        android:name="com.example.findapotty.AddFragment"
+        android:label="fragment_add"
+        tools:layout="@layout/fragment_add" />
+</navigation>

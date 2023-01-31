@@ -20,6 +20,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -218,8 +220,11 @@ public class MapFragment extends Fragment {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
 
-                BottomSheetDialogFragment dialogFragment = new RestroomPageBottomSheet();
-                dialogFragment.show(getParentFragmentManager(), dialogFragment.getTag());
+//                BottomSheetDialogFragment dialogFragment = new RestroomPageBottomSheet();
+//                dialogFragment.show(getParentFragmentManager(), dialogFragment.getTag());
+
+                NavController controller = Navigation.findNavController(mMapView);
+                controller.navigate(R.id.action_mapFragment2_to_restroomPageBottomSheet2);
 
                 return true;
             }

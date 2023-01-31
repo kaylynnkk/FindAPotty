@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -24,7 +25,6 @@ import java.util.ArrayList;
 public class RestroomReviewRecyclerViewAdaptor extends RecyclerView.Adapter<RestroomReviewRecyclerViewAdaptor.ViewHolder>{
 
     private static final String TAG = "RecyclerViewAdapter";
-
     private ArrayList<RestroomReview> restroomReviews;
     Context context;
 
@@ -33,6 +33,7 @@ public class RestroomReviewRecyclerViewAdaptor extends RecyclerView.Adapter<Rest
         this.restroomReviews = restroomReviews;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rr_pg_single_reivew, parent, false);
@@ -71,12 +72,10 @@ public class RestroomReviewRecyclerViewAdaptor extends RecyclerView.Adapter<Rest
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-
+    public static class ViewHolder extends RecyclerView.ViewHolder{
         ImageView avatar;
         TextView username;
         RelativeLayout parentLayout;
-
         public ViewHolder (View itemView) {
             super(itemView);
             avatar = itemView.findViewById(R.id.rr_rv_avatar);

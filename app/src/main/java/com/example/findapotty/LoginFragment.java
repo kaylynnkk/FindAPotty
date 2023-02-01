@@ -19,7 +19,7 @@ public class LoginFragment extends Fragment {
 
         rootView.findViewById(R.id.fl_login_in_button).setOnClickListener(view -> {
             NavController controller = Navigation.findNavController(view);
-            controller.navigate(R.id.action_loginFragment2_to_login_page);
+            controller.navigate(R.id.action_loginFragment2_to_nav_search);
         });
 
         return rootView;

@@ -10,19 +10,26 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/action_loginFragment2_to_login_page"
-            app:destination="@id/navg_login_page_fragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/navg_login_page_fragment"
-        android:name="com.example.findapotty.LoginPageFragment"
-        android:label="fragment_login_page"
-        tools:layout="@layout/fragment_login_page">
-        <action
             android:id="@+id/action_loginFragment2_to_nav_search"
             app:destination="@id/nav_search" />
     </fragment>
+
+<!--    Navigate signup link to sign up page-->
+<!--    <fragment-->
+<!--        android:id="@+id/navg_signup_fragment"-->
+<!--        android:name="com.example.findapotty.SignUpFragment"-->
+<!--        android:label="fragment_signup"-->
+<!--        tools:layout="@layout/fragment_signup">-->
+<!--        <action-->
+<!--            android:id="@+id/action_signup_to_signup"-->
+<!--            app:destination="@id/signup"/>-->
+<!--    </fragment>-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/signup"-->
+<!--        android:name="com.example.findapotty.SignUpFragment"-->
+<!--        android:label="fragment_signup"-->
+<!--        tools:layout="@layout/fragment_signup" />-->
 
     <fragment
         android:id="@+id/nav_search"

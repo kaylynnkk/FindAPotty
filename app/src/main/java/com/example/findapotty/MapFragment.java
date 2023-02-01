@@ -19,10 +19,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.example.findapotty.databinding.FragmentMapBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -51,6 +53,8 @@ public class MapFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        final FragmentMapBinding binding =
+//                DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false);
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
         mMapView = (MapView) rootView.findViewById(R.id.mapView);

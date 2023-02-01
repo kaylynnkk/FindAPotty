@@ -29,7 +29,6 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
     private View rootView;
     private RecyclerView recyclerView;
     private RestroomReviewRecyclerViewAdaptor adaptor;
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

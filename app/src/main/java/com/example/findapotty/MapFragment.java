@@ -1,12 +1,15 @@
 package com.example.findapotty;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -26,6 +30,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.findapotty.databinding.FragmentMapBinding;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -38,6 +44,9 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -47,12 +56,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback{
+public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     View rootView;
     MapView mMapView;
     private GoogleMap googleMap;
     private EditText mSearchText;
+
+    private FusedLocationProviderClient fusedLocationClient;
+    private boolean grantedDeviceLocation = false;
     private static final String TAG = "MapFragment";
 
     @Override
@@ -79,8 +91,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         return rootView;
     }
 
-    private void setUpIfNeeded(){
-        if (googleMap == null){
+    private void setUpIfNeeded() {
+        if (googleMap == null) {
             mMapView.getMapAsync(this);
         }
     }
@@ -88,6 +100,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.googleMap = googleMap;
+
+        permissionCheck();
 
         init();
 
@@ -99,8 +113,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
         searchListener();
 
+
     }
 
+    private void permissionCheck(){
+        if (ContextCompat.checkSelfPermission( getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED) {
+            grantedDeviceLocation = true;
+            Log.d(TAG, "permissionCheck: permission grated");
+        }
+    }
+
+    @SuppressLint("MissingPermission")
     private void init() {
         // For showing a move to my location button
 //        googleMap.setMyLocationEnabled(true);
@@ -117,7 +141,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         CameraPosition position = mgr.getSavedCameraPosition();
         if (position != null) {
             Toast.makeText(getActivity(), "entering Resume State", Toast.LENGTH_SHORT).show();
-            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(position));
+            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(position));
 
             googleMap.setMapType(mgr.getSavedMapType());
         }
@@ -125,7 +149,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         // UI Section
         // zoom in/out button
         googleMap.getUiSettings().setZoomControlsEnabled(true);
-        googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        // device location
+        if (grantedDeviceLocation){
+            googleMap.setMyLocationEnabled(true);
+            googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        }
         googleMap.setPadding(0, 0, 0, 150);
     }
 
@@ -262,9 +290,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         super.onPause();
         MapStateManager mgr = new MapStateManager(getActivity());
         mgr.saveMapState(googleMap);
-        Toast.makeText(getActivity(), "Map State has been save?", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Map State has been save", Toast.LENGTH_SHORT).show();
     }
-
 
 
 //    @Override
@@ -272,4 +299,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 //        super.onResume();
 //        setupMapIfNeeded();
 //    }
+
+    @SuppressLint("MissingPermission")
+    private void getDeviceLoaction() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        if (grantedDeviceLocation) {
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                moveCamera(new LatLng(location.getLatitude(), location.getLongitude()), 12);
+                                // Logic to handle location object
+                            }
+                        }
+                    });
+        }
+
+
+
+    }
 }

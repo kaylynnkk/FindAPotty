@@ -126,6 +126,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         // zoom in/out button
         googleMap.getUiSettings().setZoomControlsEnabled(true);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        googleMap.setPadding(0, 0, 0, 150);
     }
 
     private void searchListener() {

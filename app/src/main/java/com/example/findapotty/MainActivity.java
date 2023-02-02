@@ -2,6 +2,7 @@ package com.example.findapotty;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.TranslateAnimation;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -41,11 +42,6 @@ public class MainActivity extends AppCompatActivity {
                 default:
                     bottomNavigationView.setVisibility(View.GONE);
             }
-//            if (navDestination.getId() == R.id.navg_login_fragment || ){
-//                bottomNavigationView.setVisibility(View.GONE);
-//            }else{
-//                bottomNavigationView.setVisibility(View.VISIBLE);
-//            }
         });
     }
 

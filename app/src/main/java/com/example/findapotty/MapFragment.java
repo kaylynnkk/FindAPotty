@@ -1,6 +1,7 @@
 package com.example.findapotty;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -25,6 +26,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.findapotty.databinding.FragmentMapBinding;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -36,6 +38,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -44,18 +47,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements OnMapReadyCallback{
+
+    View rootView;
     MapView mMapView;
     private GoogleMap googleMap;
     private EditText mSearchText;
-    private View bottomSheet;
     private static final String TAG = "MapFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //        final FragmentMapBinding binding =
 //                DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false);
-        View rootView = inflater.inflate(R.layout.fragment_map, container, false);
+        rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -69,37 +73,54 @@ public class MapFragment extends Fragment {
 //        }
 
         mSearchText = rootView.findViewById(R.id.input_search);
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap mMap) {
-                googleMap = mMap;
 
-                init();
-
-                // add marker on long press on map
-                addMarker();
-
-                // restroom info page
-                displayRestroomPage();
-
-                searchListener();
-            }
-        });
+        setUpIfNeeded();
 
         return rootView;
+    }
+
+    private void setUpIfNeeded(){
+        if (googleMap == null){
+            mMapView.getMapAsync(this);
+        }
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        this.googleMap = googleMap;
+
+        init();
+
+        // add marker on long press on map
+        addMarker();
+
+        // restroom info page
+        displayRestroomPage();
+
+        searchListener();
+
     }
 
     private void init() {
         // For showing a move to my location button
 //        googleMap.setMyLocationEnabled(true);
 
-//         For dropping a marker at a point on the Map
-        LatLng sydney = new LatLng(-34, 151);
-        googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
 
-        // For zooming automatically to the location of the marker
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
-        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+//         For dropping a marker at a point on the Map
+//        LatLng sydney = new LatLng(-34, 151);
+//        googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
+//
+//        // For zooming automatically to the location of the marker
+//        CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
+//        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        MapStateManager mgr = new MapStateManager(getActivity());
+        CameraPosition position = mgr.getSavedCameraPosition();
+        if (position != null) {
+            Toast.makeText(getActivity(), "entering Resume State", Toast.LENGTH_SHORT).show();
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(position));
+
+            googleMap.setMapType(mgr.getSavedMapType());
+        }
 
         // UI Section
         // zoom in/out button
@@ -234,4 +255,20 @@ public class MapFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MapStateManager mgr = new MapStateManager(getActivity());
+        mgr.saveMapState(googleMap);
+        Toast.makeText(getActivity(), "Map State has been save?", Toast.LENGTH_SHORT).show();
+    }
+
+
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        setupMapIfNeeded();
+//    }
 }

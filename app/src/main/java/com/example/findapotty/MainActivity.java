@@ -1,6 +1,7 @@
 package com.example.findapotty;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 
@@ -13,6 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
     private NavController controller;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setVisibility(View.GONE);
         // change visibility
         controller.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
-            switch (navDestination.getId()){
+            switch (navDestination.getId()) {
                 case R.id.nav_search:
                 case R.id.nav_feed:
                 case R.id.nav_add:
@@ -43,8 +45,9 @@ public class MainActivity extends AppCompatActivity {
                     bottomNavigationView.setVisibility(View.GONE);
             }
         });
-    }
+        Log.d(TAG, "onStart: api key" + BuildConfig.MAPS_API_KEY);
 
+    }
     @Override
     public boolean onSupportNavigateUp() {
         return super.onSupportNavigateUp();

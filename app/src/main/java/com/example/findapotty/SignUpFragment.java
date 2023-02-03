@@ -18,7 +18,7 @@ public class SignUpFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_signup, container, false);
 
         // Need to create 'signup' button to navigate to signup page
-        //random comment 
+        //random comment
         rootView.findViewById(R.id.fl_login_in_button).setOnClickListener(view -> {
             NavController controller = Navigation.findNavController(view);
             controller.navigate(R.id.action_loginFragment2_to_nav_search);

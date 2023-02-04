@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        grantLocationPermission();
+        grantPermissions();
     }
 
     @Override
@@ -63,15 +63,17 @@ public class MainActivity extends AppCompatActivity {
 
     private final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
 
-    public void grantLocationPermission(){
+    public void grantPermissions(){
         if (ContextCompat.checkSelfPermission(
                 this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+                this, android.Manifest.permission.INTERNET) ==
                 PackageManager.PERMISSION_GRANTED) {
             ;
         } else {
             // You can directly ask for the permission.
             ActivityCompat.requestPermissions(this,
-                    new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
+                    new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET },
                     LOCATION_PERMISSION_REQUEST_CODE);
         }
     }

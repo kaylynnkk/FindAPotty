@@ -57,4 +57,7 @@ dependencies {
     // google map Places SDK
     implementation 'com.google.android.libraries.places:places:3.0.0'
 
+    // OkHttp, http request
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+
 }

@@ -1,12 +1,10 @@
 package com.example.findapotty;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.TranslateAnimation;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -55,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onStart: api key" + BuildConfig.MAPS_API_KEY);
 
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         return super.onSupportNavigateUp();
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
 
-    public void grantPermissions(){
+    public void grantPermissions() {
         if (ContextCompat.checkSelfPermission(
                 this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // You can directly ask for the permission.
             ActivityCompat.requestPermissions(this,
-                    new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET },
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET},
                     LOCATION_PERMISSION_REQUEST_CODE);
         }
     }

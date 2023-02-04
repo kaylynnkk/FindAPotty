@@ -61,7 +61,7 @@ import okhttp3.ResponseBody;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
-//    View rootView;
+    //    View rootView;
     MapView mMapView;
     private GoogleMap googleMap;
     private EditText mSearchText;
@@ -409,7 +409,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void addRestroomIconOnMap() {
 //        getNearbyRestrooms();
         binding.mapShowRrButton.setOnClickListener(new View.OnClickListener() {
-//        rootView.findViewById(R.id.map_show_rr_button).setOnClickListener(new View.OnClickListener() {
+            //        rootView.findViewById(R.id.map_show_rr_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "addRestroomIconOnMap: " + restroomList.size());

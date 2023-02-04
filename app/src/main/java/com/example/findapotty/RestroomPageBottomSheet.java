@@ -29,6 +29,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
     private View rootView;
     private RecyclerView recyclerView;
     private RestroomReviewRecyclerViewAdaptor adaptor;
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -51,17 +52,16 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         editPageListener();
 
 
-
         return dialog;
     }
 
-    private void initReviews(){
+    private void initReviews() {
         restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "Trondheim1"));
         restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "Trondheim2"));
         restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "Trondheim3"));
     }
 
-    private void addReviewListener(){
+    private void addReviewListener() {
         FloatingActionButton btn = rootView.findViewById(R.id.rr_page_add_review);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +74,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         });
     }
 
-    public void resizeImageOnScroll(){
+    public void resizeImageOnScroll() {
         recyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View view, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {

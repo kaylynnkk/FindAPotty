@@ -62,7 +62,7 @@ public class MapStateManager {
     private static final String TILT = "tilt";
     private static final String MAPTYPE = "MAPTYPE";
 
-    private static final String PREFS_NAME ="mapCameraState";
+    private static final String PREFS_NAME = "mapCameraState";
 
     private SharedPreferences mapStatePrefs;
 

@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.findapotty.databinding.FragmentEditRestroomPageBinding;
-import com.google.android.gms.common.util.DataUtils;
 
 public class RestroomPageEditFragment extends Fragment {
     @Nullable

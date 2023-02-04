@@ -1,7 +1,6 @@
 package com.example.findapotty;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,13 +20,13 @@ import java.util.ArrayList;
  * Created by User on 1/1/2018.
  */
 
-public class RestroomReviewRecyclerViewAdaptor extends RecyclerView.Adapter<RestroomReviewRecyclerViewAdaptor.ViewHolder>{
+public class RestroomReviewRecyclerViewAdaptor extends RecyclerView.Adapter<RestroomReviewRecyclerViewAdaptor.ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapter";
     private ArrayList<RestroomReview> restroomReviews;
     Context context;
 
-    public RestroomReviewRecyclerViewAdaptor(Context context, ArrayList<RestroomReview> restroomReviews ) {
+    public RestroomReviewRecyclerViewAdaptor(Context context, ArrayList<RestroomReview> restroomReviews) {
         this.context = context;
         this.restroomReviews = restroomReviews;
     }
@@ -72,11 +70,12 @@ public class RestroomReviewRecyclerViewAdaptor extends RecyclerView.Adapter<Rest
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView avatar;
         TextView username;
         RelativeLayout parentLayout;
-        public ViewHolder (View itemView) {
+
+        public ViewHolder(View itemView) {
             super(itemView);
             avatar = itemView.findViewById(R.id.rr_rv_avatar);
             username = itemView.findViewById(R.id.rr_rv_username);

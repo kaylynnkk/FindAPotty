@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Search"
+    <item
+        android:title="Search"
         android:id="@+id/nav_search"
-        android:icon="@drawable/ic_magnify"/>
-    <item android:title="Feed"
+        android:icon="@drawable/ic_magnify" />
+    <item
+        android:title="Feed"
         android:id="@+id/nav_feed"
-        android:icon="@drawable/nav_feed_24"/>
-    <item android:title="Add"
+        android:icon="@drawable/nav_feed_24" />
+    <item
+        android:title="Add"
         android:id="@+id/nav_add"
-        android:icon="@drawable/nav_add_24"/>
-    <item android:title="Favorite"
+        android:icon="@drawable/nav_add_24" />
+    <item
+        android:title="Favorite"
         android:id="@+id/nav_favorite"
-        android:icon="@drawable/nav_favorite_24"/>
-    <item android:title="My Profile"
+        android:icon="@drawable/nav_favorite_24" />
+    <item
+        android:title="My Profile"
         android:id="@+id/nav_profile"
-        android:icon="@drawable/nav_person_24"/>
+        android:icon="@drawable/nav_person_24" />
 </menu>

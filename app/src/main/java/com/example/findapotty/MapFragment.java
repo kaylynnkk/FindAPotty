@@ -45,7 +45,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -53,25 +52,13 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.PlacesApi;
 import com.google.maps.android.ui.IconGenerator;
 import com.google.maps.errors.ApiException;
-import com.google.maps.model.PlaceDetails;
 import com.google.maps.model.PlacesSearchResponse;
 import com.google.maps.model.PlacesSearchResult;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -93,9 +80,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false);
         binding.setLifecycleOwner(this);
 
-//        rootView = inflater.inflate(R.layout.fragment_map, container, false);
-
-//        mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView = binding.mapView;
         mMapView.onCreate(savedInstanceState);
 
@@ -107,7 +91,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 //            e.printStackTrace();
 //        }
 
-//        mSearchText = rootView.findViewById(R.id.input_search);
         mSearchText = binding.inputSearch;
 
         setUpIfNeeded();
@@ -154,17 +137,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @SuppressLint("MissingPermission")
     private void init() {
-        // For showing a move to my location button
-//        googleMap.setMyLocationEnabled(true);
 
-
-//         For dropping a marker at a point on the Map
-//        LatLng sydney = new LatLng(-34, 151);
-//        googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
-//
-//        // For zooming automatically to the location of the marker
-//        CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
-//        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         MapStateManager mgr = new MapStateManager(getActivity());
         CameraPosition position = mgr.getSavedCameraPosition();
         if (position != null) {
@@ -276,7 +249,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return iconGenerator.makeIcon(markerLabel);
     }
 
-//    static List<com.google.maps.model.LatLng> convertCoordType(List<com.google.android.gms.maps.model.LatLng> list) {
+    //    static List<com.google.maps.model.LatLng> convertCoordType(List<com.google.android.gms.maps.model.LatLng> list) {
 //        List<com.google.maps.model.LatLng> resultList = new ArrayList<>();
 //        for (com.google.android.gms.maps.model.LatLng item : list) {
 //            resultList.add(new com.google.maps.model.LatLng(item.latitude, item.longitude));
@@ -286,6 +259,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     static com.google.maps.model.LatLng convertLatLngType(com.google.android.gms.maps.model.LatLng latLng) {
         return new com.google.maps.model.LatLng(latLng.latitude, latLng.longitude);
     }
+
     static com.google.android.gms.maps.model.LatLng convertLatLngTypeV2(com.google.maps.model.LatLng latLng) {
         return new com.google.android.gms.maps.model.LatLng(latLng.lat, latLng.lng);
     }
@@ -387,37 +361,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
      * 3. parse json response to get restroom lat and lng
      * 4. add marker on map using lat and lng
      */
-
-    private GeoApiContext geoApiContext;
     private void getNearbyRestrooms() {
         getDeviceLocation();
-//        Log.d(TAG, "getNearbyRestrooms: current location fetched" + currentLocation.getLatitude()
-//                + ", " + currentLocation.getLongitude());
         googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
                 moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 12);
                 if (currentLocation != null) {
 
-                    geoApiContext = new GeoApiContext.Builder()
+                    GeoApiContext geoApiContext = new GeoApiContext.Builder()
                             .apiKey(BuildConfig.MAPS_API_KEY)
                             .build();
                     try {
                         // get nearby restrooms
                         PlacesSearchResponse response = PlacesApi.nearbySearchQuery(
-                                geoApiContext,
-                                convertLatLngType(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
+                                        geoApiContext,
+                                        convertLatLngType(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
                                 )
                                 .radius(5000)
                                 .keyword("restroom")
                                 .await();
                         Log.d(TAG, "onMyLocationButtonClick: restroom found " + response.results.length);
                         for (PlacesSearchResult restroom : response.results) {
-
-//                            PlaceDetails restroomDetail = PlacesApi.placeDetails(geoApiContext, restroom.placeId)
-//                                            .await();
-//                            Log.d(TAG, "onMyLocationButtonClick: " + restroomDetail.url);
-
 
                             // Specify the fields to return.
                             final List<Place.Field> placeFields = Arrays.asList(
@@ -461,60 +426,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         throw new RuntimeException(e);
                     }
 
-//                    geoApiContext.shutdown();
-
-//                    Log.d(TAG, "getNearbyRestrooms: near by restrooms fetched");
-////                        MediaType mediaType = MediaType.parse("text/plain");
-////                        RequestBody body = RequestBody.create("", mediaType);
-//                    String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
-//                            String.format("location=%f%%2C%f", currentLocation.getLatitude(), currentLocation.getLongitude()) +
-//                            "&radius=5000" +
-//                            "&keyword=restroom" +
-//                            String.format("&key=%s", BuildConfig.MAPS_API_KEY);
-//                    Log.d(TAG, "getNearbyRestrooms: requesting on " + url);
-//                    Request request = new Request.Builder().url(url).get().build();
-//
-//                    OkHttpClient client = new OkHttpClient().newBuilder().build();
-//                    client.newCall(request).enqueue(new Callback() {
-//                        @Override
-//                        public void onFailure(@NonNull Call call, @NonNull IOException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        @Override
-//                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-//                            try (ResponseBody responseBody = response.body()) {
-//                                if (!response.isSuccessful())
-//                                    throw new IOException("Unexpected code " + response);
-//
-////                                    Headers responseHeaders = response.headers();
-////                                    for (int i = 0, size = responseHeaders.size(); i < size; i++) {
-////                                        System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
-////                                    }
-//
-////                                Log.d(TAG, "getNearbyRestrooms: \n" + responseBody.string());
-//                                JSONObject Jobject = new JSONObject(responseBody.string());
-//                                JSONArray restrooms = Jobject.getJSONArray("results");
-//
-//                                for (int i = 0; i < restrooms.length(); i++) {
-//                                    JSONObject restroom = restrooms.getJSONObject(i);
-//                                    JSONObject location = restroom.getJSONObject("geometry").getJSONObject("location");
-//                                    String placeID = restroom.getString("place_id");
-//                                    Log.d(TAG, "onResponse: " + location.getDouble("lat") + ", " + location.getDouble("lng"));
-//                                    restroomList.add();
-//                                    restroomList.add(new Restroom(
-//                                            new LatLng(location.getDouble("lat"), location.getDouble("lng")),
-//                                            placeID,
-//
-//                                    ))
-//                                }
-//
-//                            } catch (JSONException e) {
-//                                throw new RuntimeException(e);
-//                            }
-//                        }
-//                    });
-
                 } else {
                     Log.d(TAG, "getNearbyRestrooms: failed to fetch current location ");
                 }
@@ -526,17 +437,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void addRestroomIconOnMap() {
 //        getNearbyRestrooms();
         binding.mapShowRrButton.setOnClickListener(new View.OnClickListener() {
-            //        rootView.findViewById(R.id.map_show_rr_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "addRestroomIconOnMap: " + restroomList.size());
                 for (int i = 0; i < restroomList.size(); i++) {
                     Log.d(TAG, "addRestroomIconOnMap: added" + i);
                     googleMap.addMarker(new MarkerOptions()
-                            .position(restroomList.get(i).getLatLng())
+                                    .position(restroomList.get(i).getLatLng())
 //                          .icon(bitmapDescriptorFromVector(getActivity(), R.drawable.map_marker_restroom))
-                            .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIconWithLabel(getActivity(),
-                                    restroomList.get(i).getOpeningStatus())))
+                                    .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIconWithLabel(getActivity(),
+                                            restroomList.get(i).getOpeningStatus())))
                     );
                 }
             }

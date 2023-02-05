@@ -1,13 +1,10 @@
 package com.example.findapotty;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.model.OpeningHours;
 import com.google.maps.model.Photo;
-
-import java.util.ArrayList;
 
 public class Restroom {
     private LatLng latLng;
@@ -37,9 +34,9 @@ public class Restroom {
     }
 
     public String getOpeningStatus() {
-        if (isOpen){
+        if (isOpen) {
             return "Opening";
-        } else{
+        } else {
             return "Closed";
         }
 //        if (openingHours != null){
@@ -54,8 +51,8 @@ public class Restroom {
     }
 
     public boolean isOpen_now() {
-        if (openingHours != null){
-            if (openingHours.openNow){
+        if (openingHours != null) {
+            if (openingHours.openNow) {
                 return true;
             } else {
                 return false;

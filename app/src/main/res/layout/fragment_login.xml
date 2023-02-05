@@ -82,4 +82,27 @@
         app:layout_constraintEnd_toEndOf="@+id/inputPassword"
         app:layout_constraintTop_toBottomOf="@+id/inputPassword" />
 
+    <TextView
+        android:id="@+id/alreadyhaveanaccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Already have an account?"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="@+id/fl_login_in_button"
+        app:layout_constraintStart_toStartOf="@+id/fl_login_in_button"
+        app:layout_constraintTop_toBottomOf="@+id/fl_login_in_button" />
+
+    <TextView
+        android:id="@+id/signup_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="SignUp"
+        android:textColor="#FF1100"
+        app:layout_constraintEnd_toEndOf="@+id/fl_login_in_button"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/alreadyhaveanaccount"
+        app:layout_constraintTop_toBottomOf="@+id/fl_login_in_button" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

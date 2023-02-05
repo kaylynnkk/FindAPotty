@@ -60,4 +60,10 @@ dependencies {
     // OkHttp, http request
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
 
+    // Maps SDK for Android utility library
+    implementation 'com.google.maps.android:android-maps-utils:2.3.0'
+
+    // https://github.com/googlemaps/google-maps-services-java
+    implementation 'com.google.maps:google-maps-services:2.1.2'
+
 }

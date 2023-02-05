@@ -14,7 +14,6 @@
             app:destination="@id/nav_search" />
     </fragment>
 
-<<<<<<< Updated upstream
     <!--    Navigate signup link to sign up page-->
     <!--    <fragment-->
     <!--        android:id="@+id/navg_signup_fragment"-->
@@ -31,24 +30,6 @@
     <!--        android:name="com.example.findapotty.SignUpFragment"-->
     <!--        android:label="fragment_signup"-->
     <!--        tools:layout="@layout/fragment_signup" />-->
-=======
-<!--    Navigate signup link to sign up page-->
-<!--    <fragment-->
-<!--        android:id="@+id/navg_signup_fragment"-->
-<!--        android:name="com.example.findapotty.signUpFragment"-->
-<!--        android:label="fragment_signup"-->
-<!--        tools:layout="@layout/fragment_signup">-->
-<!--        <action-->
-<!--            android:id="@+id/action_signup_to_signup"-->
-<!--            app:destination="@id/signup"/>-->
-<!--    </fragment>-->
-
-<!--    <fragment-->
-<!--        android:id="@+id/signup"-->
-<!--        android:name="com.example.findapotty.signUpFragment"-->
-<!--        android:label="fragment_signup"-->
-<!--        tools:layout="@layout/fragment_signup" />-->
->>>>>>> Stashed changes
 
     <fragment
         android:id="@+id/nav_search"

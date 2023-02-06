@@ -7,21 +7,39 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.example.findapotty.databinding.FragmentLoginBinding;
 
 public class LoginFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+        FragmentLoginBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false);
+        binding.setLifecycleOwner(this);
 
-        rootView.findViewById(R.id.fl_login_in_button).setOnClickListener(view -> {
-            NavController controller = Navigation.findNavController(view);
-            controller.navigate(R.id.action_loginFragment2_to_nav_search);
+        // login
+        binding.flLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavController controller = Navigation.findNavController(view);
+                controller.navigate(R.id.action_loginFragment2_to_nav_search);
+            }
         });
 
-        return rootView;
+        // sign up
+        binding.flSignupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                NavController controller = Navigation.findNavController(view);
+                controller.navigate(R.id.action_navg_login_fragment_to_nav_signup_fragment);
+            }
+        });
+
+        return binding.getRoot();
     }
 }

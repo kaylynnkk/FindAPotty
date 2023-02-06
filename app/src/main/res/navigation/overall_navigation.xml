@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_loginFragment2_to_nav_search"
             app:destination="@id/nav_search" />
+        <action
+            android:id="@+id/action_navg_login_fragment_to_nav_signup_fragment"
+            app:destination="@id/nav_signup_fragment" />
     </fragment>
 
     <!--    Navigate signup link to sign up page-->
@@ -64,4 +67,12 @@
         android:name="com.example.findapotty.RestroomPageEditFragment"
         android:label="fragment_edit_restroom_page"
         tools:layout="@layout/fragment_edit_restroom_page" />
+    <fragment
+        android:id="@+id/nav_signup_fragment"
+        android:name="com.example.findapotty.SignUpFragment"
+        android:label="SignUpFragment" >
+        <action
+            android:id="@+id/action_nav_signup_fragment_to_nav_search"
+            app:destination="@id/nav_search" />
+    </fragment>
 </navigation>

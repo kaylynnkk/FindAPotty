@@ -59,7 +59,7 @@
                 android:contentDescription="map"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/map_search_bar" />
 
@@ -71,6 +71,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/map_search_bar" />
+
+            <ImageView
+                android:id="@+id/fm_add_rr_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/nav_add_24"
+                tools:layout_editor_absoluteX="69dp"
+                tools:layout_editor_absoluteY="192dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/map_search_bar"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

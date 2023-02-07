@@ -76,7 +76,7 @@
                 android:id="@+id/fm_add_rr_button"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                app:srcCompat="@drawable/nav_add_24"
+                app:srcCompat="@drawable/icon_add_restroom"
                 tools:layout_editor_absoluteX="69dp"
                 tools:layout_editor_absoluteY="192dp"
                 app:layout_constraintStart_toStartOf="parent"

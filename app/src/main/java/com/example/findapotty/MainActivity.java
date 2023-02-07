@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             switch (navDestination.getId()) {
                 case R.id.nav_search:
                 case R.id.nav_feed:
-                case R.id.nav_add:
+                case R.id.nav_discuss:
                     bottomNavigationView.setVisibility(View.VISIBLE);
                     break;
                 default:

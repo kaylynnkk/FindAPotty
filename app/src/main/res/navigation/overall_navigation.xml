@@ -45,10 +45,10 @@
         android:label="fragment_feed"
         tools:layout="@layout/fragment_feed" />
     <fragment
-        android:id="@+id/nav_add"
+        android:id="@+id/nav_discuss"
         android:name="com.example.findapotty.AddFragment"
         android:label="fragment_add"
-        tools:layout="@layout/fragment_add" />
+        tools:layout="@layout/fragment_discuss" />
     <fragment
         android:id="@+id/navg_rr_pg_edit_fragment"
         android:name="com.example.findapotty.RestroomPageEditFragment"
@@ -57,7 +57,7 @@
     <fragment
         android:id="@+id/nav_signup_fragment"
         android:name="com.example.findapotty.SignUpFragment"
-        android:label="SignUpFragment" >
+        android:label="fragment_signup">
         <action
             android:id="@+id/action_nav_signup_fragment_to_nav_search"
             app:destination="@id/nav_search" />

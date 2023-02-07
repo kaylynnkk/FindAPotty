@@ -43,7 +43,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.PhotoMetadata;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPhotoRequest;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -70,7 +72,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationClient;
     private boolean grantedDeviceLocation = false;
     private Location currentLocation = null;
-    private ArrayList<Restroom> restroomList = new ArrayList<>();
     private boolean onSerchingComplete = false;
     FragmentMapBinding binding;
     private static final String TAG = "MapFragment";
@@ -308,10 +309,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 //                BottomSheetDialogFragment dialogFragment = new RestroomPageBottomSheet();
 //                dialogFragment.show(getParentFragmentManager(), dialogFragment.getTag());
 
-                NavController controller = Navigation.findNavController(mMapView);
-                controller.navigate(R.id.action_mapFragment2_to_restroomPageBottomSheet2);
+                try {
 
+                    NavController controller = Navigation.findNavController(mMapView);
+
+                    MapFragmentDirections.ActionMapFragment2ToRestroomPageBottomSheet2 action =
+                            MapFragmentDirections.actionMapFragment2ToRestroomPageBottomSheet2(marker.getId());
+                    controller.navigate(action);
+
+//                    RestroomPageBottomSheet restroomPageBottomSheet = new RestroomPageBottomSheet();
+//                    restroomPageBottomSheet.initRestroomPage(marker.getId());
+                    Log.d(TAG, "onMarkerClick: " + marker.getId());
+                } catch (IllegalArgumentException e) {
+                    Log.d(TAG, "onMarkerClick: failed to find action");
+                }
                 return true;
+
             }
         });
     }
@@ -386,10 +399,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                             // Specify the fields to return.
                             final List<Place.Field> placeFields = Arrays.asList(
+                                    Place.Field.ADDRESS,
                                     Place.Field.LAT_LNG,
+                                    Place.Field.PHOTO_METADATAS,
                                     Place.Field.ID,
                                     Place.Field.NAME,
-                                    Place.Field.OPENING_HOURS, Place.Field.UTC_OFFSET, Place.Field.BUSINESS_STATUS);
+                                    Place.Field.OPENING_HOURS, Place.Field.UTC_OFFSET, Place.Field.BUSINESS_STATUS
+                            );
 
                             // Construct a request object, passing the place ID and fields array.
                             final FetchPlaceRequest request = FetchPlaceRequest.newInstance(restroom.placeId, placeFields);
@@ -402,12 +418,44 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                         place.getLatLng().toString());
                                 Log.d(TAG, "onMyLocationButtonClick: open_now: " + place.isOpen());
 
-                                restroomList.add(new Restroom(
-                                        convertLatLngTypeV2(restroom.geometry.location),
-                                        restroom.placeId,
-                                        restroom.photos,
-                                        Boolean.TRUE.equals(place.isOpen())
-                                ));
+
+                                // Get the photo metadata.
+                                final List<PhotoMetadata> metadatas = place.getPhotoMetadatas();
+                                if (metadatas == null || metadatas.isEmpty()) {
+                                    Log.w(TAG, "No photo metadata.");
+                                    return;
+                                }
+                                final PhotoMetadata photoMetadata = metadatas.get(0);
+
+                                // Get the attribution text.
+                                final String attributions = photoMetadata.getAttributions();
+
+                                // Create a FetchPhotoRequest.
+                                final FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
+                                        .setMaxWidth(500) // Optional.
+                                        .setMaxHeight(300) // Optional.
+                                        .build();
+                                placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
+                                    Bitmap bitmap = fetchPhotoResponse.getBitmap();
+//                                    imageView.setImageBitmap(bitmap);
+
+                                    RestroomManager restroomManager = RestroomManager.getInstance();
+                                    restroomManager.addRestroom(new Restroom(
+                                            place.getLatLng(),
+                                            place.getId(),
+                                            bitmap,
+                                            Boolean.TRUE.equals(place.isOpen()),
+                                            place.getName(),
+                                            place.getAddress()
+                                    ));
+
+                                }).addOnFailureListener((exception) -> {
+                                    if (exception instanceof ApiException) {
+                                        final ApiException apiException = (ApiException) exception;
+                                        Log.e(TAG, "Place not found: " + exception.getMessage());
+                                    }
+                                });
+
 
                             }).addOnFailureListener((exception) -> {
                                 if (exception instanceof ApiException) {
@@ -439,15 +487,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         binding.mapShowRrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "addRestroomIconOnMap: " + restroomList.size());
-                for (int i = 0; i < restroomList.size(); i++) {
+                RestroomManager restroomManager = RestroomManager.getInstance();
+                Log.d(TAG, "addRestroomIconOnMap: " + restroomManager.getRestrooms().size());
+                for (int i = 0; i < restroomManager.getRestrooms().size(); i++) {
                     Log.d(TAG, "addRestroomIconOnMap: added" + i);
-                    googleMap.addMarker(new MarkerOptions()
-                                    .position(restroomList.get(i).getLatLng())
-//                          .icon(bitmapDescriptorFromVector(getActivity(), R.drawable.map_marker_restroom))
-                                    .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIconWithLabel(getActivity(),
-                                            restroomList.get(i).getOpeningStatus())))
-                    );
+
+                    Marker marker = googleMap.addMarker(new MarkerOptions()
+                            .position(restroomManager.getRestroomByIndex(i).getLatLng())
+                            .icon(BitmapDescriptorFactory.fromBitmap(
+                                    getMarkerIconWithLabel(
+                                            getActivity(),
+                                            restroomManager.getRestroomByIndex(i).getOpeningStatus()))));
+
+                    restroomManager.getRestrooms().get(i).setMarkerId(marker.getId());
                 }
             }
         });

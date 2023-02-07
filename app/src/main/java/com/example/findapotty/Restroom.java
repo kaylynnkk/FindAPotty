@@ -1,24 +1,37 @@
 package com.example.findapotty;
 
+import android.graphics.Bitmap;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.maps.model.OpeningHours;
-import com.google.maps.model.Photo;
 
 public class Restroom {
     private LatLng latLng;
     private String placeID;
-    private Photo[] photos;
-    private OpeningHours openingHours;
+    private Bitmap photoBitmap;
     private boolean isOpen;
+    private String name;
+    private String address;
+    private String markerId;
 
-    public Restroom(LatLng latLng, String placeID, Photo[] photos, boolean isOpen) {
+    public Restroom(
+            LatLng latLng, String placeID, Bitmap photoBitmap,
+            boolean isOpen, String name, String address) {
         this.latLng = latLng;
         this.placeID = placeID;
-        this.photos = photos;
-//        this.openingHours = openingHours;
+        this.photoBitmap = photoBitmap;
         this.isOpen = isOpen;
+        this.name = name;
+        this.address = address;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public LatLng getLatLng() {
@@ -29,8 +42,18 @@ public class Restroom {
         return placeID;
     }
 
-    public Photo[] getPhotos() {
-        return photos;
+
+    // Usage: imageView.setImageBitmap(bitmap);
+    public Bitmap getPhoto() {
+        return photoBitmap;
+    }
+
+    public String getMarkerId() {
+        return markerId;
+    }
+
+    public void setMarkerId(String markerId) {
+        this.markerId = markerId;
     }
 
     public String getOpeningStatus() {
@@ -39,27 +62,10 @@ public class Restroom {
         } else {
             return "Closed";
         }
-//        if (openingHours != null){
-//            if (openingHours.openNow){
-//                return "Opening";
-//            } else {
-//                return "Closed";
-//            }
-//        } else {
-//            return "Unknown";
-//        }
     }
 
     public boolean isOpen_now() {
-        if (openingHours != null) {
-            if (openingHours.openNow) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+        return isOpen;
     }
 
     @NonNull

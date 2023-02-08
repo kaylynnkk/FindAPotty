@@ -46,8 +46,8 @@
         tools:layout="@layout/fragment_feed" />
     <fragment
         android:id="@+id/nav_discuss"
-        android:name="com.example.findapotty.AddFragment"
-        android:label="fragment_add"
+        android:name="com.example.findapotty.DiscussFragment"
+        android:label="fragment_discuss"
         tools:layout="@layout/fragment_discuss" />
     <fragment
         android:id="@+id/navg_rr_pg_edit_fragment"

@@ -67,4 +67,8 @@ dependencies {
     // https://github.com/googlemaps/google-maps-services-java
     implementation 'com.google.maps:google-maps-services:2.1.2'
 
+    // Circle image view
+    // https://github.com/hdodenhof/CircleImageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
 }

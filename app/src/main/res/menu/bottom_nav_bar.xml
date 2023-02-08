@@ -12,7 +12,7 @@
     <item
         android:title="Discuss"
         android:id="@+id/nav_discuss"
-        android:icon="@drawable/icon_nav_discuss_24" />
+        android:icon="@drawable/nav_discuss_24" />
     <item
         android:title="Favorite"
         android:id="@+id/nav_favorite"

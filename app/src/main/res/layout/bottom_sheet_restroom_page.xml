@@ -223,7 +223,7 @@
                     android:contentDescription="add review"
                     app:layout_constraintBottom_toTopOf="@+id/rr_page_h_bottom"
                     app:layout_constraintEnd_toStartOf="@+id/rr_page_v_end"
-                    app:srcCompat="@drawable/nav_add_24" />
+                    app:srcCompat="@drawable/icon_add_restroom" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

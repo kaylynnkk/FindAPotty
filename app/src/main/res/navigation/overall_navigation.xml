@@ -48,7 +48,12 @@
         android:id="@+id/nav_discuss"
         android:name="com.example.findapotty.DiscussFragment"
         android:label="fragment_discuss"
-        tools:layout="@layout/fragment_discuss" />
+        tools:layout="@layout/fragment_discuss" >
+        <action
+            android:id="@+id/action_nav_discuss_to_singlePostDiscussionBoard"
+            app:destination="@id/singlePostDiscussionBoard" >
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/navg_rr_pg_edit_fragment"
         android:name="com.example.findapotty.RestroomPageEditFragment"
@@ -61,5 +66,14 @@
         <action
             android:id="@+id/action_nav_signup_fragment_to_nav_search"
             app:destination="@id/nav_search" />
+    </fragment>
+    <fragment
+        android:id="@+id/singlePostDiscussionBoard"
+        android:name="com.example.findapotty.SinglePostDiscussionBoard"
+        android:label="discussion_board_single_post"
+        tools:layout="@layout/discussion_board_single_post" >
+        <argument
+            android:name="disuccionPost"
+            app:argType="com.example.findapotty.DiscussionPost" />
     </fragment>
 </navigation>

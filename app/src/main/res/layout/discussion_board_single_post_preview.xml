@@ -22,7 +22,7 @@
 
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/db_sp_h_1"
+                android:id="@+id/dbspp_h_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="90dp"
@@ -31,71 +31,71 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/db_sp_h_2"
+                android:id="@+id/dbspp_h_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.9" />
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/db_sp_h_3"
+                android:id="@+id/dbspp_h_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.56" />
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/db_sp_h_4"
+                android:id="@+id/dbspp_h_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.34" />
+                app:layout_constraintGuide_percent="0.3" />
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/db_sp_v_2"
+                android:id="@+id/dbspp_v_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.33" />
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/db_sp_v_3"
+                android:id="@+id/dbspp_v_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.66" />
 
             <View
-                android:id="@+id/db_sp_divider_1"
+                android:id="@+id/dbspp_divider_1"
                 style="@style/Divider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/db_sp_userAvatar"
+                android:id="@+id/dbspp_userAvatar"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:src="@mipmap/ic_launcher"
-                app:layout_constraintBottom_toBottomOf="@+id/db_sp_userName"
+                app:layout_constraintBottom_toBottomOf="@+id/dbspp_userName"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/db_sp_userName" />
+                app:layout_constraintTop_toTopOf="@+id/dbspp_userName" />
 
             <TextView
-                android:id="@+id/db_sp_userName"
+                android:id="@+id/dbspp_userName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="username"
                 android:textColor="@color/black"
                 android:textSize="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/db_sp_h_1"
+                app:layout_constraintBottom_toTopOf="@+id/dbspp_h_1"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/db_sp_userAvatar"
+                app:layout_constraintStart_toEndOf="@+id/dbspp_userAvatar"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/db_sp_title"
+                android:id="@+id/dbspp_title"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginBottom="1dp"
@@ -105,59 +105,59 @@
                 android:textSize="18dp"
                 android:maxLines="2"
                 android:maxLength="40"
-                app:layout_constraintBottom_toTopOf="@+id/db_sp_h_4"
+                app:layout_constraintBottom_toTopOf="@+id/dbspp_h_4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/db_sp_h_1"
+                app:layout_constraintTop_toTopOf="@+id/dbspp_h_1"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/db_sp_content"
+                android:id="@+id/dbspp_content"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginBottom="1dp"
-                android:lineHeight="15dp"
+                android:lineHeight="18dp"
                 android:text="Content"
                 android:textSize="16dp"
                 android:maxLines="3"
-                app:layout_constraintBottom_toTopOf="@+id/db_sp_h_3"
+                app:layout_constraintBottom_toTopOf="@+id/dbspp_h_3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/db_sp_h_4" />
+                app:layout_constraintTop_toTopOf="@+id/dbspp_h_4" />
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/dbspp_photo_1"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="5dp"
-                app:layout_constraintBottom_toTopOf="@+id/db_sp_h_2"
-                app:layout_constraintEnd_toStartOf="@+id/db_sp_v_2"
+                app:layout_constraintBottom_toTopOf="@+id/dbspp_h_2"
+                app:layout_constraintEnd_toStartOf="@+id/dbspp_v_2"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/db_sp_h_3"
+                app:layout_constraintTop_toTopOf="@+id/dbspp_h_3"
                 app:srcCompat="@drawable/ic_launcher_background" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/dbspp_photo_2"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="5dp"
-                app:layout_constraintBottom_toTopOf="@+id/db_sp_h_2"
-                app:layout_constraintEnd_toStartOf="@+id/db_sp_v_3"
-                app:layout_constraintStart_toStartOf="@+id/db_sp_v_2"
-                app:layout_constraintTop_toTopOf="@+id/db_sp_h_3"
+                app:layout_constraintBottom_toTopOf="@+id/dbspp_h_2"
+                app:layout_constraintEnd_toStartOf="@+id/dbspp_v_3"
+                app:layout_constraintStart_toStartOf="@+id/dbspp_v_2"
+                app:layout_constraintTop_toTopOf="@+id/dbspp_h_3"
                 app:layout_constraintVertical_bias="0.483"
                 app:srcCompat="@drawable/ic_launcher_background" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/dbspp_photo_3"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="5dp"
-                app:layout_constraintBottom_toTopOf="@+id/db_sp_h_2"
+                app:layout_constraintBottom_toTopOf="@+id/dbspp_h_2"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/db_sp_v_3"
-                app:layout_constraintTop_toTopOf="@+id/db_sp_h_3"
+                app:layout_constraintStart_toStartOf="@+id/dbspp_v_3"
+                app:layout_constraintTop_toTopOf="@+id/dbspp_h_3"
                 app:layout_constraintVertical_bias="0.483"
                 app:srcCompat="@drawable/ic_launcher_background" />
 

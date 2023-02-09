@@ -25,12 +25,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class DiscussionPostRecyclerViewAdaptor extends RecyclerView.Adapter<DiscussionPostRecyclerViewAdaptor.ViewHolder>{
 
     private static final String TAG = "DiscussionPostRecyclerViewAdaptor";
-    private ArrayList<DiscussionPost> discussionPosts;
+//    private ArrayList<DiscussionPost> discussionPosts;
     Context context;
     private DiscussionBoardSinglePostPreviewBinding binding;
+    private DiscussionPostManager discussionPostManager  = DiscussionPostManager.getInstance();
 
-    public DiscussionPostRecyclerViewAdaptor(Context context, ArrayList<DiscussionPost> discussionPosts) {
-        this.discussionPosts = discussionPosts;
+//    public DiscussionPostRecyclerViewAdaptor(Context context, ArrayList<DiscussionPost> discussionPosts) {
+    public DiscussionPostRecyclerViewAdaptor(Context context) {
+//        this.discussionPosts = discussionPosts;
         this.context = context;
     }
 
@@ -45,21 +47,22 @@ public class DiscussionPostRecyclerViewAdaptor extends RecyclerView.Adapter<Disc
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
+        DiscussionPost discussionPost = discussionPostManager.getDiscussionPostByIndex(position);
         Glide.with(context)
                 .asBitmap()
                 .dontAnimate()
-                .load(discussionPosts.get(position).getUserAvatar())
+                .load(discussionPost.getUserAvatar())
                 .into(holder.userAvatar);
-        holder.userName.setText(discussionPosts.get(position).getUserName());
-        holder.postTitle.setText(discussionPosts.get(position).getPostTitle());
-        holder.postContent.setText(discussionPosts.get(position).getPostContent());
+        holder.userName.setText(discussionPost.getUserName());
+        holder.postTitle.setText(discussionPost.getPostTitle());
+        holder.postContent.setText(discussionPost.getPostContent());
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavController controller = Navigation.findNavController(view);
 //                NavDirections action =
                 DiscussFragmentDirections.ActionNavDiscussToSinglePostDiscussionBoard action =
-                        DiscussFragmentDirections.actionNavDiscussToSinglePostDiscussionBoard(discussionPosts.get(position));
+                        DiscussFragmentDirections.actionNavDiscussToSinglePostDiscussionBoard(discussionPost);
                 controller.navigate(action);
             }
         });
@@ -68,7 +71,8 @@ public class DiscussionPostRecyclerViewAdaptor extends RecyclerView.Adapter<Disc
 
     @Override
     public int getItemCount() {
-        return discussionPosts.size();
+//        return discussionPosts.size();
+        return discussionPostManager.getPostCount();
     }
 
 

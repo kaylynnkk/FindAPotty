@@ -42,5 +42,16 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.98" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fd_add_post_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="70dp"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/fd_v_2"
+            app:srcCompat="@drawable/icon_add_restroom" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

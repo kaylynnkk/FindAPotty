@@ -1,6 +1,8 @@
 package com.example.findapotty;
 
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,10 @@ public class DiscussFragment extends Fragment {
     private DiscussionPostRecyclerViewAdaptor adaptor;
     private ArrayList<DiscussionPost> discussionPosts = new ArrayList<>();
 
+    private static final String TAG = "DiscussFragment";
+    private final String KEY_RECYCLER_STATE = "recycler_state";
+    private static Bundle mBundleRecyclerViewState;
+
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_discuss, container, false);
@@ -33,7 +39,9 @@ public class DiscussFragment extends Fragment {
         adaptor = new DiscussionPostRecyclerViewAdaptor(getContext(), discussionPosts);
         recyclerView.setAdapter(adaptor);
 
-        initDiscussionBoard();
+//        initDiscussionBoard();
+        addPostListener();
+
 
 
         return binding.getRoot();
@@ -59,5 +67,28 @@ public class DiscussFragment extends Fragment {
                 "i think it's all but explicitly debunked, now that soraya was strongly implied to be the scholar he converses with in lantern rite epilogue (ngl p (jovially) disappointed in myself how did i miss her)"
                 ));
 
+    }
+
+
+    private void addPostListener() {
+        binding.fdAddPostButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                discussionPosts.add(new DiscussionPost(
+                        "https://styles.redditmedia.com/t5_2j9wpv/styles/profileIcon_snoo9375d976-d9a3-4437-b00d-b282b6c32022-headshot.png",
+                        "seokhwakangs",
+                        "3.6 beta: info on Kaveh + Baizhu skills, cons, and Dehya's team",
+                        "i think it's all but explicitly debunked, now that soraya was strongly implied to be the scholar he converses with in lantern rite epilogue (ngl p (jovially) disappointed in myself how did i miss her)"
+                ));
+
+                adaptor.notifyItemInserted(0);
+                recyclerView.smoothScrollToPosition(0);
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

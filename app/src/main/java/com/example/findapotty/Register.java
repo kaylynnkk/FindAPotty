@@ -3,7 +3,9 @@ package com.example.findapotty;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -11,7 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import com.example.findapotty.databinding.ActivityRegisterBinding;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,10 +32,22 @@ public class Register extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ProgressBar mLoadingBar;
 
+
+   /* @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Register binding = Register.inflate(inflater, R.layout.activity_register, container, false);
+        binding.setLifecycleOwner(this);
+
+        return binding.getRoot();
+    }*/
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_signup);
+        setContentView(R.layout.activity_register);
 
         //btn = findViewById(R.id.alreadyHaveAccount);
         inputUsername = findViewById(R.id.inputUsername);
@@ -51,7 +68,7 @@ public class Register extends AppCompatActivity {
         });
 
         btn.setOnClickListener((v) -> {
-            startActivity(new Intent(Register.this, LoginFragment.class));
+            startActivity(new Intent(Register.this, Login.class));
         });
     }
 
@@ -69,7 +86,7 @@ public class Register extends AppCompatActivity {
 
         if(username.isEmpty() || username.length() < 7)
         {
-            showError(inputUsername, "Your name is valid!");
+            showError(inputUsername, "Your username is not valid!");
         }
         else if(email.isEmpty() || email.contains("@"))
         {
@@ -96,7 +113,8 @@ public class Register extends AppCompatActivity {
                     {
                         Toast.makeText(Register.this, "Successful Registration", Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(Register.this, MainActivity.class);
+                        //changed MainActivity.class in second parameter to Login.class
+                        Intent intent = new Intent(Register.this, Login.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }

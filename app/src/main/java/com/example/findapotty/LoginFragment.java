@@ -37,6 +37,7 @@ public class LoginFragment extends Fragment {
 
                 NavController controller = Navigation.findNavController(view);
                 controller.navigate(R.id.action_navg_login_fragment_to_nav_signup_fragment);
+
             }
         });
 

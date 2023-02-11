@@ -67,6 +67,9 @@ public class Login extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            NavController navController = Navigation.findNavController(Login.this, R.id.nav_host_fragment);
+                            navController.navigateUp();
+                            navController.navigate(R.layout.fragment_map);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());

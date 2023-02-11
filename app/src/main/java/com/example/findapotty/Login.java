@@ -1,7 +1,11 @@
 package com.example.findapotty;
 
+
+
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,6 +18,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 
 public class Login extends AppCompatActivity {
 
@@ -21,12 +27,14 @@ public class Login extends AppCompatActivity {
     EditText inputUsername, inputPassword;
     Button fl_login_button;
     private FirebaseAuth mAuth;
+    //can remove line below
+    private static final String TAG = "EmailPassword";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_login);
+        setContentView(R.layout.activity_login);
 
         fl_login_button = findViewById(R.id.fl_signup_button);
         inputUsername = findViewById(R.id.inputUsername);
@@ -35,20 +43,39 @@ public class Login extends AppCompatActivity {
         fl_login_button.setOnClickListener((v)->{checkCredentials();});
         mAuth = FirebaseAuth.getInstance();
 
-        btn.setOnClickListener((v)->{
-            startActivity(new Intent(Login.this, Register.class));
-        });
+//        btn.setOnClickListener((v)->{
+//            startActivity(new Intent(loginActivity.this, loginActivity.class));
+//        });
 
     }
+
 
     private void checkCredentials()
     {
         String username = inputUsername.getText().toString();
         String password = inputPassword.getText().toString();
 
+        mAuth.signInWithEmailAndPassword(username, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(Login.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
         if(username.isEmpty() || !(username.length() > 7))
         {
             showError(inputUsername, "Your username is not valid!");
+
         }
         else if(password.isEmpty() || password.length()<7)
         {
@@ -64,9 +91,10 @@ public class Login extends AppCompatActivity {
                     //made second parameter MapFragment to navigate to that page
                     if(task.isSuccessful())
                     {
-                        Intent intent = new Intent(Login.this, MapFragment.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+//                        Intent intent = new Intent(Login.this, MapFragment.class);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        startActivity(intent);
+                        Toast.makeText(Login.this, "Successful Login", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {

@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements {
 
     TextView btn;
     EditText inputUsername, inputPassword;
@@ -58,7 +58,7 @@ public class LoginFragment extends Fragment {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(Login.this, "Authentication failed.",
+                            Toast.makeText(LoginFragment.this.getContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -86,7 +86,7 @@ public class LoginFragment extends Fragment {
 //                        Intent intent = new Intent(Login.this, MapFragment.class);
 //                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
 //                        startActivity(intent);
-                        Toast.makeText(Login.this, "Successful Login", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginFragment.this.getActivity(), "Successful Login", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {

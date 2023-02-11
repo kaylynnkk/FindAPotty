@@ -3,6 +3,8 @@ package com.example.findapotty;
 
 
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -86,13 +90,16 @@ public class Login extends AppCompatActivity {
             //Toast.makeText(this, "Call Login Method", Toast.LENGTH_SHORT).show();
             //should change username to email throughout file probably
             mAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @SuppressLint("ResourceType")
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     //made second parameter MapFragment to navigate to that page
                     if(task.isSuccessful())
                     {
-//                        Intent intent = new Intent(Login.this, MapFragment.class);
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        NavController navController = Navigation.findNavController(Login.this, R.id.nav_host_fragment);
+                        navController.navigateUp();
+                        navController.navigate(R.layout.fragment_map);
 //                        startActivity(intent);
                         Toast.makeText(Login.this, "Successful Login", Toast.LENGTH_SHORT).show();
                     }

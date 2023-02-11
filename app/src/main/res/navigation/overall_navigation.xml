@@ -39,11 +39,11 @@
         android:label="fragment_edit_restroom_page"
         tools:layout="@layout/fragment_edit_restroom_page" />
     <activity
-        android:id="@+id/login"
-        android:name="com.example.findapotty.Login"
-        android:label="Login" />
-    <activity
         android:id="@+id/register2"
         android:name="com.example.findapotty.Register"
         android:label="Register" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.findapotty.LoginFragment"
+        android:label="LoginFragment" />
 </navigation>

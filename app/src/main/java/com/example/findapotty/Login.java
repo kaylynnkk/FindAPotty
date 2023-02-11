@@ -61,6 +61,7 @@ public class Login extends AppCompatActivity {
 
         mAuth.signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @SuppressLint("ResourceType")
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -68,7 +69,7 @@ public class Login extends AppCompatActivity {
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             NavController navController = Navigation.findNavController(Login.this, R.id.nav_host_fragment);
-                            navController.navigateUp();
+//                            navController.navigateUp();
                             navController.navigate(R.layout.fragment_map);
                         } else {
                             // If sign in fails, display a message to the user.

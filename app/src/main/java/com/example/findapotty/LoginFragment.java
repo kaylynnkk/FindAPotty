@@ -13,6 +13,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.findapotty.databinding.FragmentLoginBinding;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginFragment extends Fragment {
     @Nullable
@@ -25,6 +27,10 @@ public class LoginFragment extends Fragment {
         binding.flLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DatabaseReference mdb = FirebaseDatabase.getInstance().getReference();
+                User user = new User("ano", "100");
+                mdb.child("users").child(mdb.push().getKey()).setValue(user);
+
                 NavController controller = Navigation.findNavController(view);
                 controller.navigate(R.id.action_loginFragment2_to_nav_search);
             }

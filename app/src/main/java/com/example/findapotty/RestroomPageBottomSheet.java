@@ -21,6 +21,8 @@ import com.example.findapotty.databinding.BottomSheetRestroomPageBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -90,6 +92,8 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: add review");
                 restroomReviews.add(0, new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "1243r4tgg g5"));
+                DatabaseReference mdb = FirebaseDatabase.getInstance().getReference();
+                mdb.child("restroom_pages").child(mdb.push().getKey()).setValue(restroomReviews.get(0));
                 adaptor.notifyItemInserted(0);
                 recyclerView.smoothScrollToPosition(0);
             }

@@ -7,13 +7,13 @@
 
         <variable
             name="data"
-            type="com.example.findapotty.RestroomPageViewModel" />
+            type="com.example.findapotty.search.restroompage.RestroomPageViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".RestroomPageEditFragment">
+        tools:context=".search.restroompage.RestroomPageEditFragment">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/rr_pg_e_h_1"

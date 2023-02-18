@@ -1,4 +1,4 @@
-package com.example.findapotty;
+package com.example.findapotty.search.restroompage;
 
 
 import android.app.Dialog;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +16,10 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.findapotty.R;
+import com.example.findapotty.Restroom;
+import com.example.findapotty.RestroomManager;
+import com.example.findapotty.search.restroompage.RestroomPageBottomSheetArgs;
 import com.example.findapotty.databinding.BottomSheetRestroomPageBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -61,6 +64,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         recyclerView.setAdapter(adaptor);
 
 
+        assert getArguments() != null;
         initRestroomPage(RestroomPageBottomSheetArgs.fromBundle(getArguments()).getMarkerId());
         initReviews();
         addReviewListener();
@@ -91,11 +95,16 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: add review");
-                restroomReviews.add(0, new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "1243r4tgg g5"));
-                DatabaseReference mdb = FirebaseDatabase.getInstance().getReference();
-                mdb.child("restroom_pages").child(mdb.push().getKey()).setValue(restroomReviews.get(0));
-                adaptor.notifyItemInserted(0);
-                recyclerView.smoothScrollToPosition(0);
+//                restroomReviews.add(0, new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "1243r4tgg g5"));
+//                DatabaseReference mdb = FirebaseDatabase.getInstance().getReference();
+//                mdb.child("restroom_pages").child(mdb.push().getKey()).setValue(restroomReviews.get(0));
+
+                NavController controller = NavHostFragment.findNavController(RestroomPageBottomSheet.this);
+                controller.navigate(R.id.action_navg_rr_pg_fragment_to_addRestroomReviewFragment);
+
+
+//                adaptor.notifyItemInserted(0);
+//                recyclerView.smoothScrollToPosition(0);
             }
         });
     }

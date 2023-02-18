@@ -91,6 +91,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume(); // needed to get the map to display immediately
+        Log.d(TAG, "onCreateView: map create");
 
 //        try {
 //            MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -103,6 +104,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         setUpIfNeeded();
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: ");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
     }
 
     private void setUpIfNeeded() {

@@ -38,6 +38,9 @@
             android:name="markerId"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_navg_rr_pg_fragment_to_addRestroomReviewFragment"
+            app:destination="@id/addRestroomReviewFragment" />
     </dialog>
     <fragment
         android:id="@+id/nav_feed"
@@ -79,4 +82,8 @@
             android:name="discussionPost"
             app:argType="com.example.findapotty.discuss.DiscussionPost" />
     </fragment>
+    <fragment
+        android:id="@+id/addRestroomReviewFragment"
+        android:name="com.example.findapotty.search.restroompage.AddRestroomReviewFragment"
+        android:label="AddRestroomReviewFragment" />
 </navigation>

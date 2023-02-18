@@ -1,4 +1,4 @@
-package com.example.findapotty;
+package com.example.findapotty.discuss;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.findapotty.databinding.DiscussionBoardSinglePostPreviewBinding;
-
-import java.util.ArrayList;
+import com.example.findapotty.discuss.DiscussFragmentDirections;
+import com.example.findapotty.R;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -61,7 +61,7 @@ public class DiscussionPostRecyclerViewAdaptor extends RecyclerView.Adapter<Disc
             public void onClick(View view) {
                 NavController controller = Navigation.findNavController(view);
 //                NavDirections action =
-                DiscussFragmentDirections.ActionNavDiscussToSinglePostDiscussionBoard action =
+                NavDirections action =
                         DiscussFragmentDirections.actionNavDiscussToSinglePostDiscussionBoard(discussionPost);
                 controller.navigate(action);
             }

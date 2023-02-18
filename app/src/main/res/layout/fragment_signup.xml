@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/login_bg"
-        tools:context=".SignUpFragment">
+        tools:context=".login.SignUpFragment">
 
         <Button
             android:id="@+id/fl_register_button"

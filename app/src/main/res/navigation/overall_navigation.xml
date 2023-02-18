@@ -6,7 +6,7 @@
     app:startDestination="@id/navg_login_fragment">
     <fragment
         android:id="@+id/navg_login_fragment"
-        android:name="com.example.findapotty.LoginFragment"
+        android:name="com.example.findapotty.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/nav_search"
-        android:name="com.example.findapotty.MapFragment"
+        android:name="com.example.findapotty.search.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map">
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <dialog
         android:id="@+id/navg_rr_pg_fragment"
-        android:name="com.example.findapotty.RestroomPageBottomSheet"
+        android:name="com.example.findapotty.search.restroompage.RestroomPageBottomSheet"
         android:label="bottom_sheet_restroom_page"
         tools:layout="@layout/bottom_sheet_restroom_page">
         <action
@@ -41,12 +41,12 @@
     </dialog>
     <fragment
         android:id="@+id/nav_feed"
-        android:name="com.example.findapotty.FeedFragment"
+        android:name="com.example.findapotty.feed.FeedFragment"
         android:label="fragment_feed"
         tools:layout="@layout/fragment_feed" />
     <fragment
         android:id="@+id/nav_discuss"
-        android:name="com.example.findapotty.DiscussFragment"
+        android:name="com.example.findapotty.discuss.DiscussFragment"
         android:label="fragment_discuss"
         tools:layout="@layout/fragment_discuss" >
         <action
@@ -56,12 +56,12 @@
     </fragment>
     <fragment
         android:id="@+id/navg_rr_pg_edit_fragment"
-        android:name="com.example.findapotty.RestroomPageEditFragment"
+        android:name="com.example.findapotty.search.restroompage.RestroomPageEditFragment"
         android:label="fragment_edit_restroom_page"
         tools:layout="@layout/fragment_edit_restroom_page" />
     <fragment
         android:id="@+id/nav_signup_fragment"
-        android:name="com.example.findapotty.SignUpFragment"
+        android:name="com.example.findapotty.login.SignUpFragment"
         android:label="fragment_signup">
         <action
             android:id="@+id/action_nav_signup_fragment_to_nav_search"
@@ -72,11 +72,11 @@
     </fragment>
     <fragment
         android:id="@+id/singlePostDiscussionBoard"
-        android:name="com.example.findapotty.SinglePostDiscussionBoard"
+        android:name="com.example.findapotty.discuss.DiscussionBoardSinglePost"
         android:label="discussion_board_single_post"
         tools:layout="@layout/discussion_board_single_post" >
         <argument
-            android:name="disuccionPost"
-            app:argType="com.example.findapotty.DiscussionPost" />
+            android:name="discussionPost"
+            app:argType="com.example.findapotty.discuss.DiscussionPost" />
     </fragment>
 </navigation>

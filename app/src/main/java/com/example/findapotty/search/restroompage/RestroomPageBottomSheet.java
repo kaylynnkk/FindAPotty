@@ -1,4 +1,4 @@
-package com.example.findapotty;
+package com.example.findapotty.search.restroompage;
 
 
 import android.app.Dialog;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +16,10 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.findapotty.R;
+import com.example.findapotty.Restroom;
+import com.example.findapotty.RestroomManager;
+import com.example.findapotty.search.restroompage.RestroomPageBottomSheetArgs;
 import com.example.findapotty.databinding.BottomSheetRestroomPageBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;

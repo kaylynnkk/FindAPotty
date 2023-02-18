@@ -1,4 +1,4 @@
-package com.example.findapotty;
+package com.example.findapotty.search.restroompage;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.findapotty.R;
 import com.example.findapotty.databinding.FragmentEditRestroomPageBinding;
 
 public class RestroomPageEditFragment extends Fragment {

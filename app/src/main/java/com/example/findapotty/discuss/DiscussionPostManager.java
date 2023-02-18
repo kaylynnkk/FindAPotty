@@ -1,4 +1,4 @@
-package com.example.findapotty;
+package com.example.findapotty.discuss;
 
 import java.util.ArrayList;
 

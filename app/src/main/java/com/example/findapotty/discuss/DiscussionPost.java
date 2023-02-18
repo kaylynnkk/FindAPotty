@@ -1,11 +1,9 @@
-package com.example.findapotty;
+package com.example.findapotty.discuss;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DiscussionPost implements Parcelable {
 

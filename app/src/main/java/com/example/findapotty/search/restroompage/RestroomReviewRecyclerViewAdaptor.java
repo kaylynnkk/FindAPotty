@@ -1,4 +1,4 @@
-package com.example.findapotty;
+package com.example.findapotty.search.restroompage;
 
 import android.content.Context;
 import android.util.Log;
@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.findapotty.R;
 
 import java.util.ArrayList;
 

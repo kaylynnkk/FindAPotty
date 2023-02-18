@@ -1,6 +1,5 @@
-package com.example.findapotty;
+package com.example.findapotty.discuss;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +11,11 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.findapotty.R;
 import com.example.findapotty.databinding.DiscussionBoardSinglePostBinding;
 
 
-public class SinglePostDiscussionBoard extends Fragment {
+public class DiscussionBoardSinglePost extends Fragment {
 
     private DiscussionBoardSinglePostBinding binding;
     private DiscussionPost discussionPost;
@@ -25,7 +25,7 @@ public class SinglePostDiscussionBoard extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.discussion_board_single_post, container, false);
 
-        discussionPost = SinglePostDiscussionBoardArgs.fromBundle(getArguments()).getDisuccionPost();
+        discussionPost = DiscussionBoardSinglePostArgs.fromBundle(getArguments()).getDiscussionPost();
         initPostPage();
 
         return binding.getRoot();

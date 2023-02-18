@@ -1,4 +1,4 @@
-package com.example.findapotty;
+package com.example.findapotty.search;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -26,8 +26,14 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
+import com.example.findapotty.BuildConfig;
+import com.example.findapotty.search.MapFragmentDirections;
+import com.example.findapotty.R;
+import com.example.findapotty.Restroom;
+import com.example.findapotty.RestroomManager;
 import com.example.findapotty.databinding.FragmentMapBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -313,7 +319,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     NavController controller = Navigation.findNavController(mMapView);
 
-                    MapFragmentDirections.ActionMapFragment2ToRestroomPageBottomSheet2 action =
+                    NavDirections action =
                             MapFragmentDirections.actionMapFragment2ToRestroomPageBottomSheet2(marker.getId());
                     controller.navigate(action);
 

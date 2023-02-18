@@ -1,4 +1,4 @@
-package com.example.findapotty;
+package com.example.findapotty.search;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -1,8 +1,6 @@
-package com.example.findapotty;
+package com.example.findapotty.discuss;
 
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.findapotty.R;
 import com.example.findapotty.databinding.FragmentDiscussBinding;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class DiscussFragment extends Fragment {

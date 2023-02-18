@@ -34,7 +34,7 @@
         </activity>
 
         <service
-            android:name=".MapFragment"
+            android:name=".search.MapFragment"
             android:foregroundServiceType="location">
             <!-- Any inner elements would go here. -->
         </service>

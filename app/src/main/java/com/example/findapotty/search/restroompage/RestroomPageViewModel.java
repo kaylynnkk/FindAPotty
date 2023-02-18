@@ -1,4 +1,4 @@
-package com.example.findapotty;
+package com.example.findapotty.search.restroompage;
 
 import android.app.Application;
 import android.content.Context;

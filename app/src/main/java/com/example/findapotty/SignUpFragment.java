@@ -27,7 +27,7 @@ public class SignUpFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_signup, container, false);
-        binding.setLifecycleOwner(this);
+//        binding.setLifecycleOwner(this);
 
         mAuth = FirebaseAuth.getInstance();
 

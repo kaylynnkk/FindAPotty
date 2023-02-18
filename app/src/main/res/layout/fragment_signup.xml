@@ -37,12 +37,12 @@
             android:paddingTop="10dp"
             android:paddingRight="10dp"
             android:paddingBottom="10dp"
-            app:layout_constraintEnd_toEndOf="@+id/inputPassword"
-            app:layout_constraintStart_toStartOf="@+id/inputPassword"
-            app:layout_constraintTop_toBottomOf="@+id/inputPassword" />
+            app:layout_constraintEnd_toEndOf="@+id/signup_input_password"
+            app:layout_constraintStart_toStartOf="@+id/signup_input_password"
+            app:layout_constraintTop_toBottomOf="@+id/signup_input_password" />
 
         <EditText
-            android:id="@+id/inputPassword"
+            android:id="@+id/signup_input_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -71,12 +71,12 @@
             android:paddingTop="10dp"
             android:paddingRight="10dp"
             android:paddingBottom="10dp"
-            app:layout_constraintEnd_toEndOf="@+id/inputUsername"
-            app:layout_constraintStart_toStartOf="@+id/inputUsername"
-            app:layout_constraintTop_toBottomOf="@+id/inputUsername" />
+            app:layout_constraintEnd_toEndOf="@+id/signup_input_username"
+            app:layout_constraintStart_toStartOf="@+id/signup_input_username"
+            app:layout_constraintTop_toBottomOf="@+id/signup_input_username" />
 
         <EditText
-            android:id="@+id/inputUsername"
+            android:id="@+id/signup_input_username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"

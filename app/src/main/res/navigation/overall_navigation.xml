@@ -66,6 +66,9 @@
         <action
             android:id="@+id/action_nav_signup_fragment_to_nav_search"
             app:destination="@id/nav_search" />
+        <action
+            android:id="@+id/action_nav_signup_fragment_to_navg_login_fragment"
+            app:destination="@id/navg_login_fragment" />
     </fragment>
     <fragment
         android:id="@+id/singlePostDiscussionBoard"

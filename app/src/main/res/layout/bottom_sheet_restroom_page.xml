@@ -181,6 +181,17 @@
                     app:layout_constraintStart_toEndOf="@+id/rr_pg_avg_rating"
                     app:layout_constraintTop_toBottomOf="@+id/rr_pg_rraddress" />
 
+                <ImageView
+                    android:id="@+id/bsrp_btn_favorite"
+                    android:layout_width="38dp"
+                    android:layout_height="37dp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintBottom_toTopOf="@+id/rr_page_rrdesc_bottom"
+                    app:layout_constraintStart_toEndOf="@+id/rr_pg_sort_button"
+                    app:layout_constraintTop_toTopOf="@+id/rr_pg_h_2"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:srcCompat="@drawable/ic_unselected_favortie" />
+
                 <Button
                     android:id="@+id/rr_pg_sort_button"
                     android:layout_width="80dp"

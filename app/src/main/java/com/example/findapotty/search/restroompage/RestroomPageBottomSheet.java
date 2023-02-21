@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,27 +19,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findapotty.R;
 import com.example.findapotty.Restroom;
-import com.example.findapotty.RestroomManager;
-import com.example.findapotty.search.restroompage.RestroomPageBottomSheetArgs;
 import com.example.findapotty.databinding.BottomSheetRestroomPageBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
 public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 
     private static final String TAG = "RestroomPageBottomSheet";
-    private ArrayList<RestroomReview> restroomReviews = new ArrayList<>();
+    private final ArrayList<RestroomReview> restroomReviews = new ArrayList<>();
     private ImageView rr_photo;
 
     private BottomSheetRestroomPageBinding binding;
     private View rootView;
     private RecyclerView recyclerView;
     private RestroomReviewRecyclerViewAdaptor adaptor;
+    private boolean isFavorite;
+    private Restroom restroom;
 
     @NonNull
     @Override
@@ -63,12 +62,16 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         adaptor = new RestroomReviewRecyclerViewAdaptor(getContext(), restroomReviews);
         recyclerView.setAdapter(adaptor);
 
-
         assert getArguments() != null;
-        initRestroomPage(RestroomPageBottomSheetArgs.fromBundle(getArguments()).getMarkerId());
+        restroom = RestroomPageBottomSheetArgs.fromBundle(getArguments()).getRestroom();
+
+        initRestroomPage();
         initReviews();
         addReviewListener();
         editPageListener();
+        binding.bsrpBtnFavorite.setOnClickListener(view -> {
+            setFavorite();
+        });
 
 
         return dialog;
@@ -80,13 +83,11 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "Trondheim3"));
     }
 
-    private void initRestroomPage(String markId) {
-        RestroomManager restroomManager = RestroomManager.getInstance();
-        Restroom restroom = restroomManager.getRestroomByMarkerId(markId);
-        if (restroom != null){
-            binding.rrPgRrPhotos.setImageBitmap(
-                    restroomManager.getRestroomByMarkerId(markId).getPhoto());
+    private void initRestroomPage() {
+        if (restroom != null) {
+            binding.rrPgRrPhotos.setImageBitmap(restroom.getPhoto());
         }
+        isFavorite = false;
     }
 
     private void addReviewListener() {
@@ -131,6 +132,20 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                 controller.navigate(R.id.action_navg_rr_pg_fragment_to_navg_rr_pg_edit_fragment);
             }
         });
+    }
+
+    private void setFavorite() {
+        if (!isFavorite) {
+            isFavorite = true;
+            binding.bsrpBtnFavorite.setImageResource(R.drawable.ic_selected_favortie);
+            Toast.makeText(binding.getRoot().getContext(),
+                    "Added to faviorte list", Toast.LENGTH_SHORT).show();
+        } else {
+            isFavorite = false;
+            binding.bsrpBtnFavorite.setImageResource(R.drawable.ic_unselected_favortie);
+            Toast.makeText(binding.getRoot().getContext(),
+                    "Removed from faviorte list", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

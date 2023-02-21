@@ -338,8 +338,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     NavController controller = Navigation.findNavController(mMapView);
 
+//                    NavDirections action =
+//                            MapFragmentDirections.actionMapFragment2ToRestroomPageBottomSheet2(marker.getId());
                     NavDirections action =
-                            MapFragmentDirections.actionMapFragment2ToRestroomPageBottomSheet2(marker.getId());
+                            MapFragmentDirections.actionMapFragment2ToRestroomPageBottomSheet2(
+                                    RestroomManager.getInstance().getRestroomByMarkerId(marker.getId()));
                     controller.navigate(action);
 
 //                    RestroomPageBottomSheet restroomPageBottomSheet = new RestroomPageBottomSheet();

@@ -1,12 +1,14 @@
 package com.example.findapotty;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class Restroom {
+public class Restroom implements Parcelable {
     private LatLng latLng;
     private String placeID;
     private Bitmap photoBitmap;
@@ -25,6 +27,28 @@ public class Restroom {
         this.name = name;
         this.address = address;
     }
+
+    protected Restroom(Parcel in) {
+        latLng = in.readParcelable(LatLng.class.getClassLoader());
+        placeID = in.readString();
+        photoBitmap = in.readParcelable(Bitmap.class.getClassLoader());
+        isOpen = in.readByte() != 0;
+        name = in.readString();
+        address = in.readString();
+        markerId = in.readString();
+    }
+
+    public static final Creator<Restroom> CREATOR = new Creator<Restroom>() {
+        @Override
+        public Restroom createFromParcel(Parcel in) {
+            return new Restroom(in);
+        }
+
+        @Override
+        public Restroom[] newArray(int size) {
+            return new Restroom[size];
+        }
+    };
 
     public String getName() {
         return name;
@@ -74,5 +98,21 @@ public class Restroom {
         return latLng.toString() + "\n"
                 + placeID + "\n"
                 + getOpeningStatus() + "\n";
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeParcelable(latLng, i);
+        parcel.writeString(placeID);
+        parcel.writeParcelable(photoBitmap, i);
+        parcel.writeByte((byte) (isOpen ? 1 : 0));
+        parcel.writeString(name);
+        parcel.writeString(address);
+        parcel.writeString(markerId);
     }
 }

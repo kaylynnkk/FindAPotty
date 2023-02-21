@@ -34,13 +34,12 @@
         <action
             android:id="@+id/action_navg_rr_pg_fragment_to_navg_rr_pg_edit_fragment"
             app:destination="@id/navg_rr_pg_edit_fragment" />
-        <argument
-            android:name="markerId"
-            app:argType="string"
-            app:nullable="true" />
         <action
             android:id="@+id/action_navg_rr_pg_fragment_to_addRestroomReviewFragment"
             app:destination="@id/addRestroomReviewFragment" />
+        <argument
+            android:name="restroom"
+            app:argType="com.example.findapotty.Restroom" />
     </dialog>
     <fragment
         android:id="@+id/nav_feed"

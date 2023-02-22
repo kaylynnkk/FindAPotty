@@ -19,10 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findapotty.R;
 import com.example.findapotty.Restroom;
+import com.example.findapotty.User;
 import com.example.findapotty.databinding.BottomSheetRestroomPageBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -36,8 +39,12 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
     private View rootView;
     private RecyclerView recyclerView;
     private RestroomReviewRecyclerViewAdaptor adaptor;
-    private boolean isFavorite;
+
+    private boolean isFavorite = false;
     private Restroom restroom;
+
+    private DatabaseReference mdb;
+    private DatabaseReference refFavoriteRestrooms;
 
     @NonNull
     @Override
@@ -65,12 +72,16 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         assert getArguments() != null;
         restroom = RestroomPageBottomSheetArgs.fromBundle(getArguments()).getRestroom();
 
+        mdb = FirebaseDatabase.getInstance().getReference();
+        refFavoriteRestrooms = mdb.child("users")
+                .child(User.getInstance().getUserId()).child("favorite_restrooms");
+
         initRestroomPage();
         initReviews();
         addReviewListener();
         editPageListener();
         binding.bsrpBtnFavorite.setOnClickListener(view -> {
-            setFavorite();
+            setFavoriteState();
         });
 
 
@@ -86,8 +97,13 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
     private void initRestroomPage() {
         if (restroom != null) {
             binding.rrPgRrPhotos.setImageBitmap(restroom.getPhoto());
+
+            if (User.getInstance().getFavoriteRestrooms().contains(restroom.getPlaceID())) {
+                // restroom found in favorite list
+                binding.bsrpBtnFavorite.setImageResource(R.drawable.ic_selected_favorite);
+                isFavorite = true;
+            }
         }
-        isFavorite = false;
     }
 
     private void addReviewListener() {
@@ -134,18 +150,25 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         });
     }
 
-    private void setFavorite() {
+    private void setFavoriteState() {
         if (!isFavorite) {
             isFavorite = true;
-            binding.bsrpBtnFavorite.setImageResource(R.drawable.ic_selected_favortie);
+            binding.bsrpBtnFavorite.setImageResource(R.drawable.ic_selected_favorite);
             Toast.makeText(binding.getRoot().getContext(),
                     "Added to faviorte list", Toast.LENGTH_SHORT).show();
+
+            User.getInstance().addFavoriteRestroom(restroom.getPlaceID());
+
         } else {
             isFavorite = false;
-            binding.bsrpBtnFavorite.setImageResource(R.drawable.ic_unselected_favortie);
+            binding.bsrpBtnFavorite.setImageResource(R.drawable.ic_unselected_favorite);
             Toast.makeText(binding.getRoot().getContext(),
                     "Removed from faviorte list", Toast.LENGTH_SHORT).show();
+
+            User.getInstance().removeFavoriteRestroom(restroom.getPlaceID());
         }
+
+        refFavoriteRestrooms.setValue(User.getInstance().getFavoriteRestrooms());
     }
 
 }

@@ -1,26 +1,24 @@
 package com.example.findapotty;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class User {
 
     private static User instance;
     private String userName;
     private String userId;
-    private ArrayList<Restroom> favoriteRestrooms = new ArrayList<>();
+    private List<String> favoriteRestrooms = new ArrayList<>();
 
-    private User(String userName, String userId) {
-        this.userName = userName;
-        this.userId = userId;
+    private User() {
     }
 
-    public static User getInstance(String userName, String userId) {
+    public static User getInstance() {
         if (instance == null) {
-            instance = new User(userName, userId);
+            instance = new User();
         }
         return instance;
     }
-
     public String getUserName() {
         return userName;
     }
@@ -29,11 +27,23 @@ public class User {
         return userId;
     }
 
-    public ArrayList<Restroom> getFavoriteRestrooms() {
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public List<String> getFavoriteRestrooms() {
         return favoriteRestrooms;
     }
 
-    public void addFavoriteRestroom(Restroom restroom) {
-        favoriteRestrooms.add(restroom);
+    public void addFavoriteRestroom(String placeId) {
+        favoriteRestrooms.add(placeId);
+    }
+
+    public void removeFavoriteRestroom(String placeId) {
+        favoriteRestrooms.remove(placeId);
     }
 }

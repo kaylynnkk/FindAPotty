@@ -15,8 +15,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.findapotty.R;
+import com.example.findapotty.User;
 import com.example.findapotty.databinding.FragmentSignupBinding;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpFragment extends Fragment {
 
@@ -60,6 +63,17 @@ public class SignUpFragment extends Fragment {
 
                 if (task.isSuccessful()) {
                     Toast.makeText(view.getContext(), "Successful Registration", Toast.LENGTH_SHORT).show();
+
+                    // add user to database
+                    DatabaseReference mdb = FirebaseDatabase.getInstance().getReference();
+
+                    String userId = mAuth.getCurrentUser().getUid();
+                    User user =  User.getInstance();
+                    user.setUserId(userId);
+                    user.setUserName(username);
+
+                    mdb.child("users").child(userId).setValue(user);
+
                     // back to login
                     NavController controller = Navigation.findNavController(view);
                     controller.navigate(R.id.action_nav_signup_fragment_to_navg_login_fragment);

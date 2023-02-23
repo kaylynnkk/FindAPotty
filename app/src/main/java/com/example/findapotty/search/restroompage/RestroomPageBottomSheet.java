@@ -96,8 +96,16 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 
     private void initRestroomPage() {
         if (restroom != null) {
+            // set name
+            binding.rrPgRrname.setText(restroom.getName());
+
+            // set address
+            binding.rrPgRraddress.setText(restroom.getAddress());
+
+            // set photos
             binding.rrPgRrPhotos.setImageBitmap(restroom.getPhoto());
 
+            // set favorite state
             if (User.getInstance().getFavoriteRestrooms().containsKey(restroom.getPlaceID())) {
                 // restroom found in favorite list
                 binding.bsrpBtnFavorite.setImageResource(R.drawable.ic_selected_favorite);

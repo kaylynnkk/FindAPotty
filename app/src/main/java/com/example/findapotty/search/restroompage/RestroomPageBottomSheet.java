@@ -98,7 +98,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         if (restroom != null) {
             binding.rrPgRrPhotos.setImageBitmap(restroom.getPhoto());
 
-            if (User.getInstance().getFavoriteRestrooms().contains(restroom.getPlaceID())) {
+            if (User.getInstance().getFavoriteRestrooms().containsKey(restroom.getPlaceID())) {
                 // restroom found in favorite list
                 binding.bsrpBtnFavorite.setImageResource(R.drawable.ic_selected_favorite);
                 isFavorite = true;
@@ -157,7 +157,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             Toast.makeText(binding.getRoot().getContext(),
                     "Added to faviorte list", Toast.LENGTH_SHORT).show();
 
-            User.getInstance().addFavoriteRestroom(restroom.getPlaceID());
+            User.getInstance().addFavoriteRestroom(restroom.getPlaceID(), restroom.getLatLng());
 
         } else {
             isFavorite = false;

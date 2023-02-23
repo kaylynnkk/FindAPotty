@@ -18,6 +18,7 @@ import androidx.navigation.Navigation;
 import com.example.findapotty.R;
 import com.example.findapotty.User;
 import com.example.findapotty.databinding.FragmentLoginBinding;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +26,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class LoginFragment extends Fragment {
 
@@ -106,9 +109,14 @@ public class LoginFragment extends Fragment {
                                     // user name
                                     currentUser.setUserName(retrievedUser.getUserName());
                                     // user favorite list
-                                    for (DataSnapshot postSnapshot: snapshot.child("favorite_restrooms").getChildren()) {
-                                        currentUser.addFavoriteRestroom(postSnapshot.getValue(String.class));
-                                    }
+                                    HashMap<String, LatLng> retrievedHashMap =
+                                            (HashMap<String, LatLng>) snapshot.child("favorite_restrooms").getValue();
+                                    currentUser.setFavoriteRestrooms(retrievedHashMap);
+//                                    for (DataSnapshot postSnapshot: snapshot.child("favorite_restrooms").getChildren()) {
+//                                        HashMap<String, LatLng> retrievedHashMap = (HashMap<String, LatLng>) postSnapshot.getValue();
+//                                        currentUser.setFavoriteRestrooms(retrievedHashMap);
+////                                        Log.d(TAG, "onDataChange: " + latLng.toString());
+//                                    }
 
                                     Log.d(TAG, "onDataChange: "+User.getInstance().getUserId());
 

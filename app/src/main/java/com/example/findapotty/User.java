@@ -1,6 +1,9 @@
 package com.example.findapotty;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class User {
@@ -8,7 +11,8 @@ public class User {
     private static User instance;
     private String userName;
     private String userId;
-    private List<String> favoriteRestrooms = new ArrayList<>();
+//    private List<String> favoriteRestrooms = new ArrayList<>();
+    private HashMap<String, LatLng> favoriteRestrooms = new HashMap<>();
 
     private User() {
     }
@@ -35,12 +39,16 @@ public class User {
         this.userId = userId;
     }
 
-    public List<String> getFavoriteRestrooms() {
+    public HashMap<String, LatLng> getFavoriteRestrooms() {
         return favoriteRestrooms;
     }
 
-    public void addFavoriteRestroom(String placeId) {
-        favoriteRestrooms.add(placeId);
+    public void setFavoriteRestrooms(HashMap<String, LatLng> hashMap) {
+        favoriteRestrooms = hashMap;
+    }
+
+    public void addFavoriteRestroom(String placeId, LatLng latLng) {
+        favoriteRestrooms.put(placeId, latLng);
     }
 
     public void removeFavoriteRestroom(String placeId) {

@@ -85,4 +85,8 @@
         android:id="@+id/addRestroomReviewFragment"
         android:name="com.example.findapotty.search.restroompage.AddRestroomReviewFragment"
         android:label="AddRestroomReviewFragment" />
+    <fragment
+        android:id="@+id/nav_favorite"
+        android:name="com.example.findapotty.favorite.FavoriteFragment"
+        android:label="FavoriteFragment" />
 </navigation>

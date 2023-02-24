@@ -59,11 +59,8 @@ public class User {
         if (retrievedFavoriteRestrooms != null){
             favoriteRestrooms = retrievedFavoriteRestrooms;
 
-//            Log.d("User", "setFavoriteRestrooms: "+ retrievedFavoriteRestrooms.getClass());
-
             retrievedFavoriteRestrooms.forEach((key, value) -> {
-//                favoriteRestroomsList.add(value);
-//                Log.d("User", "setFavoriteRestrooms: "+ value.getClass());
+                favoriteRestroomsList.add(value);
             });
         }
     }

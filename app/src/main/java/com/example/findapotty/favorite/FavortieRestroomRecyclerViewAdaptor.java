@@ -50,8 +50,8 @@ public class FavortieRestroomRecyclerViewAdaptor extends RecyclerView.Adapter<Fa
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         Restroom restroom = User.getInstance().getFavoriteRestroomByIndex(position);
-
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+
         StorageReference ref = storageRef.child(restroom.getPhotoPath());
         ref.getDownloadUrl().addOnSuccessListener(uri -> {
             Glide.with(context)
@@ -60,8 +60,8 @@ public class FavortieRestroomRecyclerViewAdaptor extends RecyclerView.Adapter<Fa
                     .load(uri)
                     .into(holder.restroomPhoto);
         });
-
-
+        holder.restroomName.setText(restroom.getName());
+        holder.restroomAddress.setText(restroom.getAddress());
 
     }
 

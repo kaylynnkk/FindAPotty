@@ -34,10 +34,14 @@ public class FavoriteFragment extends Fragment {
         adaptor = new FavortieRestroomRecyclerViewAdaptor(getContext());
         recyclerView.setAdapter(adaptor);
 
-//        initDiscussionBoard();
+        initFavoriteRestrooms();
 
 
 
         return binding.getRoot();
+    }
+
+    private void initFavoriteRestrooms() {
+        ;
     }
 }

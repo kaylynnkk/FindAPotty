@@ -109,41 +109,12 @@ public class LoginFragment extends Fragment {
                                     currentUser.setUserId(retrievedUser.getUserId());
                                     // user name
                                     currentUser.setUserName(retrievedUser.getUserName());
-                                    // user favorite list
-                                    Log.d(TAG, "FavoriteRestrooms: "+ retrievedUser.getFavoriteRestrooms().size());
-                                    retrievedUser.getFavoriteRestrooms().forEach((key, value) ->{
-                                        Log.d(TAG, "onDataChange: " + value.getAddress());
-
-                                    });
-
-//                                    HashMap<String, Object> retrievedHashMap =
-//                                            (HashMap<String, Object>) snapshot.child("favorite_restrooms").getValue();
-////                                    currentUser.setFavoriteRestrooms(retrievedHashMap);
-//                                    retrievedHashMap.forEach((key, value) -> {
-//                                        Log.d(TAG, "onDataChange1: " + key);
-//
-//                                        Restroom restroom = snapshot.child("favorite_restrooms").child(key).getValue(Restroom.class);
-//                                        Log.d(TAG, "onDataChange2: " + restroom.getAddress());
-//                                    });
-
-//                                    for (DataSnapshot postSnapshot: snapshot.child("favorite_restrooms").getChildren()) {
-//                                        String placeId = postSnapshot.getKey();
-//
-//                                        HashMap<String, Object> retrievedHashMap = (HashMap<String, Object>) postSnapshot.getValue();
-////                                        currentUser.setFavoriteRestrooms(retrievedHashMap);
-//                                        Log.d(TAG, "onDataChange: " +  postSnapshot.getKey());
-//                                        Log.d(TAG, "onDataChange: " + retrievedHashMap.get(placeId).getClass());
-//                                        Restroom restroom = (Restroom) retrievedHashMap.get(placeId);
-//                                        Log.d(TAG, "onDataChange: "+ restroom.getAddress());
-//                                    }
-
-                                    Log.d(TAG, "onDataChange: "+User.getInstance().getUserId());
+                                    // user favorite restrooms
+                                    currentUser.setFavoriteRestrooms(retrievedUser.getFavoriteRestrooms());
 
                                     Toast.makeText(view.getContext(), "Welcome " + currentUser.getUserName(),
                                             Toast.LENGTH_SHORT).show();
-
                                 }
-
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
 

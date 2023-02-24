@@ -102,23 +102,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMapView.onResume(); // needed to get the map to display immediately
         Log.d(TAG, "onCreateView: map create");
 
-//        try {
-//            MapsInitializer.initialize(getActivity().getApplicationContext());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
         mSearchText = binding.inputSearch;
-
-        setUpIfNeeded();
 
         return binding.getRoot();
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+
+        // save map state
+        MapStateManager mgr = new MapStateManager(getActivity());
+        mgr.saveMapState(googleMap);
+//        Toast.makeText(getActivity(), "Map State has been save", Toast.LENGTH_SHORT).show();
+
+//        MapStateManager.getInstance().saveGoogleMap(googleMap);
+    }
+    @Override
     public void onStop() {
         super.onStop();
         Log.d(TAG, "onStop: ");
+        onDestroy();
     }
 
     @Override
@@ -131,12 +136,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: ");
-    }
 
-    private void setUpIfNeeded() {
-        if (googleMap == null) {
-            mMapView.getMapAsync(this);
-        }
+        mMapView.getMapAsync(this);
     }
 
     @Override
@@ -172,11 +173,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @SuppressLint("MissingPermission")
     private void init() {
+        Log.d(TAG, "init: ");
 
+//        if (MapStateManager.getInstance().getGoogleMap() != null) {
+//            GoogleMap map = MapStateManager.getInstance().getGoogleMap();
+//            googleMap.moveCamera(
+//                    CameraUpdateFactory.newCameraPosition(map.getCameraPosition()));
+//            googleMap.setMapType(map.getMapType());
+//        }
+
+        // resume map state
         MapStateManager mgr = new MapStateManager(getActivity());
         CameraPosition position = mgr.getSavedCameraPosition();
         if (position != null) {
-            Toast.makeText(getActivity(), "entering Resume State", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(), "entering Resume State", Toast.LENGTH_SHORT).show();
             googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(position));
 
             googleMap.setMapType(mgr.getSavedMapType());
@@ -373,21 +383,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
     }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MapStateManager mgr = new MapStateManager(getActivity());
-        mgr.saveMapState(googleMap);
-        Toast.makeText(getActivity(), "Map State has been save", Toast.LENGTH_SHORT).show();
-    }
-
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        setupMapIfNeeded();
-//    }
 
     @SuppressLint("MissingPermission")
     private void getDeviceLocation() {

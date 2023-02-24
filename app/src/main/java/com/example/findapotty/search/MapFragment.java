@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -30,11 +31,11 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.findapotty.BuildConfig;
-import com.example.findapotty.search.MapFragmentDirections;
 import com.example.findapotty.R;
 import com.example.findapotty.Restroom;
 import com.example.findapotty.RestroomManager;
 import com.example.findapotty.databinding.FragmentMapBinding;
+import com.google.android.gms.common.util.Hex;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -47,7 +48,9 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.PhotoMetadata;
 import com.google.android.libraries.places.api.model.Place;
@@ -56,6 +59,9 @@ import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.maps.GeoApiContext;
 import com.google.maps.PlacesApi;
 import com.google.maps.android.ui.IconGenerator;
@@ -63,7 +69,10 @@ import com.google.maps.errors.ApiException;
 import com.google.maps.model.PlacesSearchResponse;
 import com.google.maps.model.PlacesSearchResult;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -465,17 +474,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                         .build();
                                 placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
                                     Bitmap bitmap = fetchPhotoResponse.getBitmap();
-//                                    imageView.setImageBitmap(bitmap);
+                                    String photoPath = saveRestroomPhotosToStorage(place.getId(), bitmap);
 
-                                    RestroomManager restroomManager = RestroomManager.getInstance();
-                                    restroomManager.addRestroom(new Restroom(
-                                            place.getLatLng(),
-                                            place.getId(),
-                                            bitmap,
-                                            Boolean.TRUE.equals(place.isOpen()),
-                                            place.getName(),
-                                            place.getAddress()
-                                    ));
+                                    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                                    StorageReference ref = storageRef.child(photoPath);
+                                    ref.getDownloadUrl().addOnSuccessListener(uri -> {
+
+                                        RestroomManager restroomManager = RestroomManager.getInstance();
+                                        restroomManager.addRestroom(new Restroom(
+                                                place.getLatLng(),
+                                                place.getId(),
+                                                bitmap,
+                                                String.valueOf(uri),
+                                                Boolean.TRUE.equals(place.isOpen()),
+                                                place.getName(),
+                                                place.getAddress()
+                                        ));
+                                    });
 
                                 }).addOnFailureListener((exception) -> {
                                     if (exception instanceof ApiException) {
@@ -532,5 +547,51 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+    }
+
+    private String saveRestroomPhotosToStorage(String placeId, Bitmap bitmap) {
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+        
+        // hash photo with sha-1
+        String sha1Photo;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            sha1Photo = Hex.bytesToStringLowercase(md.digest(data));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+
+        String photoPath = "images/" + placeId + "/" + sha1Photo + ".jpg";
+        StorageReference mountainImagesRef = storageRef.child(photoPath);
+        UploadTask uploadTask = mountainImagesRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d(TAG, "onFailure: photo upload failed");
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.d(TAG, "onSuccess: photo uploaded");
+            }
+        });
+
+        return photoPath;
+    }
+
+    private void setDownloadPhotoUrl(Restroom restroom, String photoPath) {
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference ref = storageRef.child(photoPath);
+        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                restroom.setPhotoUrl(String.valueOf(uri));
+
+            }
+        });
     }
 }

@@ -11,8 +11,8 @@ public class User {
     private static User instance;
     private String userName;
     private String userId;
-//    private List<String> favoriteRestrooms = new ArrayList<>();
-    private HashMap<String, LatLng> favoriteRestrooms = new HashMap<>();
+//    private List<Restroom> favoriteRestrooms = new ArrayList<>();
+    private HashMap<String, Restroom> favoriteRestrooms = new HashMap<>();
 
     private User() {
     }
@@ -39,16 +39,18 @@ public class User {
         this.userId = userId;
     }
 
-    public HashMap<String, LatLng> getFavoriteRestrooms() {
+    public HashMap<String, Restroom> getFavoriteRestrooms() {
         return favoriteRestrooms;
     }
 
-    public void setFavoriteRestrooms(HashMap<String, LatLng> hashMap) {
-        favoriteRestrooms = hashMap;
+    public void setFavoriteRestrooms(HashMap<String, Restroom> retrievedFavoriteRestrooms) {
+        if (retrievedFavoriteRestrooms != null){
+            favoriteRestrooms = retrievedFavoriteRestrooms;
+        }
     }
 
-    public void addFavoriteRestroom(String placeId, LatLng latLng) {
-        favoriteRestrooms.put(placeId, latLng);
+    public void addFavoriteRestroom(String placeId, Restroom restroom) {
+        favoriteRestrooms.put(placeId, restroom);
     }
 
     public void removeFavoriteRestroom(String placeId) {

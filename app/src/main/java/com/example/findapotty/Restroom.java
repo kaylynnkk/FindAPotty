@@ -7,22 +7,26 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.Exclude;
 
 public class Restroom implements Parcelable {
-    private LatLng latLng;
-    private String placeID;
-    private Bitmap photoBitmap;
-    private boolean isOpen;
-    private String name;
-    private String address;
+    private final LatLng latLng;
+    private final String placeID;
+    private final Bitmap photoBitmap;
+    private String photoUrl;
+    private final boolean isOpen;
+    private final String name;
+    private final String address;
     private String markerId;
 
+
     public Restroom(
-            LatLng latLng, String placeID, Bitmap photoBitmap,
+            LatLng latLng, String placeID, Bitmap photoBitmap, String photoUrl,
             boolean isOpen, String name, String address) {
         this.latLng = latLng;
         this.placeID = placeID;
         this.photoBitmap = photoBitmap;
+        this.photoUrl = photoUrl;
         this.isOpen = isOpen;
         this.name = name;
         this.address = address;
@@ -68,10 +72,16 @@ public class Restroom implements Parcelable {
 
 
     // Usage: imageView.setImageBitmap(bitmap);
-    public Bitmap getPhoto() {
+    @Exclude
+    public Bitmap getPhotoBitmap() {
         return photoBitmap;
     }
 
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    @Exclude
     public String getMarkerId() {
         return markerId;
     }
@@ -80,6 +90,7 @@ public class Restroom implements Parcelable {
         this.markerId = markerId;
     }
 
+    @Exclude
     public String getOpeningStatus() {
         if (isOpen) {
             return "Opening";
@@ -88,8 +99,13 @@ public class Restroom implements Parcelable {
         }
     }
 
+    @Exclude
     public boolean isOpen_now() {
         return isOpen;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     @NonNull

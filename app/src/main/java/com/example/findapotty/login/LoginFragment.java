@@ -16,6 +16,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.findapotty.R;
+import com.example.findapotty.Restroom;
 import com.example.findapotty.User;
 import com.example.findapotty.databinding.FragmentLoginBinding;
 import com.google.android.gms.maps.model.LatLng;
@@ -109,8 +110,8 @@ public class LoginFragment extends Fragment {
                                     // user name
                                     currentUser.setUserName(retrievedUser.getUserName());
                                     // user favorite list
-                                    HashMap<String, LatLng> retrievedHashMap =
-                                            (HashMap<String, LatLng>) snapshot.child("favorite_restrooms").getValue();
+                                    HashMap<String, Restroom> retrievedHashMap =
+                                            (HashMap<String, Restroom>) snapshot.child("favorite_restrooms").getValue();
                                     currentUser.setFavoriteRestrooms(retrievedHashMap);
 //                                    for (DataSnapshot postSnapshot: snapshot.child("favorite_restrooms").getChildren()) {
 //                                        HashMap<String, LatLng> retrievedHashMap = (HashMap<String, LatLng>) postSnapshot.getValue();
@@ -119,6 +120,9 @@ public class LoginFragment extends Fragment {
 //                                    }
 
                                     Log.d(TAG, "onDataChange: "+User.getInstance().getUserId());
+
+                                    Toast.makeText(view.getContext(), "Welcome " + currentUser.getUserName(),
+                                            Toast.LENGTH_SHORT).show();
 
                                 }
 

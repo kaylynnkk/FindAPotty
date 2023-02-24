@@ -103,7 +103,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             binding.rrPgRraddress.setText(restroom.getAddress());
 
             // set photos
-            binding.rrPgRrPhotos.setImageBitmap(restroom.getPhoto());
+            binding.rrPgRrPhotos.setImageBitmap(restroom.getPhotoBitmap());
 
             // set favorite state
             if (User.getInstance().getFavoriteRestrooms().containsKey(restroom.getPlaceID())) {
@@ -111,6 +111,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                 binding.bsrpBtnFavorite.setImageResource(R.drawable.ic_selected_favorite);
                 isFavorite = true;
             }
+
         }
     }
 
@@ -165,7 +166,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             Toast.makeText(binding.getRoot().getContext(),
                     "Added to faviorte list", Toast.LENGTH_SHORT).show();
 
-            User.getInstance().addFavoriteRestroom(restroom.getPlaceID(), restroom.getLatLng());
+            User.getInstance().addFavoriteRestroom(restroom.getPlaceID(), restroom);
 
         } else {
             isFavorite = false;

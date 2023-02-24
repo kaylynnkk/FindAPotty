@@ -110,13 +110,31 @@ public class LoginFragment extends Fragment {
                                     // user name
                                     currentUser.setUserName(retrievedUser.getUserName());
                                     // user favorite list
-                                    HashMap<String, Restroom> retrievedHashMap =
-                                            (HashMap<String, Restroom>) snapshot.child("favorite_restrooms").getValue();
-                                    currentUser.setFavoriteRestrooms(retrievedHashMap);
+                                    Log.d(TAG, "FavoriteRestrooms: "+ retrievedUser.getFavoriteRestrooms().size());
+                                    retrievedUser.getFavoriteRestrooms().forEach((key, value) ->{
+                                        Log.d(TAG, "onDataChange: " + value.getAddress());
+
+                                    });
+
+//                                    HashMap<String, Object> retrievedHashMap =
+//                                            (HashMap<String, Object>) snapshot.child("favorite_restrooms").getValue();
+////                                    currentUser.setFavoriteRestrooms(retrievedHashMap);
+//                                    retrievedHashMap.forEach((key, value) -> {
+//                                        Log.d(TAG, "onDataChange1: " + key);
+//
+//                                        Restroom restroom = snapshot.child("favorite_restrooms").child(key).getValue(Restroom.class);
+//                                        Log.d(TAG, "onDataChange2: " + restroom.getAddress());
+//                                    });
+
 //                                    for (DataSnapshot postSnapshot: snapshot.child("favorite_restrooms").getChildren()) {
-//                                        HashMap<String, LatLng> retrievedHashMap = (HashMap<String, LatLng>) postSnapshot.getValue();
-//                                        currentUser.setFavoriteRestrooms(retrievedHashMap);
-////                                        Log.d(TAG, "onDataChange: " + latLng.toString());
+//                                        String placeId = postSnapshot.getKey();
+//
+//                                        HashMap<String, Object> retrievedHashMap = (HashMap<String, Object>) postSnapshot.getValue();
+////                                        currentUser.setFavoriteRestrooms(retrievedHashMap);
+//                                        Log.d(TAG, "onDataChange: " +  postSnapshot.getKey());
+//                                        Log.d(TAG, "onDataChange: " + retrievedHashMap.get(placeId).getClass());
+//                                        Restroom restroom = (Restroom) retrievedHashMap.get(placeId);
+//                                        Log.d(TAG, "onDataChange: "+ restroom.getAddress());
 //                                    }
 
                                     Log.d(TAG, "onDataChange: "+User.getInstance().getUserId());

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:id="@+id/favorite_restroom_item">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_centerInParent="true">
+
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="02/30/2077 25:61"
+                app:layout_constraintBottom_toTopOf="@+id/fsr_vg_2"
+                app:layout_constraintEnd_toStartOf="@+id/fsr_hg_3" />
+
+            <RatingBar
+                android:id="@+id/fsr_rating"
+                style="?android:ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:numStars="5"
+                android:rating="3.4"
+                app:layout_constraintBottom_toTopOf="@+id/fsr_vg_2"
+                app:layout_constraintStart_toStartOf="@+id/fsr_hg_2" />
+
+            <TextView
+                android:id="@+id/fsr_restroom_address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="1234 address ave city, state"
+                app:layout_constraintEnd_toStartOf="@+id/fsr_hg_3"
+                app:layout_constraintStart_toStartOf="@+id/fsr_hg_2"
+                app:layout_constraintTop_toBottomOf="@+id/fsr_restroom_name" />
+
+            <TextView
+                android:id="@+id/fsr_restroom_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="restroom name"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/fsr_hg_3"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/fsr_hg_2"
+                app:layout_constraintTop_toTopOf="@+id/fsr_vg_1" />
+
+            <ImageView
+                android:id="@+id/fsr_restroom_photo"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignParentBottom="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/fsr_hg_1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_launcher_background" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/fsr_hg_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.25" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/fsr_hg_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.27" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/fsr_hg_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.97" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/fsr_vg_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.05" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/fsr_vg_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.95" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+</layout>

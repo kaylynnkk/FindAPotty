@@ -10,49 +10,38 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".favorite.FavoriteFragment">
+        tools:context=".favorite.FavortieFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fd_dicusssion_section"
+            android:id="@+id/ff_favorite_restrooms"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/fd_v_2"
-            app:layout_constraintStart_toStartOf="@+id/fd_v_1"
-            app:layout_constraintTop_toTopOf="@+id/fd_h_1"
+            app:layout_constraintEnd_toStartOf="@+id/ff_v_2"
+            app:layout_constraintStart_toStartOf="@+id/ff_v_1"
+            app:layout_constraintTop_toTopOf="@+id/ff_h_1"
             android:layout_marginBottom="50dp"/>
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/fd_h_1"
+            android:id="@+id/ff_h_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.05" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/fd_v_1"
+            android:id="@+id/ff_v_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.02" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/fd_v_2"
+            android:id="@+id/ff_v_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.98" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fd_add_post_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="70dp"
-            android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/fd_v_2"
-            app:srcCompat="@drawable/icon_add_restroom" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

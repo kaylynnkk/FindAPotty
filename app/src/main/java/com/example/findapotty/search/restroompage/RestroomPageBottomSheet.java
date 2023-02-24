@@ -74,7 +74,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 
         mdb = FirebaseDatabase.getInstance().getReference();
         refFavoriteRestrooms = mdb.child("users")
-                .child(User.getInstance().getUserId()).child("favorite_restrooms");
+                .child(User.getInstance().getUserId()).child("favoriteRestrooms");
 
         initRestroomPage();
         initReviews();

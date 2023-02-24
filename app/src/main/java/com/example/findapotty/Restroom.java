@@ -6,17 +6,16 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;
 
 public class Restroom implements Parcelable {
-    private final LatLng latLng;
-    private final String placeID;
-    private final Bitmap photoBitmap;
+    private LatLng latLng;
+    private String placeID;
+    private Bitmap photoBitmap;
     private String photoPath;
-    private final boolean isOpen;
-    private final String name;
-    private final String address;
+    private boolean isOpen;
+    private String name;
+    private String address;
     private String markerId;
 
 
@@ -31,6 +30,18 @@ public class Restroom implements Parcelable {
         this.name = name;
         this.address = address;
     }
+
+    public Restroom(
+            LatLng latLng, String placeID, String photoPath,
+            String name, String address) {
+        this.latLng = latLng;
+        this.placeID = placeID;
+        this.photoPath = photoPath;
+        this.name = name;
+        this.address = address;
+    }
+
+    public Restroom(){};
 
     protected Restroom(Parcel in) {
         latLng = in.readParcelable(LatLng.class.getClassLoader());

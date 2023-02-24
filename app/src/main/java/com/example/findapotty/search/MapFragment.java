@@ -299,6 +299,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return new com.google.android.gms.maps.model.LatLng(latLng.lat, latLng.lng);
     }
 
+    com.google.android.gms.maps.model.LatLng convertLatLngTypeV3_1(com.example.findapotty.LatLng latLng) {
+        return new com.google.android.gms.maps.model.LatLng(latLng.getLatitude(), latLng.getLongitude());
+    }
+
+    com.example.findapotty.LatLng convertLatLngTypeV3_2(com.google.android.gms.maps.model.LatLng latLng) {
+        return new com.example.findapotty.LatLng(latLng.latitude, latLng.longitude);
+    }
+
     private void showDialog(int id) {
         BottomSheetDialog dialog = new BottomSheetDialog(getActivity(), R.style.CustomBottomSheetDialog);
         BottomSheetBehavior behavior = dialog.getBehavior();
@@ -477,7 +485,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                                     RestroomManager restroomManager = RestroomManager.getInstance();
                                     restroomManager.addRestroom(new Restroom(
-                                            place.getLatLng(),
+                                            convertLatLngTypeV3_2(place.getLatLng()),
                                             place.getId(),
                                             bitmap,
                                             saveRestroomPhotosToStorage(place.getId(), bitmap),
@@ -530,7 +538,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     Log.d(TAG, "addRestroomIconOnMap: added" + i);
 
                     Marker marker = googleMap.addMarker(new MarkerOptions()
-                            .position(restroomManager.getRestroomByIndex(i).getLatLng())
+                            .position(convertLatLngTypeV3_1(restroomManager.getRestroomByIndex(i).getLatLng()))
                             .icon(BitmapDescriptorFactory.fromBitmap(
                                     getMarkerIconWithLabel(
                                             getActivity(),

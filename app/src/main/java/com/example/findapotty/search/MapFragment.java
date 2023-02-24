@@ -474,23 +474,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                         .build();
                                 placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
                                     Bitmap bitmap = fetchPhotoResponse.getBitmap();
-                                    String photoPath = saveRestroomPhotosToStorage(place.getId(), bitmap);
 
-                                    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-                                    StorageReference ref = storageRef.child(photoPath);
-                                    ref.getDownloadUrl().addOnSuccessListener(uri -> {
-
-                                        RestroomManager restroomManager = RestroomManager.getInstance();
-                                        restroomManager.addRestroom(new Restroom(
-                                                place.getLatLng(),
-                                                place.getId(),
-                                                bitmap,
-                                                String.valueOf(uri),
-                                                Boolean.TRUE.equals(place.isOpen()),
-                                                place.getName(),
-                                                place.getAddress()
-                                        ));
-                                    });
+                                    RestroomManager restroomManager = RestroomManager.getInstance();
+                                    restroomManager.addRestroom(new Restroom(
+                                            place.getLatLng(),
+                                            place.getId(),
+                                            bitmap,
+                                            saveRestroomPhotosToStorage(place.getId(), bitmap),
+                                            Boolean.TRUE.equals(place.isOpen()),
+                                            place.getName(),
+                                            place.getAddress()
+                                    ));
 
                                 }).addOnFailureListener((exception) -> {
                                     if (exception instanceof ApiException) {
@@ -589,7 +583,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                restroom.setPhotoUrl(String.valueOf(uri));
+//                restroom.setPhotoUrl(String.valueOf(uri));
 
             }
         });

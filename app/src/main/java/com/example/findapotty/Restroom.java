@@ -13,7 +13,7 @@ public class Restroom implements Parcelable {
     private final LatLng latLng;
     private final String placeID;
     private final Bitmap photoBitmap;
-    private String photoUrl;
+    private String photoPath;
     private final boolean isOpen;
     private final String name;
     private final String address;
@@ -21,12 +21,12 @@ public class Restroom implements Parcelable {
 
 
     public Restroom(
-            LatLng latLng, String placeID, Bitmap photoBitmap, String photoUrl,
+            LatLng latLng, String placeID, Bitmap photoBitmap, String photoPath,
             boolean isOpen, String name, String address) {
         this.latLng = latLng;
         this.placeID = placeID;
         this.photoBitmap = photoBitmap;
-        this.photoUrl = photoUrl;
+        this.photoPath = photoPath;
         this.isOpen = isOpen;
         this.name = name;
         this.address = address;
@@ -77,8 +77,8 @@ public class Restroom implements Parcelable {
         return photoBitmap;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
+    public String getPhotoPath() {
+        return photoPath;
     }
 
     @Exclude
@@ -102,10 +102,6 @@ public class Restroom implements Parcelable {
     @Exclude
     public boolean isOpen_now() {
         return isOpen;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
     }
 
     @NonNull

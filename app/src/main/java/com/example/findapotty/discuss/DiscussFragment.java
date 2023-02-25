@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -90,10 +92,12 @@ public class DiscussFragment extends Fragment {
         binding.fdAddPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                discussionPostManager.addDiscussionPost(initDiscussionBoard(), adaptor);
-
-                adaptor.notifyItemInserted(0);
-                recyclerView.smoothScrollToPosition(0);
+//                discussionPostManager.addDiscussionPost(initDiscussionBoard(), adaptor);
+//
+//                adaptor.notifyItemInserted(0);
+//                recyclerView.smoothScrollToPosition(0);
+                NavController navController = Navigation.findNavController(view);
+                navController.navigate(R.id.action_nav_discuss_to_addDiscussionPostFragment);
             }
         });
     }

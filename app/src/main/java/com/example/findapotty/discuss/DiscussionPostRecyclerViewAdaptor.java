@@ -2,6 +2,7 @@ package com.example.findapotty.discuss;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,20 +20,17 @@ import com.bumptech.glide.Glide;
 import com.example.findapotty.databinding.DiscussionBoardSinglePostPreviewBinding;
 import com.example.findapotty.discuss.DiscussFragmentDirections;
 import com.example.findapotty.R;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class DiscussionPostRecyclerViewAdaptor extends RecyclerView.Adapter<DiscussionPostRecyclerViewAdaptor.ViewHolder>{
-
+public class DiscussionPostRecyclerViewAdaptor extends FirebaseRecyclerAdapter<DiscussionPost, DiscussionPostRecyclerViewAdaptor.ViewHolder> {
     private static final String TAG = "DiscussionPostRecyclerViewAdaptor";
-//    private ArrayList<DiscussionPost> discussionPosts;
     Context context;
     private DiscussionBoardSinglePostPreviewBinding binding;
-    private DiscussionPostManager discussionPostManager  = DiscussionPostManager.getInstance();
-
-//    public DiscussionPostRecyclerViewAdaptor(Context context, ArrayList<DiscussionPost> discussionPosts) {
-    public DiscussionPostRecyclerViewAdaptor(Context context) {
-//        this.discussionPosts = discussionPosts;
+    public DiscussionPostRecyclerViewAdaptor(Context context, FirebaseRecyclerOptions<DiscussionPost> options) {
+        super(options);
         this.context = context;
     }
 
@@ -45,9 +43,8 @@ public class DiscussionPostRecyclerViewAdaptor extends RecyclerView.Adapter<Disc
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull DiscussionPost discussionPost) {
 
-        DiscussionPost discussionPost = discussionPostManager.getDiscussionPostByIndex(position);
         Glide.with(context)
                 .asBitmap()
                 .dontAnimate()
@@ -68,13 +65,6 @@ public class DiscussionPostRecyclerViewAdaptor extends RecyclerView.Adapter<Disc
         });
 
     }
-
-    @Override
-    public int getItemCount() {
-//        return discussionPosts.size();
-        return discussionPostManager.getPostCount();
-    }
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         CircleImageView userAvatar;

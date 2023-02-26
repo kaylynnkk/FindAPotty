@@ -19,6 +19,8 @@ import androidx.navigation.Navigation;
 import com.example.findapotty.R;
 import com.example.findapotty.User;
 import com.example.findapotty.databinding.FragmentAddDiscussionPostBinding;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class AddDiscussionPostFragment extends Fragment {
 
@@ -71,5 +73,10 @@ public class AddDiscussionPostFragment extends Fragment {
         NavDirections action =
                 AddDiscussionPostFragmentDirections.actionAddDiscussionPostFragmentToSinglePostDiscussionBoard(newPost);
         controller.navigate(action);
+
+        // send post to database
+        DatabaseReference postRef = FirebaseDatabase.getInstance().getReference("discussion_posts");
+        String postId = postRef.push().getKey();
+        postRef.child(User.getInstance().getUserId()).child(postId).setValue(newPost);
     }
 }

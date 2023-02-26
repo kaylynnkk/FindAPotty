@@ -1,6 +1,7 @@
 package com.example.findapotty.discuss;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +11,24 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.findapotty.R;
+import com.example.findapotty.User;
 import com.example.findapotty.databinding.FragmentDiscussBinding;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.database.SnapshotParser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Random;
 
@@ -24,40 +36,35 @@ public class DiscussFragment extends Fragment {
 
     private FragmentDiscussBinding binding;
     private RecyclerView recyclerView;
-    private DiscussionPostRecyclerViewAdaptor adaptor;
-//    private ArrayList<DiscussionPost> discussionPosts = new ArrayList<>();
-    private DiscussionPostManager discussionPostManager  = DiscussionPostManager.getInstance();
+    private FirebaseRecyclerAdapter<DiscussionPost, DiscussionPostRecyclerViewAdaptor.ViewHolder> adaptor;
+//    private DiscussionPostManager discussionPostManager  = DiscussionPostManager.getInstance();
+    private DatabaseReference postRef = FirebaseDatabase.getInstance().getReference("discussion_posts/"+ User.getInstance().getUserId());
 
     private static final String TAG = "DiscussFragment";
-    private final String KEY_RECYCLER_STATE = "recycler_state";
-    private static Bundle mBundleRecyclerViewState;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_discuss, container, false);
-        binding.setLifecycleOwner(this);
 
+        // init variables
         recyclerView = binding.fdDicusssionSection;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        adaptor = new DiscussionPostRecyclerViewAdaptor(getContext(), discussionPosts);
-        adaptor = new DiscussionPostRecyclerViewAdaptor(getContext());
+        FirebaseRecyclerOptions<DiscussionPost> options =
+                new FirebaseRecyclerOptions.Builder<DiscussionPost>()
+                        .setQuery(postRef, DiscussionPost.class)
+                        .build();
+        adaptor = new DiscussionPostRecyclerViewAdaptor(getContext(), options);
         recyclerView.setAdapter(adaptor);
 
-
-//        initDiscussionBoard();
-
         // listener
-        binding.fdAddPostButton.setOnClickListener(view -> toWriteNewPost(view));
-
-        // receive arguments
-        addToList();
-
+        binding.fdAddPostButton.setOnClickListener(view -> toWriteNewPost());
+//        binding.fdRefreshBoard.setOnClickListener(view -> refreshBoard());
 
 
         return binding.getRoot();
     }
 
-    private DiscussionPost initDiscussionBoard(){
+    private DiscussionPost genRandomPost(){
         Random random = new Random();
         switch (random.nextInt(3)){
             case 0: {
@@ -90,28 +97,44 @@ public class DiscussFragment extends Fragment {
                     "3.6 beta: info on Kaveh + Baizhu skills, cons, and Dehya's team",
                     "i think it's all but explicitly debunked, now that soraya was strongly implied to be the scholar he converses with in lantern rite epilogue (ngl p (jovially) disappointed in myself how did i miss her)"
             );
-
         }
-
     }
 
-    private void toWriteNewPost(View view) {
-//        discussionPostManager.addDiscussionPost(initDiscussionBoard(), adaptor);
-//
-//        adaptor.notifyItemInserted(0);
-//        recyclerView.smoothScrollToPosition(0);
-        NavController navController = Navigation.findNavController(view);
+    private void toWriteNewPost() {;
+        NavController navController = Navigation.findNavController(binding.getRoot());
         navController.navigate(R.id.action_nav_discuss_to_addDiscussionPostFragment);
     }
 
-    private void addToList() {
-        if (getArguments() != null) {
-//            DiscussionPost newDiscussionPost = DiscussFragmentArgs.fromBundle(getArguments()).getNewDiscussionPost();
-//            discussionPostManager.addDiscussionPost(newDiscussionPost, adaptor);
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: ");
+        adaptor.startListening();
+    }
 
-            adaptor.notifyItemInserted(0);
-            recyclerView.smoothScrollToPosition(0);
-        }
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: ");
+        adaptor.stopListening();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
     }
 
 }

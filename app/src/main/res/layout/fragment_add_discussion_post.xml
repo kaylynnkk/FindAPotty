@@ -96,7 +96,7 @@
             android:backgroundTint="@color/quantum_grey"
             android:ems="10"
             android:gravity="start|top"
-            android:hint="Waht's happening?"
+            android:hint="What's happening?"
             android:inputType="textMultiLine"
             android:maxLength="3000"
             android:textColor="@color/black"

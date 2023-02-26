@@ -39,7 +39,9 @@ public class DiscussionPostManager {
     }
 
     public void clearDiscussionPosts(DiscussionPostRecyclerViewAdaptor adaptor) {
+        int size = discussionPosts.size();
         discussionPosts.clear();
+        adaptor.notifyItemRangeRemoved(0, size);
     }
 
     public int getPostCount() {

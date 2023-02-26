@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.05" />
+            app:layout_constraintGuide_percent="0.02" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/fd_v_1"
@@ -53,6 +53,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/fd_v_2"
             app:srcCompat="@drawable/icon_add_restroom" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fd_refresh_board"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:clickable="true"
+            app:layout_constraintBottom_toTopOf="@+id/fd_add_post_button"
+            app:layout_constraintEnd_toStartOf="@+id/fd_v_2"
+            app:srcCompat="@drawable/icon_refresh_discussion_board" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

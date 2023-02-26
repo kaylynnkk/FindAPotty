@@ -3,6 +3,7 @@ package com.example.findapotty;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.Exclude;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;

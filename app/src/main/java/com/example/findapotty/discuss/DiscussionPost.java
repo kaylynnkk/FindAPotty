@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.database.Exclude;
+
 public class DiscussionPost implements Parcelable {
 
     private String userAvatar;
@@ -16,6 +18,9 @@ public class DiscussionPost implements Parcelable {
     private String postTag;
     private int postCommentCount;
     private int postLikeCount;
+
+
+    public DiscussionPost() {}
 
     public DiscussionPost(String userAvatar, String userName, String postTitle, String postContent) {
         this.userAvatar = userAvatar;
@@ -46,10 +51,12 @@ public class DiscussionPost implements Parcelable {
         }
     };
 
+    @Exclude
     public String getUserAvatar() {
         return userAvatar;
     }
 
+    @Exclude
     public String getUserName() {
         return userName;
     }

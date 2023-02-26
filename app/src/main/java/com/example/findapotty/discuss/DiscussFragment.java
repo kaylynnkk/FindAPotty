@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,8 +43,14 @@ public class DiscussFragment extends Fragment {
         adaptor = new DiscussionPostRecyclerViewAdaptor(getContext());
         recyclerView.setAdapter(adaptor);
 
+
 //        initDiscussionBoard();
-        addPostListener();
+
+        // listener
+        binding.fdAddPostButton.setOnClickListener(view -> toWriteNewPost(view));
+
+        // receive arguments
+        addToList();
 
 
 
@@ -88,22 +95,23 @@ public class DiscussFragment extends Fragment {
 
     }
 
-    private void addPostListener() {
-        binding.fdAddPostButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                discussionPostManager.addDiscussionPost(initDiscussionBoard(), adaptor);
+    private void toWriteNewPost(View view) {
+//        discussionPostManager.addDiscussionPost(initDiscussionBoard(), adaptor);
 //
-//                adaptor.notifyItemInserted(0);
-//                recyclerView.smoothScrollToPosition(0);
-                NavController navController = Navigation.findNavController(view);
-                navController.navigate(R.id.action_nav_discuss_to_addDiscussionPostFragment);
-            }
-        });
+//        adaptor.notifyItemInserted(0);
+//        recyclerView.smoothScrollToPosition(0);
+        NavController navController = Navigation.findNavController(view);
+        navController.navigate(R.id.action_nav_discuss_to_addDiscussionPostFragment);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    private void addToList() {
+        if (getArguments() != null) {
+//            DiscussionPost newDiscussionPost = DiscussFragmentArgs.fromBundle(getArguments()).getNewDiscussionPost();
+//            discussionPostManager.addDiscussionPost(newDiscussionPost, adaptor);
+
+            adaptor.notifyItemInserted(0);
+            recyclerView.smoothScrollToPosition(0);
+        }
     }
+
 }

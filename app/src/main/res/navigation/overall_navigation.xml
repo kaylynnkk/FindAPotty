@@ -57,7 +57,7 @@
         </action>
         <action
             android:id="@+id/action_nav_discuss_to_addDiscussionPostFragment"
-            app:destination="@id/addDiscussionPostFragment" />
+            app:destination="@id/addDiscussionPostFragment"/>
     </fragment>
     <fragment
         android:id="@+id/navg_rr_pg_edit_fragment"
@@ -95,5 +95,11 @@
     <fragment
         android:id="@+id/addDiscussionPostFragment"
         android:name="com.example.findapotty.discuss.AddDiscussionPostFragment"
-        android:label="fragment_add_discussion_post" />
+        android:label="fragment_add_discussion_post">
+        <action
+            android:id="@+id/action_addDiscussionPostFragment_to_singlePostDiscussionBoard"
+            app:destination="@id/singlePostDiscussionBoard"
+            app:popUpTo="@+id/nav_discuss"
+            app:popUpToInclusive="false" />
+    </fragment>
 </navigation>

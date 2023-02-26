@@ -13,6 +13,7 @@ public class User {
 
     private static User instance;
     private String userName;
+    private String userAvatarUrl;
     private String userId;
 //    private List<Restroom> favoriteRestrooms = new ArrayList<>();
     private HashMap<String, Restroom> favoriteRestrooms = new HashMap<>();

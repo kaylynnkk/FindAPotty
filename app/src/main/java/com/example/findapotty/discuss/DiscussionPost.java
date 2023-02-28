@@ -5,12 +5,14 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.example.findapotty.User;
 import com.google.firebase.database.Exclude;
 
 public class DiscussionPost implements Parcelable {
 
     private String userAvatar;
     private String userName;
+    private String authorId = User.getInstance().getUserId();
 
     private String postTitle;
     private String postContent;
@@ -28,6 +30,12 @@ public class DiscussionPost implements Parcelable {
         this.postTitle = postTitle;
         this.postContent = postContent;
     }
+
+//    public DiscussionPost(String postTitle, String postContent, String authorId) {
+//        this.postTitle = postTitle;
+//        this.postContent = postContent;
+//        this.authorId = authorId;
+//    }
 
     protected DiscussionPost(Parcel in) {
         userAvatar = in.readString();
@@ -51,12 +59,18 @@ public class DiscussionPost implements Parcelable {
         }
     };
 
-    @Exclude
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public String getUserAvatar() {
         return userAvatar;
     }
 
-    @Exclude
     public String getUserName() {
         return userName;
     }
@@ -67,6 +81,10 @@ public class DiscussionPost implements Parcelable {
 
     public String getPostContent() {
         return postContent;
+    }
+
+    public String getAuthorId() {
+        return authorId;
     }
 
     @Override

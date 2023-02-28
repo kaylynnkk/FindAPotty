@@ -21,8 +21,11 @@ import com.bumptech.glide.Glide;
 import com.example.findapotty.R;
 import com.example.findapotty.User;
 import com.example.findapotty.databinding.FragmentDiscussBinding;
+import com.firebase.ui.database.FirebaseArray;
+import com.firebase.ui.database.FirebaseIndexArray;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.database.ObservableSnapshotArray;
 import com.firebase.ui.database.SnapshotParser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,7 +41,7 @@ public class DiscussFragment extends Fragment {
     private RecyclerView recyclerView;
     private FirebaseRecyclerAdapter<DiscussionPost, DiscussionPostRecyclerViewAdaptor.ViewHolder> adaptor;
 //    private DiscussionPostManager discussionPostManager  = DiscussionPostManager.getInstance();
-    private DatabaseReference postRef = FirebaseDatabase.getInstance().getReference("discussion_posts/"+ User.getInstance().getUserId());
+    private DatabaseReference postRef = FirebaseDatabase.getInstance().getReference("discussion_posts");
 
     private static final String TAG = "DiscussFragment";
 
@@ -51,7 +54,34 @@ public class DiscussFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         FirebaseRecyclerOptions<DiscussionPost> options =
                 new FirebaseRecyclerOptions.Builder<DiscussionPost>()
-                        .setQuery(postRef, DiscussionPost.class)
+//                        .setQuery(postRef, DiscussionPost.class)
+                        .setQuery(postRef, new SnapshotParser<DiscussionPost>() {
+                            @NonNull
+                            @Override
+                            public DiscussionPost parseSnapshot(@NonNull DataSnapshot snapshot) {
+                                DiscussionPost subPost = snapshot.getValue(DiscussionPost.class);
+//                                String id = subPost.getAuthorId();
+//                                DiscussionPost post = new DiscussionPost();
+//
+//                                DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
+//                                usersRef.addValueEventListener(new ValueEventListener() {
+//                                    @Override
+//                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                        Log.d(TAG, "onDataChange: user name" + snapshot.child(id).getValue(User.class).getUserName());
+//                                        post.setUserName(snapshot.child(id).getValue(User.class).getUserName());
+//                                        Log.d(TAG, "onDataChange: post user name" + post.getUserName());
+//                                    }
+//
+//                                    @Override
+//                                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                                    }
+//                                });
+
+                                return new DiscussionPost(
+                                        subPost.getUserAvatar(), subPost.getUserName(), subPost.getPostTitle(), subPost.getPostContent());
+                            }
+                        })
                         .build();
         adaptor = new DiscussionPostRecyclerViewAdaptor(getContext(), options);
         recyclerView.setAdapter(adaptor);
@@ -109,7 +139,6 @@ public class DiscussFragment extends Fragment {
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart: ");
-        adaptor.startListening();
     }
 
     @Override
@@ -128,7 +157,6 @@ public class DiscussFragment extends Fragment {
     public void onStop() {
         super.onStop();
         Log.d(TAG, "onStop: ");
-        adaptor.stopListening();
     }
 
     @Override
@@ -137,4 +165,15 @@ public class DiscussFragment extends Fragment {
         Log.d(TAG, "onDestroy: ");
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        adaptor.startListening();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        adaptor.stopListening();
+    }
 }

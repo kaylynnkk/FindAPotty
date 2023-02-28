@@ -35,12 +35,13 @@
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/dbsp_userAvatar"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:layout_marginStart="16dp"
                         android:src="@mipmap/ic_launcher"
+                        app:civ_border_color="#ee9dcf"
+                        app:civ_border_width="1dp"
                         app:layout_constraintBottom_toBottomOf="@+id/dbsp_userName"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/dbsp_userName" />
@@ -55,28 +56,29 @@
                         android:textColor="@color/black"
                         android:textSize="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/dbsp_userAvatar"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:id="@+id/dbsp_postTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="24dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="@string/post_test_title"
                     android:textColor="@color/black"
-                    android:text="Title"
-                    android:layout_marginBottom="20dp" />
+                    android:textSize="26dp" />
 
                 <TextView
                     android:id="@+id/dbsp_postContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="@string/post_test_content"
                     android:textColor="@color/black"
-                    android:text="Content"
-                    android:layout_marginBottom="20dp" />
+                    android:textSize="18dp"
+                    android:lineHeight="26dp"/>
 
 
             </LinearLayout>
@@ -87,14 +89,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.02" />
+            app:layout_constraintGuide_percent="0.05" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/dbsp_v_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.98" />
+            app:layout_constraintGuide_percent="0.95" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/dbsp_h_1"

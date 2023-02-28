@@ -26,6 +26,7 @@ public class AddDiscussionPostFragment extends Fragment {
 
     private FragmentAddDiscussionPostBinding binding;
     private static final String TAG = "AddDiscussionPostFragment";
+    private User user = User.getInstance();
 
     @Nullable
     @Override
@@ -66,7 +67,8 @@ public class AddDiscussionPostFragment extends Fragment {
     }
 
     private void submit(View view) {
-        DiscussionPost newPost = new DiscussionPost(null, User.getInstance().getUserName(),
+        Log.d(TAG, "submit: "+ user.getAvatarUrl().toString());
+        DiscussionPost newPost = new DiscussionPost(user.getAvatarUrl().toString(), user.getUserName(),
                 binding.fadpTitle.getText().toString(), binding.fadpContent.getText().toString());
 
         NavController controller = Navigation.findNavController(view);
@@ -77,6 +79,6 @@ public class AddDiscussionPostFragment extends Fragment {
         // send post to database
         DatabaseReference postRef = FirebaseDatabase.getInstance().getReference("discussion_posts");
         String postId = postRef.push().getKey();
-        postRef.child(User.getInstance().getUserId()).child(postId).setValue(newPost);
+        postRef.child(postId).setValue(newPost);
     }
 }

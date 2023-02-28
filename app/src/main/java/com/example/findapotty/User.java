@@ -1,5 +1,6 @@
 package com.example.findapotty;
 
+import android.net.Uri;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -14,7 +15,8 @@ public class User {
 
     private static User instance;
     private String userName;
-    private String userAvatarUrl;
+    private String avatarPath = "avatars/default_avatar.jpg";
+    private Uri avatarUrl;
     private String userId;
 //    private List<Restroom> favoriteRestrooms = new ArrayList<>();
     private HashMap<String, Restroom> favoriteRestrooms = new HashMap<>();
@@ -37,12 +39,29 @@ public class User {
         return userId;
     }
 
+    public String getAvatarPath() {
+        return avatarPath;
+    }
+
+    @Exclude
+    public Uri getAvatarUrl() {
+        return avatarUrl;
+    }
+
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public void setAvatarPath(String avatarPath) {
+        this.avatarPath = avatarPath;
+    }
+
+    public void setAvatarUrl(Uri avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public HashMap<String, Restroom> getFavoriteRestrooms() {

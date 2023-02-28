@@ -1,5 +1,6 @@
 package com.example.findapotty.login;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 
@@ -105,10 +108,20 @@ public class LoginFragment extends Fragment {
                                     User retrievedUser = snapshot.getValue( User.class );
 
                                     User currentUser = User.getInstance();
+
                                     // user id
                                     currentUser.setUserId(retrievedUser.getUserId());
+
                                     // user name
                                     currentUser.setUserName(retrievedUser.getUserName());
+
+                                    // user avatar
+                                    currentUser.setAvatarPath(retrievedUser.getAvatarPath());
+                                    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                                    StorageReference ref = storageRef.child(currentUser.getAvatarPath());
+                                    ref.getDownloadUrl().addOnSuccessListener(uri -> {
+                                        currentUser.setAvatarUrl(uri);
+                                    });
                                     // user favorite restrooms
                                     currentUser.setFavoriteRestrooms(retrievedUser.getFavoriteRestrooms());
 

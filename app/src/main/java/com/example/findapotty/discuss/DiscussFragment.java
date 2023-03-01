@@ -11,21 +11,16 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.bumptech.glide.Glide;
 import com.example.findapotty.R;
-import com.example.findapotty.User;
 import com.example.findapotty.databinding.FragmentDiscussBinding;
 import com.firebase.ui.database.FirebaseArray;
-import com.firebase.ui.database.FirebaseIndexArray;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.firebase.ui.database.ObservableSnapshotArray;
 import com.firebase.ui.database.SnapshotParser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,67 +28,70 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Iterator;
 import java.util.Random;
 
 public class DiscussFragment extends Fragment {
 
     private FragmentDiscussBinding binding;
     private RecyclerView recyclerView;
-    private FirebaseRecyclerAdapter<DiscussionPost, DiscussionPostRecyclerViewAdaptor.ViewHolder> adaptor;
-//    private DiscussionPostManager discussionPostManager  = DiscussionPostManager.getInstance();
+    private DiscussionPostRecyclerViewAdaptor adaptor;
+    private DiscussionPostManager discussionPostManager  = DiscussionPostManager.getInstance();
     private DatabaseReference postRef = FirebaseDatabase.getInstance().getReference("discussion_posts");
 
     private static final String TAG = "DiscussFragment";
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView: ");
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_discuss, container, false);
 
         // init variables
         recyclerView = binding.fdDicusssionSection;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        FirebaseRecyclerOptions<DiscussionPost> options =
-                new FirebaseRecyclerOptions.Builder<DiscussionPost>()
-//                        .setQuery(postRef, DiscussionPost.class)
-                        .setQuery(postRef, new SnapshotParser<DiscussionPost>() {
-                            @NonNull
-                            @Override
-                            public DiscussionPost parseSnapshot(@NonNull DataSnapshot snapshot) {
-                                DiscussionPost subPost = snapshot.getValue(DiscussionPost.class);
-//                                String id = subPost.getAuthorId();
-//                                DiscussionPost post = new DiscussionPost();
-//
-//                                DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
-//                                usersRef.addValueEventListener(new ValueEventListener() {
-//                                    @Override
-//                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                        Log.d(TAG, "onDataChange: user name" + snapshot.child(id).getValue(User.class).getUserName());
-//                                        post.setUserName(snapshot.child(id).getValue(User.class).getUserName());
-//                                        Log.d(TAG, "onDataChange: post user name" + post.getUserName());
-//                                    }
-//
-//                                    @Override
-//                                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                                    }
-//                                });
 
-                                return new DiscussionPost(
-                                        subPost.getUserAvatar(), subPost.getUserName(), subPost.getPostTitle(), subPost.getPostContent());
-                            }
-                        })
-                        .build();
-        adaptor = new DiscussionPostRecyclerViewAdaptor(getContext(), options);
+        adaptor = new DiscussionPostRecyclerViewAdaptor(getContext());
         recyclerView.setAdapter(adaptor);
+
+        // init
+        if (discussionPostManager.onInit){
+            init();
+            discussionPostManager.onInit = false;
+        }
 
         // listener
         binding.fdAddPostButton.setOnClickListener(view -> toWriteNewPost());
 //        binding.fdRefreshBoard.setOnClickListener(view -> refreshBoard());
+        binding.fdSwipeRefresh.setOnRefreshListener(() -> {
+            discussionPostManager.clearDiscussionPosts(adaptor);
+            init();
+            binding.fdSwipeRefresh.setRefreshing(false);
+        });
 
 
         return binding.getRoot();
     }
 
+    private void init() {
+        Log.d(TAG, "init: ");
+        discussionPostManager.clearDiscussionPosts(adaptor);
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot post : snapshot.getChildren()) {
+                    discussionPostManager.addDiscussionPost(post.getValue(DiscussionPost.class), adaptor);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        postRef.orderByChild("uploadTime").addValueEventListener(listener);
+    }
+
+    /*
     private DiscussionPost genRandomPost(){
         Random random = new Random();
         switch (random.nextInt(3)){
@@ -129,6 +127,7 @@ public class DiscussFragment extends Fragment {
             );
         }
     }
+    */
 
     private void toWriteNewPost() {;
         NavController navController = Navigation.findNavController(binding.getRoot());
@@ -163,17 +162,8 @@ public class DiscussFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy: ");
+        discussionPostManager.onInit = true;
+        discussionPostManager.clearDiscussionPosts(adaptor);
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        adaptor.startListening();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        adaptor.stopListening();
-    }
 }

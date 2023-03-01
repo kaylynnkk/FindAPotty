@@ -16,6 +16,7 @@ public class DiscussionPost implements Parcelable {
 
     private String postTitle;
     private String postContent;
+    private String uploadTime; //yyyy-MM-dd HH:mm:ss
 
     private String postTag;
     private int postCommentCount;
@@ -24,11 +25,13 @@ public class DiscussionPost implements Parcelable {
 
     public DiscussionPost() {}
 
-    public DiscussionPost(String userAvatar, String userName, String postTitle, String postContent) {
+    public DiscussionPost(
+            String userAvatar, String userName, String postTitle, String postContent, String uploadTime) {
         this.userAvatar = userAvatar;
         this.userName = userName;
         this.postTitle = postTitle;
         this.postContent = postContent;
+        this.uploadTime = uploadTime;
     }
 
 //    public DiscussionPost(String postTitle, String postContent, String authorId) {
@@ -85,6 +88,10 @@ public class DiscussionPost implements Parcelable {
 
     public String getAuthorId() {
         return authorId;
+    }
+
+    public String getUploadTime() {
+        return uploadTime;
     }
 
     @Override

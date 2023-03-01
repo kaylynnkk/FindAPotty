@@ -25,12 +25,12 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class DiscussionPostRecyclerViewAdaptor extends FirebaseRecyclerAdapter<DiscussionPost, DiscussionPostRecyclerViewAdaptor.ViewHolder> {
+public class DiscussionPostRecyclerViewAdaptor extends RecyclerView.Adapter<DiscussionPostRecyclerViewAdaptor.ViewHolder> {
     private static final String TAG = "DiscussionPostRecyclerViewAdaptor";
     Context context;
     private DiscussionBoardSinglePostPreviewBinding binding;
-    public DiscussionPostRecyclerViewAdaptor(Context context, FirebaseRecyclerOptions<DiscussionPost> options) {
-        super(options);
+    private DiscussionPostManager discussionPostManager  = DiscussionPostManager.getInstance();
+    public DiscussionPostRecyclerViewAdaptor(Context context) {
         this.context = context;
     }
 
@@ -43,8 +43,8 @@ public class DiscussionPostRecyclerViewAdaptor extends FirebaseRecyclerAdapter<D
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull DiscussionPost discussionPost) {
-
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        DiscussionPost discussionPost = discussionPostManager.getDiscussionPostByIndex(position);
         Glide.with(context)
                 .asBitmap()
                 .dontAnimate()
@@ -63,7 +63,11 @@ public class DiscussionPostRecyclerViewAdaptor extends FirebaseRecyclerAdapter<D
                 controller.navigate(action);
             }
         });
+    }
 
+    @Override
+    public int getItemCount() {
+        return discussionPostManager.getPostCount();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -48,7 +48,7 @@
 
                     <TextView
                         android:id="@+id/dbsp_userName"
-                        android:layout_width="300dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_marginStart="8dp"

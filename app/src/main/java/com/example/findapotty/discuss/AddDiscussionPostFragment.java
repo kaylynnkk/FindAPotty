@@ -22,6 +22,10 @@ import com.example.findapotty.databinding.FragmentAddDiscussionPostBinding;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class AddDiscussionPostFragment extends Fragment {
 
     private FragmentAddDiscussionPostBinding binding;
@@ -68,8 +72,15 @@ public class AddDiscussionPostFragment extends Fragment {
 
     private void submit(View view) {
         Log.d(TAG, "submit: "+ user.getAvatarUrl().toString());
-        DiscussionPost newPost = new DiscussionPost(user.getAvatarUrl().toString(), user.getUserName(),
-                binding.fadpTitle.getText().toString(), binding.fadpContent.getText().toString());
+
+        //yyyy-MM-dd HH:mm:ss
+        String currentDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                .format(Calendar.getInstance().getTime());
+
+        DiscussionPost newPost = new DiscussionPost(
+                user.getAvatarUrl().toString(), user.getUserName(),
+                binding.fadpTitle.getText().toString(), binding.fadpContent.getText().toString(),
+                currentDateTime);
 
         NavController controller = Navigation.findNavController(view);
         NavDirections action =

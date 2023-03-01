@@ -1,12 +1,18 @@
 package com.example.findapotty.discuss;
 
+import com.google.firebase.database.DataSnapshot;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class DiscussionPostManager {
 
     private static DiscussionPostManager instance;
     private ArrayList<DiscussionPost> discussionPosts = new ArrayList<>();
-    private int maxPostCount = 4;
+    private int maxPostCount = 100;
+    public boolean onInit = true;
+    public int currentStartIndex = 0;
+    public Iterator<DataSnapshot> iterator = null;
 
     private DiscussionPostManager() {
     }
@@ -28,6 +34,7 @@ public class DiscussionPostManager {
 
     public void addDiscussionPost(DiscussionPost discussionPost, DiscussionPostRecyclerViewAdaptor adaptor) {
         discussionPosts.add(0, discussionPost);
+        adaptor.notifyItemInserted(0);
         if (discussionPosts.size() > maxPostCount) {
             discussionPosts.remove(discussionPosts.size() - 1);
             adaptor.notifyItemRemoved(discussionPosts.size() - 1);

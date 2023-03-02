@@ -1,7 +1,6 @@
 package com.example.findapotty.favorite;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,20 +15,13 @@ import com.bumptech.glide.Glide;
 import com.example.findapotty.R;
 import com.example.findapotty.Restroom;
 import com.example.findapotty.User;
-import com.example.findapotty.databinding.DiscussionBoardSinglePostPreviewBinding;
-import com.example.findapotty.databinding.FavoriteSingleRestroomBinding;
-import com.example.findapotty.discuss.DiscussionPostRecyclerViewAdaptor;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.findapotty.databinding.FavoriteSingleRestroomPreviewBinding;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.HashMap;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class FavortieRestroomRecyclerViewAdaptor extends RecyclerView.Adapter<FavortieRestroomRecyclerViewAdaptor.ViewHolder>{
 
-    private FavoriteSingleRestroomBinding binding;
+    private FavoriteSingleRestroomPreviewBinding binding;
     Context context;
 
 
@@ -42,7 +34,7 @@ public class FavortieRestroomRecyclerViewAdaptor extends RecyclerView.Adapter<Fa
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         binding = DataBindingUtil.inflate(
-                LayoutInflater.from(context), R.layout.favorite_single_restroom, parent, false);
+                LayoutInflater.from(context), R.layout.favorite_single_restroom_preview, parent, false);
         return new ViewHolder(binding);
     }
 
@@ -76,7 +68,7 @@ public class FavortieRestroomRecyclerViewAdaptor extends RecyclerView.Adapter<Fa
         TextView restroomAddress;
         RelativeLayout parentLayout;
 
-        public ViewHolder(FavoriteSingleRestroomBinding binding) {
+        public ViewHolder(FavoriteSingleRestroomPreviewBinding binding) {
             super(binding.getRoot());
             restroomPhoto = binding.fsrRestroomPhoto;
             restroomName = binding.fsrRestroomName;

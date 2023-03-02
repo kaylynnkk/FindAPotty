@@ -91,7 +91,11 @@
     <fragment
         android:id="@+id/nav_favorite"
         android:name="com.example.findapotty.favorite.FavoriteFragment"
-        android:label="fragment_favorite" />
+        android:label="fragment_favorite" >
+        <action
+            android:id="@+id/action_nav_favorite_to_navg_rr_pg_fragment"
+            app:destination="@id/navg_rr_pg_fragment" />
+    </fragment>
     <fragment
         android:id="@+id/addDiscussionPostFragment"
         android:name="com.example.findapotty.discuss.AddDiscussionPostFragment"

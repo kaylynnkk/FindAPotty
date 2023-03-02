@@ -75,20 +75,21 @@ public class DiscussFragment extends Fragment {
     private void init() {
         Log.d(TAG, "init: ");
         discussionPostManager.clearDiscussionPosts(adaptor);
-        ValueEventListener listener = new ValueEventListener() {
+
+        postRef.orderByChild("uploadTime").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot post : snapshot.getChildren()) {
                     discussionPostManager.addDiscussionPost(post.getValue(DiscussionPost.class), adaptor);
                 }
+                postRef.orderByChild("uploadTime").removeEventListener(this);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        };
-        postRef.orderByChild("uploadTime").addValueEventListener(listener);
+        });
     }
 
     /*

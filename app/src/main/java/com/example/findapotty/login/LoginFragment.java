@@ -127,6 +127,8 @@ public class LoginFragment extends Fragment {
 
                                     Toast.makeText(view.getContext(), "Welcome " + currentUser.getUserName(),
                                             Toast.LENGTH_SHORT).show();
+
+                                    mdb.child("users").child(userId).removeEventListener(this);
                                 }
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {

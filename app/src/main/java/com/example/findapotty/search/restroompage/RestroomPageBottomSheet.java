@@ -17,6 +17,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.findapotty.R;
 import com.example.findapotty.Restroom;
 import com.example.findapotty.User;
@@ -26,6 +27,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -103,7 +106,19 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             binding.rrPgRraddress.setText(restroom.getAddress());
 
             // set photos
-            binding.rrPgRrPhotos.setImageBitmap(restroom.getPhotoBitmap());
+            if (restroom.getPhotoBitmap() != null) {
+                binding.rrPgRrPhotos.setImageBitmap(restroom.getPhotoBitmap());
+            } else {
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                StorageReference ref = storageRef.child(restroom.getPhotoPath());
+                ref.getDownloadUrl().addOnSuccessListener(uri -> {
+                    Glide.with(getContext())
+                            .asBitmap()
+                            .dontAnimate()
+                            .load(uri)
+                            .into(binding.rrPgRrPhotos);
+                });
+            }
 
             // set favorite state
             if (User.getInstance().getFavoriteRestrooms().containsKey(restroom.getPlaceID())) {

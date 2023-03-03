@@ -1,4 +1,4 @@
-package com.example.findapotty;
+package com.example.findapotty.profile;
 
 public class ReadWriteUserDetails
 {

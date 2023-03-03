@@ -1,14 +1,19 @@
-package com.example.findapotty;
+package com.example.findapotty.profile;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
+import com.example.findapotty.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class NotLogin extends AppCompatActivity {
+public class ProfileFragment extends Fragment {
 
     private TextView textViewWelcome, textViewFullName, textViewEmail, textViewDoB,
     textViewGender, textViewMobile;
@@ -25,24 +30,22 @@ public class NotLogin extends AppCompatActivity {
     private Button fl_done_button;
     private FirebaseAuth authProfile;
     private FirebaseUser firebaseUser;
+    private View rootView;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_not_login);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        getSupportActionBar().setTitle("Home");
+        rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        textViewWelcome = findViewById(R.id.textView_show_welcome);
-        textViewFullName = findViewById(R.id.textView_show_full_name);
-        textViewEmail = findViewById(R.id.textView_show_email);
-        textViewDoB = findViewById(R.id.textView_show_dob);
-        textViewGender = findViewById(R.id.textView_show_gender);
-        textViewMobile = findViewById(R.id.textView_show_mobile);
-        fl_done_button = findViewById(R.id.fl_done_button);
+        textViewWelcome = rootView.findViewById(R.id.textView_show_welcome);
+        textViewFullName = rootView.findViewById(R.id.textView_show_full_name);
+        textViewEmail = rootView.findViewById(R.id.textView_show_email);
+        textViewDoB = rootView.findViewById(R.id.textView_show_dob);
+        textViewGender = rootView.findViewById(R.id.textView_show_gender);
+        textViewMobile = rootView.findViewById(R.id.textView_show_mobile);
+        fl_done_button = rootView.findViewById(R.id.fl_done_button);
         fl_done_button.setOnClickListener((v)->{addUserProfile();});
-
-
 
         authProfile = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = authProfile.getCurrentUser();
@@ -59,7 +62,19 @@ public class NotLogin extends AppCompatActivity {
             showUserProfile();
         }
 
+        return rootView;
     }
+
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView();
+//
+//        getSupportActionBar().setTitle("Home");
+//
+//
+//
+//    }
 
     //if the user doesn't already exist in the database
     private void showUserProfile()
@@ -86,12 +101,12 @@ public class NotLogin extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful())
                 {
-                    Toast.makeText(NotLogin.this, "User Profile Information was Successfully added", Toast.LENGTH_LONG).show();
+                    Toast.makeText(rootView.getContext(), "User Profile Information was Successfully added", Toast.LENGTH_LONG).show();
                     //put intent statements here to switch to new activity
                 }
                 else
                 {
-                    Toast.makeText(NotLogin.this, "Failed to add User Profile information", Toast.LENGTH_LONG).show();
+                    Toast.makeText(rootView.getContext(), "Failed to add User Profile information", Toast.LENGTH_LONG).show();
                 }
 
             }

@@ -1,3 +1,4 @@
+package com.example.findapotty.feedback;
 
 public class FeedbackFragment extends Fragment {
   editText namedata, emaildata, messagedata;

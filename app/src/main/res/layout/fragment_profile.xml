@@ -44,7 +44,9 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="344dp"
                 android:layout_marginEnd="3dp"
-                android:src="@drawable/icon_segment" />
+                android:src="@drawable/icon_segment"
+                android:clickable="true"
+                android:onClick="myOnClickMethod"/>
 
         </RelativeLayout>
 

@@ -8,10 +8,11 @@
     <EditText
         android:id="@+id/messagedata"
         android:layout_width="349dp"
-        android:layout_height="180dp"
+        android:layout_height="72dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/rectangle"
         android:inputType="textLongMessage"
+        android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/message" />
@@ -21,6 +22,7 @@
         android:layout_width="349dp"
         android:layout_height="46dp"
         android:layout_marginTop="16dp"
+        android:padding="8dp"
         android:background="@drawable/rectangle"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,6 +85,7 @@
         android:layout_width="349dp"
         android:layout_height="46dp"
         android:layout_marginTop="8dp"
+        android:padding="8dp"
         android:background="@drawable/rectangle"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"

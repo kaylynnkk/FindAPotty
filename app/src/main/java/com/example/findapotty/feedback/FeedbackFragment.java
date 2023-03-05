@@ -11,23 +11,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+
 import com.example.findapotty.R;
 
 public class FeedbackFragment extends Fragment {
-//    EditText namedata, emaildata, messagedata;
-//    Button submit_bt;
-//    Firebase firebase;
+    EditText namedata, emaildata, messagedata;
+    Button submit_bt;
+    //Firebase firebase;
     private View rootView;
     public View onCreateView (@NonNull LayoutInflater inflater , @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_feedback, container, false);
-//
+
         return rootView;
+
+//        namedata = rootView.findViewById(R.id.namedata);
+//        emaildata = rootView.findViewById(R.id.emaildata);
+//        messagedata = rootView.findViewById(R.id.messagedata);
 //
-//        namedata = findViewById(R.id.namedata);
-//        emaildata = findViewById(R.id.emaildata);
-//        messagedata = findViewById(R.id.messagedata);
-//
-//        submit_bt = findViewById(R.id.submit_bt);
+//        submit_bt = rootView.findViewById(R.id.submit_bt);
 //        Firebase.setAndroidContext(this);
 //
 //        //firebase = new Firebase("")

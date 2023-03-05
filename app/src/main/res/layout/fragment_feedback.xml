@@ -100,7 +100,9 @@
         android:text="submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/messagedata" />
+        app:layout_constraintTop_toBottomOf="@+id/messagedata"
+        android:clickable="true"
+        android:onClick="onClick"/>
 
     <TextView
         android:id="@+id/textView12"

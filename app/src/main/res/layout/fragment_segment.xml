@@ -13,76 +13,81 @@
         android:id="@+id/trends_bt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:background="@drawable/button_background"
+        android:clickable="true"
         android:gravity="center"
+        android:onClick="myOnClickMethod"
         android:padding="16dp"
         android:text="TRENDS"
         android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@+id/diary_bt"
-        tools:layout_editor_absoluteX="0dp"
-        android:clickable="true"
-        android:onClick="myOnClickMethod"/>
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/contactus_bt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:background="@drawable/button_background"
+        android:clickable="true"
         android:gravity="center"
+        android:onClick="myOnClickMethod"
         android:padding="16dp"
         android:text="CONTACT US"
         android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@+id/tunes_bt"
-        tools:layout_editor_absoluteX="0dp"
-        android:clickable="true"
-        android:onClick="myOnClickMethod"/>
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/tunes_bt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:background="@drawable/button_background"
+        android:clickable="true"
         android:gravity="center"
+        android:onClick="myOnClickMethod"
         android:padding="16dp"
         android:text="TUNES"
         android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@+id/reminders_bt"
-        tools:layout_editor_absoluteX="0dp"
-        android:clickable="true"
-        android:onClick="myOnClickMethod"/>
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/reminders_bt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:background="@drawable/button_background"
+        android:clickable="true"
         android:gravity="center"
+        android:onClick="myOnClickMethod"
         android:padding="16dp"
         android:text="REMINDERS"
         android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@+id/trainer_bt"
-        tools:layout_editor_absoluteX="0dp"
-        android:clickable="true"
-        android:onClick="myOnClickMethod"/>
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/trainer_bt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:background="@drawable/button_background"
+        android:clickable="true"
         android:gravity="center"
+        android:onClick="myOnClickMethod"
         android:padding="16dp"
         android:text="TRAINER"
         android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@+id/trends_bt"
-        tools:layout_editor_absoluteX="0dp"
-        android:clickable="true"
-        android:onClick="myOnClickMethod"/>
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/diary_bt"

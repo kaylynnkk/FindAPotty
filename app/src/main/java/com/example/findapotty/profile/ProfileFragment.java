@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.findapotty.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,6 +29,8 @@ public class ProfileFragment extends Fragment {
     private String fullName, email, dob, gender, mobile;
     private ImageView imageView;
     private Button fl_done_button;
+
+    private ImageView icon_segment;
     private FirebaseAuth authProfile;
     private FirebaseUser firebaseUser;
     private View rootView;
@@ -45,7 +48,11 @@ public class ProfileFragment extends Fragment {
         textViewGender = rootView.findViewById(R.id.textView_show_gender);
         textViewMobile = rootView.findViewById(R.id.textView_show_mobile);
         fl_done_button = rootView.findViewById(R.id.fl_done_button);
+        icon_segment = rootView.findViewById(R.id.icon_segment);
         fl_done_button.setOnClickListener((v)->{addUserProfile();});
+
+        //navigates from user profile to segment page when user clicks on segment icon
+        icon_segment.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_segment));
 
         authProfile = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = authProfile.getCurrentUser();

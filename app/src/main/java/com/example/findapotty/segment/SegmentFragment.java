@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.findapotty.R;
 
-/* Page that displays the additional features options: diary, trends, trainer, reminders, tunes, contactus*/
+/* Page that displays the additional features options: diary, trends, trainer, reminders, tunes, contact us*/
 public class SegmentFragment extends Fragment {
 
     private TextView diary_bt , trends_bt, trainer_bt, reminders_bt, tunes_bt, contactus_bt;
@@ -24,10 +24,10 @@ public class SegmentFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-         //Inflate the segment layout for this fragment
+         // Inflate the segment layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_segment, container, false);
 
-        // identify buttons to their ids
+        //  connecting buttons to their designated ids
         diary_bt = rootView.findViewById(R.id.diary_bt);
         trends_bt = rootView.findViewById(R.id.trends_bt);
         trainer_bt = rootView.findViewById(R.id.trainer_bt);

@@ -99,5 +99,14 @@
         android:id="@+id/nav_segment"
         android:name="com.example.findapotty.segment.SegmentFragment"
         android:label="SegmentFragment"
-        tools:layout="@layout/fragment_segment" />
+        tools:layout="@layout/fragment_segment" >
+        <action
+            android:id="@+id/action_nav_segment_to_nav_feedback"
+            app:destination="@id/nav_feedback" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_feedback"
+        android:name="com.example.findapotty.feedback.FeedbackFragment"
+        android:label="FeedbackFragment"
+        tools:layout="@layout/fragment_feedback" />
 </navigation>

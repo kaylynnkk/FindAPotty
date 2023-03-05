@@ -17,9 +17,11 @@ public class FeedbackFragment extends Fragment {
 //    EditText namedata, emaildata, messagedata;
 //    Button submit_bt;
 //    Firebase firebase;
+    private View rootView;
+    public View onCreateView (@NonNull LayoutInflater inflater , @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_feedback, container, false);
 //
-//    public View onCreateView (@NonNull LayoutInflater inflater , @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        View rootView = inflater.inflate(R.layout.fragment_userfeedback, container, false);
+        return rootView;
 //
 //        namedata = findViewById(R.id.namedata);
 //        emaildata = findViewById(R.id.emaildata);
@@ -68,5 +70,5 @@ public class FeedbackFragment extends Fragment {
 //                }
 //            }
 //        }
-//    }
+    }
 }

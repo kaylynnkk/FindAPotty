@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.findapotty.R;
 
-
+/* Page that displays the additional features options: diary, trends, trainer, reminders, tunes, contactus*/
 public class SegmentFragment extends Fragment {
 
     private TextView diary_bt , trends_bt, trainer_bt, reminders_bt, tunes_bt, contactus_bt;

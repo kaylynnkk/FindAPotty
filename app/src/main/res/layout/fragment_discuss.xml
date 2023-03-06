@@ -11,7 +11,9 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/fd_swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingTop="?attr/actionBarSize"
+        android:paddingBottom="?attr/actionBarSize">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -21,11 +23,10 @@
                 android:id="@+id/fd_dicusssion_section"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginBottom="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/fd_v_2"
                 app:layout_constraintStart_toStartOf="@+id/fd_v_1"
-                app:layout_constraintTop_toTopOf="@+id/fd_h_1" />
+                app:layout_constraintTop_toTopOf="@+id/fd_h_1"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/fd_h_1"

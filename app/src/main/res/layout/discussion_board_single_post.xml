@@ -3,13 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="?attr/actionBarSize"
         tools:context=".discuss.DiscussionBoardSinglePost">
 
         <ScrollView
@@ -19,7 +16,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/dbsp_v_2"
             app:layout_constraintStart_toStartOf="@id/dbsp_v_1"
-            app:layout_constraintTop_toTopOf="@+id/dbsp_h_1">
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:id="@+id/linearLayout1"
@@ -75,10 +72,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
+                    android:lineHeight="26dp"
                     android:text="@string/post_test_content"
                     android:textColor="@color/black"
-                    android:textSize="18dp"
-                    android:lineHeight="26dp"/>
+                    android:textSize="18dp" />
 
 
             </LinearLayout>
@@ -97,20 +94,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.95" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/dbsp_h_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.02" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/dbsp_h_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.18" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

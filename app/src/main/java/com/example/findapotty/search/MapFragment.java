@@ -102,7 +102,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMapView.onResume(); // needed to get the map to display immediately
         Log.d(TAG, "onCreateView: map create");
 
-        mSearchText = binding.inputSearch;
+//        mSearchText = binding.inputSearch;
 
         return binding.getRoot();
     }
@@ -154,7 +154,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // restroom info page
         displayRestroomPage();
 
-        searchListener();
+//        searchListener();
 
 
         getNearbyRestrooms();
@@ -200,7 +200,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             googleMap.setMyLocationEnabled(true);
             googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         }
-        googleMap.setPadding(0, 0, 0, 150);
+//        googleMap.setPadding(0, 0, 0, 150);
     }
 
     private void searchListener() {

@@ -2,10 +2,12 @@ package com.example.findapotty;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -31,24 +33,24 @@ public class MainActivity extends AppCompatActivity {
 //        setContentView(R.layout.activity_main);
 
 
-
-
-
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        setSupportActionBar(binding.appBarMain.toolbar);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
-        // - Navigation View
+        // - init variables
+        Toolbar toolbar = binding.appBarMain.toolbar;
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navigationView;
+        BottomNavigationView bottomNavigationView = binding.bottomNavigation;
+
+        // - tool bar
+        setSupportActionBar(toolbar);
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -58,39 +60,46 @@ public class MainActivity extends AppCompatActivity {
                 .setOpenableLayout(drawer)
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+
+        // - Navigation View
         NavigationUI.setupWithNavController(navigationView, navController);
 
-
-
         // - Bottom Navigation View
-        BottomNavigationView bottomNavigationView = binding.appBarMain.bottomNavigation;
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
+        // - visibility
         // default visibility
         bottomNavigationView.setVisibility(View.GONE);
-        binding.appBarMain.toolbar.setVisibility(View.GONE);
+        toolbar.setVisibility(View.GONE);
         // change visibility
         navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
             switch (navDestination.getId()) {
                 case R.id.nav_search:
-                case R.id.nav_feed:
+                    bottomNavigationView.setVisibility(View.VISIBLE);
+                    toolbar.setVisibility(View.VISIBLE);
+                    toolbar.setBackground(getDrawable(R.drawable.bg_common_toolbar));
+//                    toolbar.setBackgroundColor(getResources().getColor(R.color.bg_toolbar_map, this.getTheme()));
                 case R.id.nav_discuss:
                 case R.id.nav_favorite:
                     bottomNavigationView.setVisibility(View.VISIBLE);
-                    binding.appBarMain.toolbar.setVisibility(View.VISIBLE);
+                    toolbar.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.nav_feed:
+                    bottomNavigationView.setVisibility(View.VISIBLE);
+                    toolbar.setVisibility(View.VISIBLE);
+                    toolbar.setBackgroundColor(getResources().getColor(R.color.bg_toolbar_feeds, this.getTheme()));
                     break;
                 case R.id.navg_login_fragment:
                 case R.id.nav_signup_fragment:
-                    binding.appBarMain.toolbar.setVisibility(View.GONE);
+                    toolbar.setVisibility(View.GONE);
                     break;
                 default:
                     bottomNavigationView.setVisibility(View.GONE);
-                    binding.appBarMain.toolbar.setVisibility(View.VISIBLE);
+                    toolbar.setVisibility(View.VISIBLE);
             }
         });
 
         grantPermissions();
-
 
 
     }

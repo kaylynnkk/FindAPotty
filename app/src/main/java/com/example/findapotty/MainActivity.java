@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -55,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_history, R.id.nav_search, R.id.nav_feed,
+                R.id.nav_history,
+                R.id.nav_search, R.id.nav_feed,
                 R.id.nav_discuss, R.id.nav_favorite, R.id.nav_profile)
                 .setOpenableLayout(drawer)
                 .build();
@@ -73,29 +75,37 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setVisibility(View.GONE);
         // change visibility
         navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
+            // bottom nav view
             switch (navDestination.getId()) {
                 case R.id.nav_search:
-                    bottomNavigationView.setVisibility(View.VISIBLE);
-                    toolbar.setVisibility(View.VISIBLE);
-                    toolbar.setBackground(getDrawable(R.drawable.bg_common_toolbar));
-//                    toolbar.setBackgroundColor(getResources().getColor(R.color.bg_toolbar_map, this.getTheme()));
                 case R.id.nav_discuss:
                 case R.id.nav_favorite:
-                    bottomNavigationView.setVisibility(View.VISIBLE);
-                    toolbar.setVisibility(View.VISIBLE);
-                    break;
                 case R.id.nav_feed:
                     bottomNavigationView.setVisibility(View.VISIBLE);
-                    toolbar.setVisibility(View.VISIBLE);
-                    toolbar.setBackgroundColor(getResources().getColor(R.color.bg_toolbar_feeds, this.getTheme()));
                     break;
+                default:
+                    bottomNavigationView.setVisibility(View.GONE);
+            }
+
+            // toolbar
+            switch (navDestination.getId()) {
                 case R.id.navg_login_fragment:
                 case R.id.nav_signup_fragment:
                     toolbar.setVisibility(View.GONE);
                     break;
+//                case R.id.nav_search:
+//                    toolbar.setVisibility(View.VISIBLE);
+//                    toolbar.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.bg_common_toolbar, getTheme()));
+//                    break;
+//                case R.id.nav_feed:
+//                    toolbar.setVisibility(View.VISIBLE);
+//                    toolbar.setBackgroundColor(getResources().getColor(R.color.bg_toolbar_feeds, this.getTheme()));
+//                    break;
+//                case R.id.nav_discuss:
+//                case R.id.nav_favorite:
                 default:
-                    bottomNavigationView.setVisibility(View.GONE);
                     toolbar.setVisibility(View.VISIBLE);
+//                    toolbar.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.bg_common_toolbar, getTheme()));
             }
         });
 

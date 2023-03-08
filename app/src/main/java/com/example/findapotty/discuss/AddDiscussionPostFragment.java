@@ -20,7 +20,7 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.findapotty.R;
-import com.example.findapotty.User;
+import com.example.findapotty.user.User;
 import com.example.findapotty.databinding.FragmentAddDiscussionPostBinding;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

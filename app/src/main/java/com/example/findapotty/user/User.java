@@ -1,15 +1,12 @@
-package com.example.findapotty;
+package com.example.findapotty.user;
 
 import android.net.Uri;
-import android.util.Log;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.example.findapotty.Restroom;
 import com.google.firebase.database.Exclude;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class User {
 
@@ -21,6 +18,9 @@ public class User {
 //    private List<Restroom> favoriteRestrooms = new ArrayList<>();
     private HashMap<String, Restroom> favoriteRestrooms = new HashMap<>();
     private ArrayList<Restroom> favoriteRestroomsList = new ArrayList<>();
+
+    private HashMap<String, Restroom> visitedRestrooms =
+            VisitedRestroomsManager.getInstance().getRestrooms();
 
     private User() {
     }
@@ -68,6 +68,7 @@ public class User {
         return favoriteRestrooms;
     }
 
+    @Exclude
     public ArrayList<Restroom> getFavoriteRestroomsList() {
         return favoriteRestroomsList;
     }
@@ -94,5 +95,9 @@ public class User {
     public void removeFavoriteRestroom(String placeId) {
         favoriteRestroomsList.remove(favoriteRestrooms.get(placeId));
         favoriteRestrooms.remove(placeId);
+    }
+
+    public HashMap<String, Restroom> getVisitedRestrooms() {
+        return visitedRestrooms;
     }
 }

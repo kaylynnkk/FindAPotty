@@ -34,6 +34,7 @@ import com.example.findapotty.BuildConfig;
 import com.example.findapotty.R;
 import com.example.findapotty.Restroom;
 import com.example.findapotty.RestroomManager;
+import com.example.findapotty.user.User;
 import com.example.findapotty.databinding.FragmentMapBinding;
 import com.google.android.gms.common.util.Hex;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -50,7 +51,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.PhotoMetadata;
 import com.google.android.libraries.places.api.model.Place;
@@ -59,6 +59,8 @@ import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -357,23 +359,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
+                Restroom restroom = RestroomManager.getInstance().getRestroomByMarkerId(marker.getId());
 
-//                BottomSheetDialogFragment dialogFragment = new RestroomPageBottomSheet();
-//                dialogFragment.show(getParentFragmentManager(), dialogFragment.getTag());
+                // insert to database
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                ref.child("users").child(User.getInstance().getUserId()).child("visitedRestrooms").child(restroom.getPlaceID())
+                        .setValue(restroom);
 
                 try {
 
                     NavController controller = Navigation.findNavController(mMapView);
-
-//                    NavDirections action =
-//                            MapFragmentDirections.actionMapFragment2ToRestroomPageBottomSheet2(marker.getId());
                     NavDirections action =
-                            MapFragmentDirections.actionMapFragment2ToRestroomPageBottomSheet2(
-                                    RestroomManager.getInstance().getRestroomByMarkerId(marker.getId()));
+                            MapFragmentDirections.actionMapFragment2ToRestroomPageBottomSheet2(restroom);
                     controller.navigate(action);
 
-//                    RestroomPageBottomSheet restroomPageBottomSheet = new RestroomPageBottomSheet();
-//                    restroomPageBottomSheet.initRestroomPage(marker.getId());
                     Log.d(TAG, "onMarkerClick: " + marker.getId());
                 } catch (IllegalArgumentException e) {
                     Log.d(TAG, "onMarkerClick: failed to find action");

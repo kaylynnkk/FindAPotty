@@ -15,7 +15,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.findapotty.R;
-import com.example.findapotty.User;
+import com.example.findapotty.user.User;
 import com.example.findapotty.databinding.FragmentSignupBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;

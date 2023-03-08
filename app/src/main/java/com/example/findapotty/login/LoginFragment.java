@@ -1,6 +1,5 @@
 package com.example.findapotty.login;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,12 +16,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.findapotty.R;
-import com.example.findapotty.Restroom;
-import com.example.findapotty.User;
+import com.example.findapotty.user.User;
 import com.example.findapotty.databinding.FragmentLoginBinding;
-import com.google.android.gms.maps.model.LatLng;
+import com.example.findapotty.user.VisitedRestroomsManager;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,8 +27,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.util.HashMap;
 
 public class LoginFragment extends Fragment {
 
@@ -122,8 +117,14 @@ public class LoginFragment extends Fragment {
                                     ref.getDownloadUrl().addOnSuccessListener(uri -> {
                                         currentUser.setAvatarUrl(uri);
                                     });
+
                                     // user favorite restrooms
                                     currentUser.setFavoriteRestrooms(retrievedUser.getFavoriteRestrooms());
+
+                                    // visited retrooms
+                                    VisitedRestroomsManager.getInstance()
+                                            .setRestrooms(retrievedUser.getVisitedRestrooms());
+//                                    Log.d(TAG, "onDataChange: visited " + retrievedUser.getVisitedRestrooms().size());
 
                                     Toast.makeText(view.getContext(), "Welcome " + currentUser.getUserName(),
                                             Toast.LENGTH_SHORT).show();

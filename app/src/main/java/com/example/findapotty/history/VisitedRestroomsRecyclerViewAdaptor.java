@@ -1,4 +1,4 @@
-package com.example.findapotty.favorite;
+package com.example.findapotty.history;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,43 +8,41 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.findapotty.R;
 import com.example.findapotty.Restroom;
 import com.example.findapotty.user.User;
-import com.example.findapotty.databinding.FavoriteSingleRestroomPreviewBinding;
+import com.example.findapotty.databinding.VisitedRestroomPreviewBinding;
+import com.example.findapotty.user.VisitedRestroomsManager;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-public class FavortieRestroomRecyclerViewAdaptor extends RecyclerView.Adapter<FavortieRestroomRecyclerViewAdaptor.ViewHolder>{
+public class VisitedRestroomsRecyclerViewAdaptor extends RecyclerView.Adapter<VisitedRestroomsRecyclerViewAdaptor.ViewHolder>{
 
-    private FavoriteSingleRestroomPreviewBinding binding;
+    private VisitedRestroomPreviewBinding binding;
     Context context;
 
-
-    public FavortieRestroomRecyclerViewAdaptor(Context context) {
-//        this.discussionPosts = discussionPosts;
+    public VisitedRestroomsRecyclerViewAdaptor(Context context) {
         this.context = context;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        binding = DataBindingUtil.inflate(
-                LayoutInflater.from(context), R.layout.favorite_single_restroom_preview, parent, false);
+        binding = VisitedRestroomPreviewBinding.inflate(LayoutInflater.from(context), parent, false);
         return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Restroom restroom = User.getInstance().getFavoriteRestroomByIndex(position);
+        Restroom restroom = VisitedRestroomsManager.getInstance().getRestroomByIndex(position);
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
         StorageReference ref = storageRef.child(restroom.getPhotoPath());
@@ -57,17 +55,15 @@ public class FavortieRestroomRecyclerViewAdaptor extends RecyclerView.Adapter<Fa
         });
         holder.restroomName.setText(restroom.getName());
         holder.restroomAddress.setText(restroom.getAddress());
-        holder.parentLayout.setOnClickListener(view -> {
-            NavController controller = Navigation.findNavController(view);
-            NavDirections action = FavoriteFragmentDirections.actionNavFavoriteToNavgRrPgFragment(restroom);
-            controller.navigate(action);
-        });
+//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+//        ref.child("users").child(User.getInstance().getUserId()).child("visitedRestrooms").addValueEventListener(
+//        )
 
     }
 
     @Override
     public int getItemCount() {
-        return User.getInstance().getFavoriteRestrooms().size();
+        return VisitedRestroomsManager.getInstance().getCount();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -76,12 +72,12 @@ public class FavortieRestroomRecyclerViewAdaptor extends RecyclerView.Adapter<Fa
         TextView restroomAddress;
         RelativeLayout parentLayout;
 
-        public ViewHolder(FavoriteSingleRestroomPreviewBinding binding) {
+        public ViewHolder(VisitedRestroomPreviewBinding binding) {
             super(binding.getRoot());
-            restroomPhoto = binding.fsrRestroomPhoto;
-            restroomName = binding.fsrRestroomName;
-            restroomAddress = binding.fsrRestroomAddress;
-            parentLayout = binding.favoriteRestroomItem;
+            restroomPhoto = binding.vrpRestroomPhoto;
+            restroomName = binding.vrpRestroomName;
+            restroomAddress = binding.vrpRestroomAddress;
+            parentLayout = binding.visitedRestroomItem;
         }
     }
 }

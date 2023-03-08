@@ -5,8 +5,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import com.example.findapotty.User;
-import com.google.firebase.database.Exclude;
+import com.example.findapotty.user.User;
 
 public class DiscussionPost implements Parcelable {
 

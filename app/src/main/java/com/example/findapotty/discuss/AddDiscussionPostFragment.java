@@ -5,12 +5,15 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
@@ -24,29 +27,45 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class AddDiscussionPostFragment extends Fragment {
 
     private FragmentAddDiscussionPostBinding binding;
     private static final String TAG = "AddDiscussionPostFragment";
-    private User user = User.getInstance();
+    private final User user = User.getInstance();
+    private MenuProvider menuProvider;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_discussion_post, container, false);
+//        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_discussion_post, container, false);
+        binding = FragmentAddDiscussionPostBinding.inflate(inflater, container, false);
 
         titleCounter();
         contentCounter();
-        binding.fadpSubmit.setOnClickListener(view -> {
-            submit(view);
-        });
-
-
+        setToolbarMenu();
 
 
         return binding.getRoot();
+    }
+
+    private void setToolbarMenu() {
+        requireActivity().addMenuProvider(
+                menuProvider = new MenuProvider() {
+                    @Override
+                    public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                        menuInflater.inflate(R.menu.add_post_menu, menu);
+                    }
+
+                    @Override
+                    public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                        if (menuItem.getItemId() == R.id.add_post_menu_done){
+                            submit();
+                            return true;
+                        }
+                        return false;
+                    }
+                });
     }
 
     private void titleCounter() {
@@ -70,7 +89,8 @@ public class AddDiscussionPostFragment extends Fragment {
 
     }
 
-    private void submit(View view) {
+    private void submit() {
+        View view = binding.getRoot();
         Log.d(TAG, "submit: "+ user.getAvatarUrl().toString());
 
         //yyyy-MM-dd HH:mm:ss
@@ -91,5 +111,11 @@ public class AddDiscussionPostFragment extends Fragment {
         DatabaseReference postRef = FirebaseDatabase.getInstance().getReference("discussion_posts");
         String postId = postRef.push().getKey();
         postRef.child(postId).setValue(newPost);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        requireActivity().removeMenuProvider(menuProvider);
     }
 }

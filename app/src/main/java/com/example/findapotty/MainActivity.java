@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         // - init variables
-        Toolbar toolbar = binding.appBarMain.toolbar;
+        Toolbar toolbar = binding.appBarMain.mainToolbar;
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navigationView;
         BottomNavigationView bottomNavigationView = binding.bottomNavigation;

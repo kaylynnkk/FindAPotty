@@ -107,12 +107,5 @@
             app:layout_constraintStart_toStartOf="@+id/fadp_vg_1"
             app:layout_constraintTop_toTopOf="@+id/fadp_hg_4" />
 
-        <Button
-            android:id="@+id/fadp_submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Submit"
-            app:layout_constraintEnd_toStartOf="@+id/fadp_vg_2"
-            app:layout_constraintTop_toTopOf="@+id/fadp_hg_2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

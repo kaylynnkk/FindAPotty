@@ -103,6 +103,22 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.95" />
 
+            <TextView
+                android:id="@+id/vrp_frequency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                app:layout_constraintBottom_toTopOf="@+id/vrp_datetime"
+                app:layout_constraintEnd_toStartOf="@+id/vrp_hg_3" />
+
+            <TextView
+                android:id="@+id/vrp_datetime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MM-dd-yyyy"
+                app:layout_constraintBottom_toTopOf="@+id/vrp_vg_2"
+                app:layout_constraintEnd_toStartOf="@+id/vrp_hg_3" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 </layout>

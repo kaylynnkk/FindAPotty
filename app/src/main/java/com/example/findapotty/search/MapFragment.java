@@ -371,7 +371,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 VisitedRestroom visitedRestroom =
                         VisitedRestroomsManager.getInstance().getRestrooms().get(restroom.getPlaceID());
                 //yyyy-MM-dd HH:mm:ss
-                String currentDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                String currentDateTime = new SimpleDateFormat("MM-dd-yyyy HH:mm")
                         .format(Calendar.getInstance().getTime());
                 if (visitedRestroom != null){
                     visitedRestroom.setFrequency(visitedRestroom.getFrequency() + 1);

@@ -31,15 +31,15 @@ public class Restroom implements Parcelable {
         this.address = address;
     }
 
-    public Restroom(
-            LatLng latLng, String placeID, String photoPath,
-            String name, String address) {
-        this.latLng = latLng;
-        this.placeID = placeID;
-        this.photoPath = photoPath;
-        this.name = name;
-        this.address = address;
-    }
+//    public Restroom(
+//            LatLng latLng, String placeID, String photoPath,
+//            String name, String address) {
+//        this.latLng = latLng;
+//        this.placeID = placeID;
+//        this.photoPath = photoPath;
+//        this.name = name;
+//        this.address = address;
+//    }
 
     public Restroom(Restroom that){
         this(

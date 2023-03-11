@@ -62,6 +62,8 @@ public class VisitedRestroomsRecyclerViewAdaptor extends RecyclerView.Adapter<Vi
         }
         holder.restroomName.setText(restroom.getName());
         holder.restroomAddress.setText(restroom.getAddress());
+        holder.frequency.setText( String.valueOf(restroom.getFrequency()) );
+        holder.dateTime.setText(restroom.getDateTime());
     }
 
     @Override
@@ -73,6 +75,8 @@ public class VisitedRestroomsRecyclerViewAdaptor extends RecyclerView.Adapter<Vi
         ImageView restroomPhoto;
         TextView restroomName;
         TextView restroomAddress;
+        TextView frequency;
+        TextView dateTime;
         RelativeLayout parentLayout;
 
         public ViewHolder(VisitedRestroomPreviewBinding binding) {
@@ -80,6 +84,8 @@ public class VisitedRestroomsRecyclerViewAdaptor extends RecyclerView.Adapter<Vi
             restroomPhoto = binding.vrpRestroomPhoto;
             restroomName = binding.vrpRestroomName;
             restroomAddress = binding.vrpRestroomAddress;
+            frequency = binding.vrpFrequency;
+            dateTime = binding.vrpDatetime;
             parentLayout = binding.visitedRestroomItem;
         }
     }

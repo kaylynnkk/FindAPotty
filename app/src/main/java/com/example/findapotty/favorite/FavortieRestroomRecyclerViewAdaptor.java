@@ -1,6 +1,7 @@
 package com.example.findapotty.favorite;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -27,6 +28,7 @@ import com.google.firebase.storage.StorageReference;
 public class FavortieRestroomRecyclerViewAdaptor extends RecyclerView.Adapter<FavortieRestroomRecyclerViewAdaptor.ViewHolder>{
 
     private FavoriteSingleRestroomPreviewBinding binding;
+    private static final String TAG = "FavortieRestroomRecyclerViewAdaptor";
     Context context;
 
 
@@ -47,6 +49,7 @@ public class FavortieRestroomRecyclerViewAdaptor extends RecyclerView.Adapter<Fa
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         FavoriteRestroom restroom = FavoriteRestroomsManager.getInstance().getRestroomByIndex(position);
+        Log.d(TAG, "onBindViewHolder: "+restroom.getName());
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
         StorageReference ref = storageRef.child(restroom.getPhotoPath());
@@ -69,7 +72,7 @@ public class FavortieRestroomRecyclerViewAdaptor extends RecyclerView.Adapter<Fa
 
     @Override
     public int getItemCount() {
-        return User.getInstance().getFavoriteRestrooms().size();
+        return FavoriteRestroomsManager.getInstance().getCount();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

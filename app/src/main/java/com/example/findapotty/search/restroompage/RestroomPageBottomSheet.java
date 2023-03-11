@@ -24,6 +24,7 @@ import com.example.findapotty.user.FavoriteRestroom;
 import com.example.findapotty.user.FavoriteRestroomsManager;
 import com.example.findapotty.user.User;
 import com.example.findapotty.databinding.BottomSheetRestroomPageBinding;
+import com.example.findapotty.user.VisitedRestroomsManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -123,7 +124,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             }
 
             // set favorite state
-            if (User.getInstance().getFavoriteRestrooms().containsKey(restroom.getPlaceID())) {
+            if (FavoriteRestroomsManager.getInstance().getRestrooms().containsKey(restroom.getPlaceID())) {
                 // restroom found in favorite list
                 binding.bsrpBtnFavorite.setImageResource(R.drawable.ic_selected_favorite);
                 isFavorite = true;
@@ -194,7 +195,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             FavoriteRestroomsManager.getInstance().removeRestroom(restroom.getPlaceID());
         }
 
-        refFavoriteRestrooms.setValue(User.getInstance().getFavoriteRestrooms());
+        refFavoriteRestrooms.setValue(FavoriteRestroomsManager.getInstance().getRestrooms());
     }
 
 }

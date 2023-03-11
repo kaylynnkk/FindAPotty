@@ -41,7 +41,14 @@ public class Restroom implements Parcelable {
         this.address = address;
     }
 
-    public Restroom(){};
+    public Restroom(Restroom that){
+        this(
+                that.getLatLng(), that.getPlaceID(), that.getPhotoBitmap(),
+                that.getPhotoPath(), that.isOpen_now(), that.getName(), that.getAddress()
+        );
+    }
+
+    public Restroom(){}
 
     protected Restroom(Parcel in) {
         latLng = in.readParcelable(LatLng.class.getClassLoader());

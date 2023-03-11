@@ -18,8 +18,7 @@ public class User {
 //    private List<Restroom> favoriteRestrooms = new ArrayList<>();
     private HashMap<String, Restroom> favoriteRestrooms = new HashMap<>();
     private ArrayList<Restroom> favoriteRestroomsList = new ArrayList<>();
-
-    private HashMap<String, Restroom> visitedRestrooms =
+    private HashMap<String, VisitedRestroom> visitedRestrooms =
             VisitedRestroomsManager.getInstance().getRestrooms();
 
     private User() {
@@ -97,7 +96,7 @@ public class User {
         favoriteRestrooms.remove(placeId);
     }
 
-    public HashMap<String, Restroom> getVisitedRestrooms() {
+    public HashMap<String, VisitedRestroom> getVisitedRestrooms() {
         return visitedRestrooms;
     }
 }

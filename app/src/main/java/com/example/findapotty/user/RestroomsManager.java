@@ -6,25 +6,25 @@ import com.google.firebase.database.Exclude;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class RestroomsManager {
+public class RestroomsManager<T extends Restroom> {
 
-    private HashMap<String, Restroom> restrooms = new HashMap<>();
-    private ArrayList<Restroom> restroomList = new ArrayList<>();
+    private HashMap<String, T> restrooms = new HashMap<>();
+    private ArrayList<T> restroomList = new ArrayList<>();
 
-    public HashMap<String, Restroom> getRestrooms() {
+    public HashMap<String, T> getRestrooms() {
         return restrooms;
     }
 
-    @Exclude
-    public ArrayList<Restroom> getRestroomsList() {
+
+    public ArrayList<T> getRestroomsList() {
         return restroomList;
     }
 
-    public Restroom getRestroomByIndex(int index) {
+    public T getRestroomByIndex(int index) {
         return restroomList.get(index);
     }
 
-    public void setRestrooms(HashMap<String, Restroom> retrievedRestrooms) {
+    public void setRestrooms(HashMap<String, T> retrievedRestrooms) {
         if (retrievedRestrooms != null){
             restrooms = retrievedRestrooms;
 
@@ -34,7 +34,7 @@ public class RestroomsManager {
         }
     }
 
-    public void addRestroom(String placeId, Restroom restroom) {
+    public void addRestroom(String placeId, T restroom) {
         restrooms.put(placeId, restroom);
         restroomList.add(restroom);
     }

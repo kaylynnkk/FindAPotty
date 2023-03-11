@@ -36,6 +36,7 @@ import com.example.findapotty.Restroom;
 import com.example.findapotty.RestroomManager;
 import com.example.findapotty.user.User;
 import com.example.findapotty.databinding.FragmentMapBinding;
+import com.example.findapotty.user.VisitedRestroom;
 import com.google.android.gms.common.util.Hex;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -364,7 +365,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 // insert to database
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                 ref.child("users").child(User.getInstance().getUserId()).child("visitedRestrooms").child(restroom.getPlaceID())
-                        .setValue(restroom);
+                        .setValue(new VisitedRestroom(restroom, "03-11-2023", 4));
 
                 try {
 

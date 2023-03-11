@@ -77,8 +77,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
@@ -365,8 +367,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 // insert to database
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                VisitedRestroomsManager.getInstance().addRestroom(
-                        restroom.getPlaceID(), new VisitedRestroom(restroom, "03-11-2023", 4));
+
+                VisitedRestroom visitedRestroom =
+                        VisitedRestroomsManager.getInstance().getRestrooms().get(restroom.getPlaceID());
+                //yyyy-MM-dd HH:mm:ss
+                String currentDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                        .format(Calendar.getInstance().getTime());
+                if (visitedRestroom != null){
+                    visitedRestroom.setFrequency(visitedRestroom.getFrequency() + 1);
+                    visitedRestroom.setDateTime(currentDateTime);
+                } else {
+                    VisitedRestroomsManager.getInstance().addRestroom(
+                            restroom.getPlaceID(),
+                            new VisitedRestroom(restroom, currentDateTime, 1)
+                    );
+                }
+
                 ref.child("users").child(User.getInstance().getUserId()).child("visitedRestrooms")
                         .setValue(VisitedRestroomsManager.getInstance().getRestrooms());
 

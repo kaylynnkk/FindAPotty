@@ -16,6 +16,14 @@ public class VisitedRestroom extends Restroom {
 
     public VisitedRestroom() {}
 
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
+    }
+
     public String getDateTime() {
         return dateTime;
     }

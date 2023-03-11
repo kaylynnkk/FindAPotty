@@ -7,6 +7,7 @@ import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class User {
 
@@ -15,9 +16,8 @@ public class User {
     private String avatarPath = "avatars/default_avatar.jpg";
     private Uri avatarUrl;
     private String userId;
-//    private List<Restroom> favoriteRestrooms = new ArrayList<>();
-    private HashMap<String, Restroom> favoriteRestrooms = new HashMap<>();
-    private ArrayList<Restroom> favoriteRestroomsList = new ArrayList<>();
+    private HashMap<String, FavoriteRestroom> favoriteRestrooms =
+        FavoriteRestroomsManager.getInstance().getRestrooms();
     private HashMap<String, VisitedRestroom> visitedRestrooms =
             VisitedRestroomsManager.getInstance().getRestrooms();
 
@@ -63,40 +63,11 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
-    public HashMap<String, Restroom> getFavoriteRestrooms() {
-        return favoriteRestrooms;
-    }
-
-    @Exclude
-    public ArrayList<Restroom> getFavoriteRestroomsList() {
-        return favoriteRestroomsList;
-    }
-
-    public Restroom getFavoriteRestroomByIndex(int index) {
-        return favoriteRestroomsList.get(index);
-    }
-
-    public void setFavoriteRestrooms(HashMap<String, Restroom> retrievedFavoriteRestrooms) {
-        if (retrievedFavoriteRestrooms != null){
-            favoriteRestrooms = retrievedFavoriteRestrooms;
-
-            retrievedFavoriteRestrooms.forEach((key, value) -> {
-                favoriteRestroomsList.add(value);
-            });
-        }
-    }
-
-    public void addFavoriteRestroom(String placeId, Restroom restroom) {
-        favoriteRestrooms.put(placeId, restroom);
-        favoriteRestroomsList.add(restroom);
-    }
-
-    public void removeFavoriteRestroom(String placeId) {
-        favoriteRestroomsList.remove(favoriteRestrooms.get(placeId));
-        favoriteRestrooms.remove(placeId);
-    }
-
     public HashMap<String, VisitedRestroom> getVisitedRestrooms() {
         return visitedRestrooms;
+    }
+
+    public HashMap<String, FavoriteRestroom> getFavoriteRestrooms() {
+        return favoriteRestrooms;
     }
 }

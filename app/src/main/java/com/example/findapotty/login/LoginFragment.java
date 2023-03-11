@@ -16,6 +16,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.findapotty.R;
+import com.example.findapotty.user.FavoriteRestroomsManager;
 import com.example.findapotty.user.User;
 import com.example.findapotty.databinding.FragmentLoginBinding;
 import com.example.findapotty.user.VisitedRestroomsManager;
@@ -119,12 +120,12 @@ public class LoginFragment extends Fragment {
                                     });
 
                                     // user favorite restrooms
-                                    currentUser.setFavoriteRestrooms(retrievedUser.getFavoriteRestrooms());
+                                    FavoriteRestroomsManager.getInstance()
+                                                    .setRestrooms(retrievedUser.getFavoriteRestrooms());
 
                                     // visited retrooms
                                     VisitedRestroomsManager.getInstance()
                                             .setRestrooms(retrievedUser.getVisitedRestrooms());
-//                                    Log.d(TAG, "onDataChange: visited " + retrievedUser.getVisitedRestrooms().size());
 
                                     Toast.makeText(view.getContext(), "Welcome " + currentUser.getUserName(),
                                             Toast.LENGTH_SHORT).show();

@@ -50,18 +50,18 @@ public class VisitedRestroomsRecyclerViewAdaptor extends RecyclerView.Adapter<Vi
         Log.d(TAG, "onBindViewHolder: visited " + restroom.getFrequency() + " " + restroom.getDateTime());
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
-        StorageReference ref = storageRef.child(restroom.getPhotoPath());
-        ref.getDownloadUrl().addOnSuccessListener(uri -> {
-            Glide.with(context)
-                    .asBitmap()
-                    .dontAnimate()
-                    .load(uri)
-                    .into(holder.restroomPhoto);
-        });
+        if (restroom.getPhotoPath() != null){
+            StorageReference ref = storageRef.child(restroom.getPhotoPath());
+            ref.getDownloadUrl().addOnSuccessListener(uri -> {
+                Glide.with(context)
+                        .asBitmap()
+                        .dontAnimate()
+                        .load(uri)
+                        .into(holder.restroomPhoto);
+            });
+        }
         holder.restroomName.setText(restroom.getName());
         holder.restroomAddress.setText(restroom.getAddress());
-
-
     }
 
     @Override

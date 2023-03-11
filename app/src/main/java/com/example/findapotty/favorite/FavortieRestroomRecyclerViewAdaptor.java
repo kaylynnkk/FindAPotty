@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.findapotty.R;
 import com.example.findapotty.Restroom;
+import com.example.findapotty.user.FavoriteRestroom;
+import com.example.findapotty.user.FavoriteRestroomsManager;
 import com.example.findapotty.user.User;
 import com.example.findapotty.databinding.FavoriteSingleRestroomPreviewBinding;
 import com.google.firebase.storage.FirebaseStorage;
@@ -44,7 +46,7 @@ public class FavortieRestroomRecyclerViewAdaptor extends RecyclerView.Adapter<Fa
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Restroom restroom = User.getInstance().getFavoriteRestroomByIndex(position);
+        FavoriteRestroom restroom = FavoriteRestroomsManager.getInstance().getRestroomByIndex(position);
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
         StorageReference ref = storageRef.child(restroom.getPhotoPath());

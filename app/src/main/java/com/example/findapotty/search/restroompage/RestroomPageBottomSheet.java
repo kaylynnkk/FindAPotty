@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.findapotty.R;
 import com.example.findapotty.Restroom;
+import com.example.findapotty.user.FavoriteRestroom;
+import com.example.findapotty.user.FavoriteRestroomsManager;
 import com.example.findapotty.user.User;
 import com.example.findapotty.databinding.BottomSheetRestroomPageBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -181,7 +183,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             Toast.makeText(binding.getRoot().getContext(),
                     "Added to faviorte list", Toast.LENGTH_SHORT).show();
 
-            User.getInstance().addFavoriteRestroom(restroom.getPlaceID(), restroom);
+            FavoriteRestroomsManager.getInstance().addRestroom(restroom.getPlaceID(), new FavoriteRestroom(restroom));
 
         } else {
             isFavorite = false;
@@ -189,7 +191,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             Toast.makeText(binding.getRoot().getContext(),
                     "Removed from faviorte list", Toast.LENGTH_SHORT).show();
 
-            User.getInstance().removeFavoriteRestroom(restroom.getPlaceID());
+            FavoriteRestroomsManager.getInstance().removeRestroom(restroom.getPlaceID());
         }
 
         refFavoriteRestrooms.setValue(User.getInstance().getFavoriteRestrooms());

@@ -1,6 +1,6 @@
 package com.example.findapotty.user;
 
-import com.example.findapotty.Restroom;
+import com.example.findapotty.model.Restroom;
 
 public class VisitedRestroom extends Restroom {
 

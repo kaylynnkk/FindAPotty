@@ -39,7 +39,7 @@
             app:destination="@id/addRestroomReviewFragment" />
         <argument
             android:name="restroom"
-            app:argType="com.example.findapotty.Restroom" />
+            app:argType="com.example.findapotty.model.Restroom" />
     </dialog>
     <fragment
         android:id="@+id/nav_feed"

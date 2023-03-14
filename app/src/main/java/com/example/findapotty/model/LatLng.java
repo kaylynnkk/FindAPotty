@@ -1,4 +1,4 @@
-package com.example.findapotty;
+package com.example.findapotty.model;
 
 
 import android.os.Parcel;

@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,10 +33,9 @@ import androidx.navigation.Navigation;
 
 import com.example.findapotty.BuildConfig;
 import com.example.findapotty.R;
-import com.example.findapotty.Restroom;
-import com.example.findapotty.RestroomManager;
-import com.example.findapotty.user.User;
 import com.example.findapotty.databinding.FragmentMapBinding;
+import com.example.findapotty.model.Restroom;
+import com.example.findapotty.user.User;
 import com.example.findapotty.user.VisitedRestroom;
 import com.example.findapotty.user.VisitedRestroomsManager;
 import com.google.android.gms.common.util.Hex;
@@ -85,12 +85,8 @@ import java.util.List;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
-    //    View rootView;
     MapView mMapView;
     private GoogleMap googleMap;
-    private EditText mSearchText;
-
-    private FusedLocationProviderClient fusedLocationClient;
     private boolean grantedDeviceLocation = false;
     private Location currentLocation = null;
     private boolean onSerchingComplete = false;
@@ -98,7 +94,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = "MapFragment";
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false);
         binding.setLifecycleOwner(this);
 
@@ -119,9 +115,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Log.d(TAG, "onPause: ");
 
         // save map state
-        MapStateManager mgr = new MapStateManager(getActivity());
+        MapStateManager mgr = new MapStateManager(requireActivity());
         mgr.saveMapState(googleMap);
-//        Toast.makeText(getActivity(), "Map State has been save", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(requireActivity()(), "Map State has been save", Toast.LENGTH_SHORT).show();
 
 //        MapStateManager.getInstance().saveGoogleMap(googleMap);
     }
@@ -170,7 +166,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void permissionCheck() {
-        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+        if (ContextCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED) {
             grantedDeviceLocation = true;
             Log.d(TAG, "permissionCheck: permission grated");
@@ -189,10 +185,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 //        }
 
         // resume map state
-        MapStateManager mgr = new MapStateManager(getActivity());
+        MapStateManager mgr = new MapStateManager(requireActivity());
         CameraPosition position = mgr.getSavedCameraPosition();
         if (position != null) {
-//            Toast.makeText(getActivity(), "entering Resume State", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(requireActivity()(), "entering Resume State", Toast.LENGTH_SHORT).show();
             googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(position));
 
             googleMap.setMapType(mgr.getSavedMapType());
@@ -206,9 +202,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             googleMap.setMyLocationEnabled(true);
             googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         }
-//        googleMap.setPadding(0, 0, 0, 150);
     }
-
+/*
     private void searchListener() {
         Log.d(TAG, "init: initializing");
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -228,13 +223,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
     }
-
+*/
+/*
     private void searchAddress() {
         Log.d(TAG, "geoLocate: geolocating");
 
         String searchString = mSearchText.getText().toString();
 
-        Geocoder geocoder = new Geocoder(getActivity());
+        Geocoder geocoder = new Geocoder(requireActivity()());
         List<Address> list = new ArrayList<>();
         try {
             list = geocoder.getFromLocationName(searchString, 1);
@@ -247,7 +243,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
             Log.d(TAG, "geoLocate: found a location: " + address.toString());
-            Toast.makeText(getActivity(), address.getAddressLine(0), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireActivity()(), address.getAddressLine(0), Toast.LENGTH_SHORT).show();
 
             float zoomLevel = 10f;
             if (address.getFeatureName().equals(address.getCountryName())) { //probably a country
@@ -265,10 +261,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), zoomLevel);
 
         } else {
-            Toast.makeText(getActivity(), "Unable to fetch the entered address", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireActivity()(), "Unable to fetch the entered address", Toast.LENGTH_SHORT).show();
         }
     }
-
+*/
     private void moveCamera(LatLng latLng, float zoom) {
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude);
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(
@@ -279,18 +275,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
-        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
-        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        vectorDrawable.draw(canvas);
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
+        if (vectorDrawable != null) {
+            vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+            Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            vectorDrawable.draw(canvas);
+            return BitmapDescriptorFactory.fromBitmap(bitmap);
+        }
+        return null;
     }
 
     @SuppressLint("MissingInflatedId")
 //    private Bitmap getMarkerIconWithLabel(Context context, ImageView markerImage, String markerLabel, float angle) {
     private Bitmap getMarkerIconWithLabel(Context context, String markerLabel) {
         IconGenerator iconGenerator = new IconGenerator(context);
-        View markerView = LayoutInflater.from(context).inflate(R.layout.marker_restroom, null);
+        @SuppressLint("InflateParams") View markerView = LayoutInflater.from(context).inflate(R.layout.marker_restroom, null);
         ImageView imgMarker = markerView.findViewById(R.id.mr_marker_icon);
         TextView tvLabel = markerView.findViewById(R.id.mr_marker_label);
         imgMarker.setImageResource(R.drawable.map_marker_restroom);
@@ -315,21 +314,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return new com.google.android.gms.maps.model.LatLng(latLng.lat, latLng.lng);
     }
 
-    com.google.android.gms.maps.model.LatLng convertLatLngTypeV3_1(com.example.findapotty.LatLng latLng) {
+    com.google.android.gms.maps.model.LatLng convertLatLngTypeV3_1(com.example.findapotty.model.LatLng latLng) {
         return new com.google.android.gms.maps.model.LatLng(latLng.getLatitude(), latLng.getLongitude());
     }
 
-    com.example.findapotty.LatLng convertLatLngTypeV3_2(com.google.android.gms.maps.model.LatLng latLng) {
-        return new com.example.findapotty.LatLng(latLng.latitude, latLng.longitude);
+    com.example.findapotty.model.LatLng convertLatLngTypeV3_2(com.google.android.gms.maps.model.LatLng latLng) {
+        return new com.example.findapotty.model.LatLng(latLng.latitude, latLng.longitude);
     }
 
     private void showDialog(int id) {
-        BottomSheetDialog dialog = new BottomSheetDialog(getActivity(), R.style.CustomBottomSheetDialog);
-        BottomSheetBehavior behavior = dialog.getBehavior();
+        BottomSheetDialog dialog = new BottomSheetDialog(requireActivity(), R.style.CustomBottomSheetDialog);
+        BottomSheetBehavior<FrameLayout> behavior = dialog.getBehavior();
         behavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireActivity(), "", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -349,7 +348,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 googleMap.addMarker(new MarkerOptions()
                         .position(latLng)
                         .title("Marker")
-                        .icon(bitmapDescriptorFromVector(getActivity(), R.drawable.map_marker_long_press))
+                        .icon(bitmapDescriptorFromVector(requireActivity(), R.drawable.map_marker_long_press))
                 );
                 moveCamera(latLng, googleMap.getCameraPosition().zoom);
 
@@ -363,42 +362,38 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
-                Restroom restroom = RestroomManager.getInstance().getRestroomByMarkerId(marker.getId());
+                Restroom restroom = NearbyRestroomManager.getInstance().getRestroomByMarkerId(marker.getId());
+                if (restroom != null) {
+                    // insert to database
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                    VisitedRestroom visitedRestroom =
+                            VisitedRestroomsManager.getInstance().getRestrooms().get(restroom.getPlaceID());
+                    //yyyy-MM-dd HH:mm:ss
+                    @SuppressLint("SimpleDateFormat") String currentDateTime = new SimpleDateFormat("MM-dd-yyyy HH:mm")
+                            .format(Calendar.getInstance().getTime());
+                    if (visitedRestroom != null) {
+                        visitedRestroom.setFrequency(visitedRestroom.getFrequency() + 1);
+                        visitedRestroom.setDateTime(currentDateTime);
+                    } else {
+                        VisitedRestroomsManager.getInstance().addRestroom(
+                                new VisitedRestroom(restroom, currentDateTime, 1)
+                        );
+                    }
+                    ref.child("users").child(User.getInstance().getUserId()).child("visitedRestrooms")
+                            .setValue(VisitedRestroomsManager.getInstance().getRestrooms());
+                    try {
+                        NavController controller = Navigation.findNavController(mMapView);
+                        NavDirections action =
+                                MapFragmentDirections.actionMapFragment2ToRestroomPageBottomSheet2(restroom);
+                        controller.navigate(action);
+                        Log.d(TAG, "onMarkerClick: " + marker.getId());
+                    } catch (IllegalArgumentException e) {
+                        Log.d(TAG, "onMarkerClick: failed to find action");
+                    }
 
-                // insert to database
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-
-                VisitedRestroom visitedRestroom =
-                        VisitedRestroomsManager.getInstance().getRestrooms().get(restroom.getPlaceID());
-                //yyyy-MM-dd HH:mm:ss
-                String currentDateTime = new SimpleDateFormat("MM-dd-yyyy HH:mm")
-                        .format(Calendar.getInstance().getTime());
-                if (visitedRestroom != null){
-                    visitedRestroom.setFrequency(visitedRestroom.getFrequency() + 1);
-                    visitedRestroom.setDateTime(currentDateTime);
-                } else {
-                    VisitedRestroomsManager.getInstance().addRestroom(
-                            restroom.getPlaceID(),
-                            new VisitedRestroom(restroom, currentDateTime, 1)
-                    );
+                    return true;
                 }
-
-                ref.child("users").child(User.getInstance().getUserId()).child("visitedRestrooms")
-                        .setValue(VisitedRestroomsManager.getInstance().getRestrooms());
-
-                try {
-
-                    NavController controller = Navigation.findNavController(mMapView);
-                    NavDirections action =
-                            MapFragmentDirections.actionMapFragment2ToRestroomPageBottomSheet2(restroom);
-                    controller.navigate(action);
-
-                    Log.d(TAG, "onMarkerClick: " + marker.getId());
-                } catch (IllegalArgumentException e) {
-                    Log.d(TAG, "onMarkerClick: failed to find action");
-                }
-                return true;
-
+                return false;
             }
         });
     }
@@ -406,8 +401,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @SuppressLint("MissingPermission")
     private void getDeviceLocation() {
         if (grantedDeviceLocation) {
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
-            fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+            fusedLocationClient.getLastLocation().addOnSuccessListener(requireActivity(), new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
                     // Got last known location. In some rare situations this can be null.
@@ -469,14 +464,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             // Construct a request object, passing the place ID and fields array.
                             final FetchPlaceRequest request = FetchPlaceRequest.newInstance(restroom.placeId, placeFields);
 
-                            Places.initialize(getActivity(), BuildConfig.MAPS_API_KEY);
-                            PlacesClient placesClient = Places.createClient(getActivity());
+                            Places.initialize(requireActivity(), BuildConfig.MAPS_API_KEY);
+                            PlacesClient placesClient = Places.createClient(requireActivity());
                             placesClient.fetchPlace(request).addOnSuccessListener((res) -> {
                                 Place place = res.getPlace();
-                                Log.i(TAG, "onMyLocationButtonClick: " + "Place found: " + place.getName() + " " +
-                                        place.getLatLng().toString());
-                                Log.d(TAG, "onMyLocationButtonClick: open_now: " + place.isOpen());
-
 
                                 // Get the photo metadata.
                                 final List<PhotoMetadata> metadatas = place.getPhotoMetadatas();
@@ -486,9 +477,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 }
                                 final PhotoMetadata photoMetadata = metadatas.get(0);
 
-                                // Get the attribution text.
-                                final String attributions = photoMetadata.getAttributions();
-
                                 // Create a FetchPhotoRequest.
                                 final FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
                                         .setMaxWidth(500) // Optional.
@@ -497,16 +485,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
                                     Bitmap bitmap = fetchPhotoResponse.getBitmap();
 
-                                    RestroomManager restroomManager = RestroomManager.getInstance();
-                                    restroomManager.addRestroom(new Restroom(
-                                            convertLatLngTypeV3_2(place.getLatLng()),
-                                            place.getId(),
-                                            bitmap,
-                                            saveRestroomPhotosToStorage(place.getId(), bitmap),
-                                            Boolean.TRUE.equals(place.isOpen()),
-                                            place.getName(),
-                                            place.getAddress()
-                                    ));
+                                    NearbyRestroomManager.getInstance()
+                                            .addRestroom(new NearbyRestroom(
+                                                            new Restroom(
+                                                                    convertLatLngTypeV3_2(place.getLatLng()),
+                                                                    place.getId(),
+                                                                    bitmap,
+                                                                    saveRestroomPhotosToStorage(place.getId(), bitmap),
+                                                                    place.getName(),
+                                                                    place.getAddress()
+                                                            ),
+                                                    Boolean.TRUE.equals(place.isOpen())
+                                                    )
+
+                                            );
 
                                 }).addOnFailureListener((exception) -> {
                                     if (exception instanceof ApiException) {
@@ -525,11 +517,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                         }
 
-                    } catch (ApiException e) {
-                        throw new RuntimeException(e);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    } catch (IOException e) {
+                    } catch (ApiException | InterruptedException | IOException e) {
                         throw new RuntimeException(e);
                     }
 
@@ -546,19 +534,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         binding.mapShowRrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RestroomManager restroomManager = RestroomManager.getInstance();
-                Log.d(TAG, "addRestroomIconOnMap: " + restroomManager.getRestrooms().size());
-                for (int i = 0; i < restroomManager.getRestrooms().size(); i++) {
+                NearbyRestroomManager restroomsManager = NearbyRestroomManager.getInstance();
+                Log.d(TAG, "addRestroomIconOnMap: " + restroomsManager.getRestrooms().size());
+                for (int i = 0; i < restroomsManager.getRestrooms().size(); i++) {
                     Log.d(TAG, "addRestroomIconOnMap: added" + i);
 
                     Marker marker = googleMap.addMarker(new MarkerOptions()
-                            .position(convertLatLngTypeV3_1(restroomManager.getRestroomByIndex(i).getLatLng()))
+                            .position(convertLatLngTypeV3_1(restroomsManager.getRestroomByIndex(i).getLatLng()))
                             .icon(BitmapDescriptorFactory.fromBitmap(
                                     getMarkerIconWithLabel(
-                                            getActivity(),
-                                            restroomManager.getRestroomByIndex(i).getOpeningStatus()))));
+                                            requireActivity(),
+                                            restroomsManager.getRestroomByIndex(i).getOpeningStatus()))));
 
-                    restroomManager.getRestrooms().get(i).setMarkerId(marker.getId());
+                    restroomsManager.getRestroomsList().get(i).setMarkerId(marker.getId());
                 }
             }
         });

@@ -17,10 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.findapotty.R;
-import com.example.findapotty.Restroom;
 import com.example.findapotty.user.FavoriteRestroom;
 import com.example.findapotty.user.FavoriteRestroomsManager;
-import com.example.findapotty.user.User;
 import com.example.findapotty.databinding.FavoriteSingleRestroomPreviewBinding;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;

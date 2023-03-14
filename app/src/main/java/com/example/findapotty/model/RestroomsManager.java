@@ -1,7 +1,6 @@
-package com.example.findapotty.user;
+package com.example.findapotty.model;
 
-import com.example.findapotty.Restroom;
-import com.google.firebase.database.Exclude;
+import com.example.findapotty.model.Restroom;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,16 +9,12 @@ public class RestroomsManager<T extends Restroom> {
 
     private HashMap<String, T> restrooms = new HashMap<>();
     private ArrayList<T> restroomList = new ArrayList<>();
-
     public HashMap<String, T> getRestrooms() {
         return restrooms;
     }
-
-
     public ArrayList<T> getRestroomsList() {
         return restroomList;
     }
-
     public T getRestroomByIndex(int index) {
         return restroomList.get(index);
     }
@@ -34,8 +29,8 @@ public class RestroomsManager<T extends Restroom> {
         }
     }
 
-    public void addRestroom(String placeId, T restroom) {
-        restrooms.put(placeId, restroom);
+    public void addRestroom(T restroom) {
+        restrooms.put(restroom.getPlaceID(), restroom);
         restroomList.add(restroom);
     }
 

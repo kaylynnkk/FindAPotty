@@ -19,12 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.findapotty.R;
-import com.example.findapotty.Restroom;
+import com.example.findapotty.model.Restroom;
 import com.example.findapotty.user.FavoriteRestroom;
 import com.example.findapotty.user.FavoriteRestroomsManager;
 import com.example.findapotty.user.User;
 import com.example.findapotty.databinding.BottomSheetRestroomPageBinding;
-import com.example.findapotty.user.VisitedRestroomsManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -184,7 +183,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             Toast.makeText(binding.getRoot().getContext(),
                     "Added to faviorte list", Toast.LENGTH_SHORT).show();
 
-            FavoriteRestroomsManager.getInstance().addRestroom(restroom.getPlaceID(), new FavoriteRestroom(restroom));
+            FavoriteRestroomsManager.getInstance().addRestroom(new FavoriteRestroom(restroom));
 
         } else {
             isFavorite = false;

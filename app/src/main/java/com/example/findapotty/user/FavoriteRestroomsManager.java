@@ -1,6 +1,8 @@
 package com.example.findapotty.user;
 
-public class FavoriteRestroomsManager extends RestroomsManager<FavoriteRestroom>{
+import com.example.findapotty.model.RestroomsManager;
+
+public class FavoriteRestroomsManager extends RestroomsManager<FavoriteRestroom> {
 
     private static FavoriteRestroomsManager instance;
     private FavoriteRestroomsManager() {

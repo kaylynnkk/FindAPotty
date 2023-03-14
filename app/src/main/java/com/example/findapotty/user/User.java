@@ -2,12 +2,9 @@ package com.example.findapotty.user;
 
 import android.net.Uri;
 
-import com.example.findapotty.Restroom;
 import com.google.firebase.database.Exclude;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class User {
 
@@ -16,9 +13,9 @@ public class User {
     private String avatarPath = "avatars/default_avatar.jpg";
     private Uri avatarUrl;
     private String userId;
-    private HashMap<String, FavoriteRestroom> favoriteRestrooms =
+    private final HashMap<String, FavoriteRestroom> favoriteRestrooms =
         FavoriteRestroomsManager.getInstance().getRestrooms();
-    private HashMap<String, VisitedRestroom> visitedRestrooms =
+    private final HashMap<String, VisitedRestroom> visitedRestrooms =
             VisitedRestroomsManager.getInstance().getRestrooms();
 
     private User() {

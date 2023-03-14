@@ -1,4 +1,4 @@
-package com.example.findapotty;
+package com.example.findapotty.model;
 
 import android.graphics.Bitmap;
 import android.os.Parcel;
@@ -13,38 +13,25 @@ public class Restroom implements Parcelable {
     private String placeID;
     private Bitmap photoBitmap;
     private String photoPath;
-    private boolean isOpen;
     private String name;
     private String address;
-    private String markerId;
 
 
     public Restroom(
             LatLng latLng, String placeID, Bitmap photoBitmap, String photoPath,
-            boolean isOpen, String name, String address) {
+            String name, String address) {
         this.latLng = latLng;
         this.placeID = placeID;
         this.photoBitmap = photoBitmap;
         this.photoPath = photoPath;
-        this.isOpen = isOpen;
         this.name = name;
         this.address = address;
     }
 
-//    public Restroom(
-//            LatLng latLng, String placeID, String photoPath,
-//            String name, String address) {
-//        this.latLng = latLng;
-//        this.placeID = placeID;
-//        this.photoPath = photoPath;
-//        this.name = name;
-//        this.address = address;
-//    }
-
     public Restroom(Restroom that){
         this(
                 that.getLatLng(), that.getPlaceID(), that.getPhotoBitmap(),
-                that.getPhotoPath(), that.isOpen_now(), that.getName(), that.getAddress()
+                that.getPhotoPath(), that.getName(), that.getAddress()
         );
     }
 
@@ -54,10 +41,8 @@ public class Restroom implements Parcelable {
         latLng = in.readParcelable(LatLng.class.getClassLoader());
         placeID = in.readString();
         photoBitmap = in.readParcelable(Bitmap.class.getClassLoader());
-        isOpen = in.readByte() != 0;
         name = in.readString();
         address = in.readString();
-        markerId = in.readString();
     }
 
     public static final Creator<Restroom> CREATOR = new Creator<Restroom>() {
@@ -99,37 +84,6 @@ public class Restroom implements Parcelable {
         return photoPath;
     }
 
-    @Exclude
-    public String getMarkerId() {
-        return markerId;
-    }
-
-    public void setMarkerId(String markerId) {
-        this.markerId = markerId;
-    }
-
-    @Exclude
-    public String getOpeningStatus() {
-        if (isOpen) {
-            return "Opening";
-        } else {
-            return "Closed";
-        }
-    }
-
-    @Exclude
-    public boolean isOpen_now() {
-        return isOpen;
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return latLng.toString() + "\n"
-                + placeID + "\n"
-                + getOpeningStatus() + "\n";
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -140,9 +94,7 @@ public class Restroom implements Parcelable {
         parcel.writeParcelable(latLng, i);
         parcel.writeString(placeID);
         parcel.writeParcelable(photoBitmap, i);
-        parcel.writeByte((byte) (isOpen ? 1 : 0));
         parcel.writeString(name);
         parcel.writeString(address);
-        parcel.writeString(markerId);
     }
 }

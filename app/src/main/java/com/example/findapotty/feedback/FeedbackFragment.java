@@ -37,54 +37,57 @@ public class FeedbackFragment extends Fragment {
         messagedata = rootView.findViewById(R.id.messagedata);
         submit_bt = rootView.findViewById(R.id.submit_bt);
 
+        // get activity associated with fragment
         Context context = getActivity().getApplicationContext();
 
         // obtain a unique id for every user to submit a feedback
         String UniqueID = Settings.Secure.getString(context.getContentResolver(),Settings.Secure.ANDROID_ID);
 
         // connecting to firebase
+        // creates child reference to users and unique id
+        // store data for each user separately under own unique id
         firebase = FirebaseDatabase.getInstance().getReference().child("Users").child(UniqueID);
 
-        // checks user fields for name, email, and message
-        submit_bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String name = namedata.getText().toString();
-                final String email = emaildata.getText().toString();
-                final String message = messagedata.getText().toString();
+        // retrieve text user input into name, email, and message
+        submit_bt.setOnClickListener(v -> {
+            final String name = namedata.getText().toString();
+            final String email = emaildata.getText().toString();
+            final String message = messagedata.getText().toString();
 
-                DatabaseReference child_name = firebase.child("Name");
-                child_name.setValue(name.toString());
-                if (name.isEmpty()){
-                    namedata.setError("This field is required.");
-                    submit_bt.setEnabled(false);
-                } else {
-                    namedata.setError(null);
-                    submit_bt.setEnabled(true);
-                }
-
-                DatabaseReference child_email = firebase.child("Email");
-                child_email.setValue(email.toString());
-                if (email.isEmpty()) {
-                    emaildata.setError("This field is required.");
-                    submit_bt.setEnabled(false);
-                } else {
-                    emaildata.setError(null);
-                    submit_bt.setEnabled(true);
-                }
-
-                DatabaseReference child_message = firebase.child("Message");
-                child_message.setValue(message.toString());
-                if (message.isEmpty()){
-                    messagedata.setError("This field is required.");
-                    submit_bt.setEnabled(false);
-                } else {
-                    messagedata.setError(null);
-                    submit_bt.setEnabled(true);
-                }
-                // message to be displayed when user presses "submit"
-                Toast.makeText(rootView.getContext(), "Successfully submitted!", Toast.LENGTH_SHORT).show();
+            // write name to name location in database
+            DatabaseReference child_name = firebase.child("Name");
+            child_name.setValue(name);
+            if (name.isEmpty()){
+                namedata.setError("This field is required.");
+                submit_bt.setEnabled(false);
+            } else {
+                namedata.setError(null);
+                submit_bt.setEnabled(true);
             }
+
+            // write email to email location in database
+            DatabaseReference child_email = firebase.child("Email");
+            child_email.setValue(email);
+            if (email.isEmpty()) {
+                emaildata.setError("This field is required.");
+                submit_bt.setEnabled(false);
+            } else {
+                emaildata.setError(null);
+                submit_bt.setEnabled(true);
+            }
+
+            // write message to message location in database
+            DatabaseReference child_message = firebase.child("Message");
+            child_message.setValue(message);
+            if (message.isEmpty()){
+                messagedata.setError("This field is required.");
+                submit_bt.setEnabled(false);
+            } else {
+                messagedata.setError(null);
+                submit_bt.setEnabled(true);
+            }
+            // message to be displayed when user presses "submit"
+            Toast.makeText(rootView.getContext(), "Successfully submitted!", Toast.LENGTH_SHORT).show();
         });
         return rootView;
     }

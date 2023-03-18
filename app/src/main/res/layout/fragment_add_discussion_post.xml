@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".discuss.AddDiscussionPostFragment">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/fadp_hg_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.09" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/fadp_hg_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.02" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/fadp_hg_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.19" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/fadp_hg_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.97" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/fadp_vg_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.03892944" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/fadp_vg_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.85" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/fadp_vg_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.97" />
+
+        <EditText
+            android:id="@+id/fadp_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#ef55ff"
+            android:gravity="center_vertical"
+            android:hint="Title (Required)"
+            android:inputType="text"
+            android:maxLength="30"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="26sp"
+            app:layout_constraintEnd_toStartOf="@+id/fadp_vg_3"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/fadp_vg_1"
+            app:layout_constraintTop_toTopOf="@+id/fadp_hg_1" />
+
+        <TextView
+            android:id="@+id/fasp_title_length_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="0/30"
+            app:layout_constraintBottom_toBottomOf="@+id/fadp_title"
+            app:layout_constraintEnd_toStartOf="@+id/fadp_vg_2"
+            app:layout_constraintStart_toStartOf="@+id/fadp_vg_3"
+            app:layout_constraintTop_toTopOf="@+id/fadp_title" />
+
+        <EditText
+            android:id="@+id/fadp_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:backgroundTint="@color/quantum_grey"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="What's happening?"
+            android:inputType="textMultiLine"
+            android:maxLength="3000"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:lineHeight="26dp"
+            app:layout_constraintBottom_toTopOf="@+id/fadp_hg_3"
+            app:layout_constraintEnd_toStartOf="@+id/fadp_vg_2"
+            app:layout_constraintStart_toStartOf="@+id/fadp_vg_1"
+            app:layout_constraintTop_toTopOf="@+id/fadp_hg_4" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

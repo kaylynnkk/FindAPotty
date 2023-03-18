@@ -2,61 +2,127 @@ package com.example.findapotty;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.findapotty.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private NavController controller;
+    private NavController navController;
+    private AppBarConfiguration mAppBarConfiguration;
+    private ActivityMainBinding binding;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        grantPermissions();
+//        setContentView(R.layout.activity_main);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        controller = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, controller);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        NavigationUI.setupWithNavController(bottomNavigationView, controller);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
+        // - init variables
+        Toolbar toolbar = binding.appBarMain.mainToolbar;
+        DrawerLayout drawer = binding.drawerLayout;
+        NavigationView navigationView = binding.navigationView;
+        BottomNavigationView bottomNavigationView = binding.bottomNavigation;
+
+        // - tool bar
+        setSupportActionBar(toolbar);
+
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        mAppBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.nav_history,
+                R.id.nav_search, R.id.nav_feed,
+                R.id.nav_discuss, R.id.nav_favorite, R.id.nav_profile)
+                .setOpenableLayout(drawer)
+                .build();
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+
+        // - Navigation View
+        NavigationUI.setupWithNavController(navigationView, navController);
+
+        // - Bottom Navigation View
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
+        // - visibility
         // default visibility
         bottomNavigationView.setVisibility(View.GONE);
+        toolbar.setVisibility(View.GONE);
         // change visibility
-        controller.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
+        navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
+            // bottom nav view
             switch (navDestination.getId()) {
                 case R.id.nav_search:
-                case R.id.nav_feed:
                 case R.id.nav_discuss:
+                case R.id.nav_favorite:
+                case R.id.nav_feed:
                     bottomNavigationView.setVisibility(View.VISIBLE);
                     break;
                 default:
                     bottomNavigationView.setVisibility(View.GONE);
             }
+
+            // toolbar
+            switch (navDestination.getId()) {
+                case R.id.navg_login_fragment:
+                case R.id.nav_signup_fragment:
+                    toolbar.setVisibility(View.GONE);
+                    break;
+//                case R.id.nav_search:
+//                    toolbar.setVisibility(View.VISIBLE);
+//                    toolbar.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.bg_common_toolbar, getTheme()));
+//                    break;
+//                case R.id.nav_feed:
+//                    toolbar.setVisibility(View.VISIBLE);
+//                    toolbar.setBackgroundColor(getResources().getColor(R.color.bg_toolbar_feeds, this.getTheme()));
+//                    break;
+//                case R.id.nav_discuss:
+//                case R.id.nav_favorite:
+                default:
+                    toolbar.setVisibility(View.VISIBLE);
+//                    toolbar.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.bg_common_toolbar, getTheme()));
+            }
         });
-        Log.d(TAG, "onStart: api key" + BuildConfig.MAPS_API_KEY);
+
+        grantPermissions();
+
 
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        return super.onSupportNavigateUp();
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+                || super.onSupportNavigateUp();
     }
 
 
@@ -99,4 +165,5 @@ public class MainActivity extends AppCompatActivity {
         // Other 'case' lines to check for other
         // permissions this app might request.
     }
+
 }

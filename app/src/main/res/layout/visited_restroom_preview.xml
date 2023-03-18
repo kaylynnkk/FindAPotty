@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/preview_bg"
+        android:id="@+id/visited_restroom_item">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true">
+
+            <RatingBar
+                android:id="@+id/vrp_rating"
+                style="?android:ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:numStars="5"
+                android:rating="3.4"
+                app:layout_constraintBottom_toTopOf="@+id/vrp_vg_2"
+                app:layout_constraintStart_toStartOf="@+id/vrp_hg_2" />
+
+            <TextView
+                android:id="@+id/vrp_restroom_address"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="1234 address ave city, state"
+                app:layout_constraintBottom_toTopOf="@+id/vrp_datetime"
+                app:layout_constraintEnd_toStartOf="@+id/vrp_hg_3"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/vrp_hg_2"
+                app:layout_constraintTop_toBottomOf="@+id/vrp_restroom_name"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/vrp_restroom_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="restroom name"
+                android:textSize="20dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"
+                app:layout_constraintEnd_toStartOf="@+id/vrp_hg_3"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/vrp_hg_2"
+                app:layout_constraintTop_toTopOf="@+id/vrp_vg_1" />
+
+            <ImageView
+                android:id="@+id/vrp_restroom_photo"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignParentBottom="true"
+                app:layout_constraintBottom_toTopOf="@+id/vrp_vg_2"
+                app:layout_constraintEnd_toStartOf="@+id/vrp_hg_1"
+                app:layout_constraintStart_toStartOf="@+id/vrp_hg_4"
+                app:layout_constraintTop_toTopOf="@+id/vrp_vg_1"
+                app:srcCompat="@drawable/ic_launcher_background" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/vrp_hg_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.37" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/vrp_hg_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.39" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/vrp_hg_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.97" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/vrp_hg_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.03" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/vrp_vg_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.05" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/vrp_vg_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.95" />
+
+            <TextView
+                android:id="@+id/vrp_datetime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MM-dd-yyyy"
+                app:layout_constraintBottom_toTopOf="@+id/vrp_vg_2"
+                app:layout_constraintEnd_toStartOf="@+id/vrp_hg_3" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+</layout>

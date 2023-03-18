@@ -16,9 +16,18 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.findapotty.R;
+import com.example.findapotty.user.FavoriteRestroomsManager;
+import com.example.findapotty.user.User;
 import com.example.findapotty.databinding.FragmentLoginBinding;
+import com.example.findapotty.user.VisitedRestroomsManager;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class LoginFragment extends Fragment {
 
@@ -39,6 +48,9 @@ public class LoginFragment extends Fragment {
         });
         binding.flSignupButton.setOnClickListener(view -> {
             actionSignUpPage(view);
+        });
+        binding.flLoginButton2.setOnClickListener(view -> {
+            quickLogin();
         });
 
         return binding.getRoot();
@@ -80,11 +92,56 @@ public class LoginFragment extends Fragment {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
-                            Toast.makeText(binding.getRoot().getContext(), "Authentication successful.",
-                                    Toast.LENGTH_SHORT).show();
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            DatabaseReference mdb = FirebaseDatabase.getInstance().getReference();
+
+                            String userId = mAuth.getCurrentUser().getUid();
+                            User user =  User.getInstance();
+
+                            // retrieve user info
+                            mdb.child("users").child(userId).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    User retrievedUser = snapshot.getValue( User.class );
+
+                                    User currentUser = User.getInstance();
+
+                                    // user id
+                                    currentUser.setUserId(retrievedUser.getUserId());
+
+                                    // user name
+                                    currentUser.setUserName(retrievedUser.getUserName());
+
+                                    // user avatar
+                                    currentUser.setAvatarPath(retrievedUser.getAvatarPath());
+                                    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                                    StorageReference ref = storageRef.child(currentUser.getAvatarPath());
+                                    ref.getDownloadUrl().addOnSuccessListener(uri -> {
+                                        currentUser.setAvatarUrl(uri);
+                                    });
+
+                                    // user favorite restrooms
+                                    FavoriteRestroomsManager.getInstance()
+                                                    .setRestrooms(retrievedUser.getFavoriteRestrooms());
+
+                                    // visited retrooms
+                                    VisitedRestroomsManager.getInstance()
+                                            .setRestrooms(retrievedUser.getVisitedRestrooms());
+
+                                    Toast.makeText(view.getContext(), "Welcome " + currentUser.getUserName(),
+                                            Toast.LENGTH_SHORT).show();
+
+                                    mdb.child("users").child(userId).removeEventListener(this);
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                            // end retrieve user info
+
                             NavController controller = Navigation.findNavController(view);
                             controller.navigate(R.id.action_loginFragment2_to_nav_search);
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -98,5 +155,10 @@ public class LoginFragment extends Fragment {
     private void showError(EditText input, String s) {
         input.setError(s);
         input.requestFocus();
+    }
+
+    private void quickLogin() {
+        NavController controller = Navigation.findNavController(binding.getRoot());
+        controller.navigate(R.id.action_loginFragment2_to_nav_search);
     }
 }

@@ -5,24 +5,39 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.example.findapotty.user.User;
+
 public class DiscussionPost implements Parcelable {
 
     private String userAvatar;
     private String userName;
+    private String authorId = User.getInstance().getUserId();
 
     private String postTitle;
     private String postContent;
+    private String uploadTime; //yyyy-MM-dd HH:mm:ss
 
     private String postTag;
     private int postCommentCount;
     private int postLikeCount;
 
-    public DiscussionPost(String userAvatar, String userName, String postTitle, String postContent) {
+
+    public DiscussionPost() {}
+
+    public DiscussionPost(
+            String userAvatar, String userName, String postTitle, String postContent, String uploadTime) {
         this.userAvatar = userAvatar;
         this.userName = userName;
         this.postTitle = postTitle;
         this.postContent = postContent;
+        this.uploadTime = uploadTime;
     }
+
+//    public DiscussionPost(String postTitle, String postContent, String authorId) {
+//        this.postTitle = postTitle;
+//        this.postContent = postContent;
+//        this.authorId = authorId;
+//    }
 
     protected DiscussionPost(Parcel in) {
         userAvatar = in.readString();
@@ -46,6 +61,14 @@ public class DiscussionPost implements Parcelable {
         }
     };
 
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public String getUserAvatar() {
         return userAvatar;
     }
@@ -60,6 +83,14 @@ public class DiscussionPost implements Parcelable {
 
     public String getPostContent() {
         return postContent;
+    }
+
+    public String getAuthorId() {
+        return authorId;
+    }
+
+    public String getUploadTime() {
+        return uploadTime;
     }
 
     @Override

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:checkableBehavior="single">
+        <item
+            android:title="Home"
+            android:id="@+id/nav_search"
+            android:icon="@drawable/nav_home_24" />
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/ic_nav_history"
+            android:title="History" />
+
+    </group>
+
+    <item android:title="Services">
+        <menu>
+            <item
+                android:id="@+id/nav_diary"
+                android:icon="@drawable/bottomsheet_drag"
+                android:title="Diary" />
+            <item
+                android:id="@+id/nav_trends"
+                android:icon="@drawable/bottomsheet_drag"
+                android:title="Trends" />
+            <item
+                android:id="@+id/nav_trainer"
+                android:icon="@drawable/bottomsheet_drag"
+                android:title="Trainer" />
+            <item
+                android:id="@+id/nav_reminers"
+                android:icon="@drawable/bottomsheet_drag"
+                android:title="Reminers" />
+            <item
+                android:id="@+id/nav_tunes"
+                android:icon="@drawable/bottomsheet_drag"
+                android:title="Tunes" />
+        </menu>
+    </item>
+</menu>

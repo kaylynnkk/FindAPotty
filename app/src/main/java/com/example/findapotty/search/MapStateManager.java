@@ -110,4 +110,27 @@ public class MapStateManager {
     private double getDouble(final SharedPreferences prefs, final String key, final double defaultValue) {
         return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits(defaultValue)));
     }
+
+
+//    private static MapStateManager instance;
+//    private GoogleMap googleMap;
+//
+//    private MapStateManager(){}
+//
+//    public static MapStateManager getInstance() {
+//        if (instance == null) {
+//            instance = new MapStateManager();
+//        }
+//        return instance;
+//    }
+//
+//    public void saveGoogleMap(GoogleMap googleMap) {
+//        this.googleMap = googleMap;
+//    }
+//
+//    public GoogleMap getGoogleMap() {
+//        return googleMap;
+//    }
+
+
 }

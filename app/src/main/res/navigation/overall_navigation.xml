@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/nav_search"
         android:name="com.example.findapotty.search.MapFragment"
-        android:label="fragment_map"
+        android:label="Map"
         tools:layout="@layout/fragment_map">
         <action
             android:id="@+id/action_mapFragment2_to_restroomPageBottomSheet2"
@@ -34,33 +34,34 @@
         <action
             android:id="@+id/action_navg_rr_pg_fragment_to_navg_rr_pg_edit_fragment"
             app:destination="@id/navg_rr_pg_edit_fragment" />
-        <argument
-            android:name="markerId"
-            app:argType="string"
-            app:nullable="true" />
         <action
             android:id="@+id/action_navg_rr_pg_fragment_to_addRestroomReviewFragment"
             app:destination="@id/addRestroomReviewFragment" />
+        <argument
+            android:name="restroom"
+            app:argType="com.example.findapotty.model.Restroom" />
     </dialog>
     <fragment
         android:id="@+id/nav_feed"
         android:name="com.example.findapotty.feed.FeedFragment"
-        android:label="fragment_feed"
+        android:label="News Feed"
         tools:layout="@layout/fragment_feed" />
     <fragment
         android:id="@+id/nav_discuss"
         android:name="com.example.findapotty.discuss.DiscussFragment"
-        android:label="fragment_discuss"
-        tools:layout="@layout/fragment_discuss" >
+        android:label="Discussion Board"
+        tools:layout="@layout/fragment_discuss">
         <action
             android:id="@+id/action_nav_discuss_to_singlePostDiscussionBoard"
-            app:destination="@id/singlePostDiscussionBoard" >
-        </action>
+            app:destination="@id/singlePostDiscussionBoard"></action>
+        <action
+            android:id="@+id/action_nav_discuss_to_addDiscussionPostFragment"
+            app:destination="@id/addDiscussionPostFragment" />
     </fragment>
     <fragment
         android:id="@+id/navg_rr_pg_edit_fragment"
         android:name="com.example.findapotty.search.restroompage.RestroomPageEditFragment"
-        android:label="fragment_edit_restroom_page"
+        android:label="Edit Restroom Page"
         tools:layout="@layout/fragment_edit_restroom_page" />
     <fragment
         android:id="@+id/nav_signup_fragment"
@@ -76,8 +77,8 @@
     <fragment
         android:id="@+id/singlePostDiscussionBoard"
         android:name="com.example.findapotty.discuss.DiscussionBoardSinglePost"
-        android:label="discussion_board_single_post"
-        tools:layout="@layout/discussion_board_single_post" >
+        android:label="Post"
+        tools:layout="@layout/discussion_board_single_post">
         <argument
             android:name="discussionPost"
             app:argType="com.example.findapotty.discuss.DiscussionPost" />
@@ -85,5 +86,27 @@
     <fragment
         android:id="@+id/addRestroomReviewFragment"
         android:name="com.example.findapotty.search.restroompage.AddRestroomReviewFragment"
-        android:label="AddRestroomReviewFragment" />
+        android:label="Add Review" />
+    <fragment
+        android:id="@+id/nav_favorite"
+        android:name="com.example.findapotty.favorite.FavoriteFragment"
+        android:label="Favorite">
+        <action
+            android:id="@+id/action_nav_favorite_to_navg_rr_pg_fragment"
+            app:destination="@id/navg_rr_pg_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addDiscussionPostFragment"
+        android:name="com.example.findapotty.discuss.AddDiscussionPostFragment"
+        android:label="Add Post">
+        <action
+            android:id="@+id/action_addDiscussionPostFragment_to_singlePostDiscussionBoard"
+            app:destination="@id/singlePostDiscussionBoard"
+            app:popUpTo="@+id/nav_discuss"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_history"
+        android:name="com.example.findapotty.history.HistoryFragment"
+        android:label="History" />
 </navigation>

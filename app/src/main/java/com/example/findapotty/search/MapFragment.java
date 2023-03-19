@@ -6,18 +6,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,10 +25,13 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findapotty.BuildConfig;
 import com.example.findapotty.R;
 import com.example.findapotty.databinding.FragmentMapBinding;
+import com.example.findapotty.history.VisitedRestroomsRecyclerViewAdaptor;
 import com.example.findapotty.model.Restroom;
 import com.example.findapotty.user.User;
 import com.example.findapotty.user.VisitedRestroom;
@@ -78,7 +76,6 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -92,6 +89,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private boolean onSerchingComplete = false;
     FragmentMapBinding binding;
     private static final String TAG = "MapFragment";
+    private RecyclerView recyclerView;
+    private NearbyRestroomsRecyclerViewAdaptor adaptor;
+    private boolean onActiveScroll = false;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,6 +105,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Log.d(TAG, "onCreateView: map create");
 
 //        mSearchText = binding.inputSearch;
+
+        recyclerView = binding.fmNearbyRestrooms;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adaptor = new NearbyRestroomsRecyclerViewAdaptor(getContext());
+        recyclerView.setAdapter(adaptor);
+
+        scrollToAttach();
 
         return binding.getRoot();
     }
@@ -362,7 +370,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
-                Restroom restroom = NearbyRestroomManager.getInstance().getRestroomByMarkerId(marker.getId());
+                Restroom restroom = NearbyRestroomsManager.getInstance().getRestroomByMarkerId(marker.getId());
                 if (restroom != null) {
                     // insert to database
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -449,6 +457,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 .keyword("restroom")
                                 .await();
                         Log.d(TAG, "onMyLocationButtonClick: restroom found " + response.results.length);
+
+                        // loop through all nearby restrooms
                         for (PlacesSearchResult restroom : response.results) {
 
                             // Specify the fields to return.
@@ -485,7 +495,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
                                     Bitmap bitmap = fetchPhotoResponse.getBitmap();
 
-                                    NearbyRestroomManager.getInstance()
+                                    NearbyRestroomsManager.getInstance()
                                             .addRestroom(new NearbyRestroom(
                                                             new Restroom(
                                                                     convertLatLngTypeV3_2(place.getLatLng()),
@@ -499,6 +509,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                                     )
 
                                             );
+                                    adaptor.notifyItemInserted(0);
+                                    recyclerView.smoothScrollToPosition(0);
 
                                 }).addOnFailureListener((exception) -> {
                                     if (exception instanceof ApiException) {
@@ -534,7 +546,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         binding.mapShowRrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NearbyRestroomManager restroomsManager = NearbyRestroomManager.getInstance();
+                NearbyRestroomsManager restroomsManager = NearbyRestroomsManager.getInstance();
                 Log.d(TAG, "addRestroomIconOnMap: " + restroomsManager.getRestrooms().size());
                 for (int i = 0; i < restroomsManager.getRestrooms().size(); i++) {
                     Log.d(TAG, "addRestroomIconOnMap: added" + i);
@@ -547,6 +559,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                             restroomsManager.getRestroomByIndex(i).getOpeningStatus()))));
 
                     restroomsManager.getRestroomsList().get(i).setMarkerId(marker.getId());
+
                 }
             }
         });
@@ -597,5 +610,57 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
             }
         });
+    }
+
+    // https://www.jb51.net/article/198584.htm
+    // https://developer.android.com/reference/androidx/recyclerview/widget/LinearSnapHelper
+    // stick item after the scroll is stopped
+    private void scrollToAttach() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!onActiveScroll) {
+                        recyclerView.postDelayed(() -> smoothScrollToCenter(), 50);
+                    }
+                }
+                if (recyclerView.getScrollState() != RecyclerView.SCROLL_STATE_SETTLING) {
+                    onActiveScroll = false;
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (recyclerView.getScrollState() == RecyclerView.SCROLL_STATE_SETTLING && !onActiveScroll) {
+                    // scroll is almost stop in this range
+                    if (dx >= -5 && dx <= 5) {
+                        recyclerView.stopScroll();
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void smoothScrollToCenter() {
+        onActiveScroll = true;
+        View stickyInfoView = recyclerView.getChildAt(0); // get the first visible view
+        int rcyWidth = recyclerView.getWidth();
+        int itemWidth = stickyInfoView.getWidth();
+        int itemRight = stickyInfoView.getRight();
+        int threshold = (rcyWidth - itemWidth) / 2;
+        // when item left edge is not attached to threshold
+        if ( (itemWidth + threshold) != itemRight ) {
+            // over half of the view is visible
+            if (itemRight >= (itemWidth / 2)) {
+                recyclerView.smoothScrollBy( -(itemWidth - itemRight + threshold),0);// scroll back to the item
+            }
+            // under half of the view is visible
+            else {
+                recyclerView.smoothScrollBy(itemRight - threshold, 0);// scroll to next item
+            }
+        }
     }
 }

@@ -31,7 +31,7 @@ public class RestroomsManager<T extends Restroom> {
 
     public void addRestroom(T restroom) {
         restrooms.put(restroom.getPlaceID(), restroom);
-        restroomList.add(restroom);
+        restroomList.add(0, restroom);
     }
 
     public void removeRestroom(String placeId) {

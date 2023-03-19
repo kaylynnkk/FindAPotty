@@ -2,17 +2,17 @@ package com.example.findapotty.search;
 
 import com.example.findapotty.model.RestroomsManager;
 
-public class NearbyRestroomManager extends RestroomsManager<NearbyRestroom> {
+public class NearbyRestroomsManager extends RestroomsManager<NearbyRestroom> {
 
-    private static NearbyRestroomManager instance;
+    private static NearbyRestroomsManager instance;
 
-    private NearbyRestroomManager() {
+    private NearbyRestroomsManager() {
 
     }
 
-    public static NearbyRestroomManager getInstance() {
+    public static NearbyRestroomsManager getInstance() {
         if (instance == null) {
-            instance = new NearbyRestroomManager();
+            instance = new NearbyRestroomsManager();
         }
         return instance;
     }

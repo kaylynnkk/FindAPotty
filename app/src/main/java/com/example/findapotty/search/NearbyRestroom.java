@@ -1,19 +1,18 @@
 package com.example.findapotty.search;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
 import com.example.findapotty.model.Restroom;
-import com.google.firebase.database.Exclude;
 
 public class NearbyRestroom extends Restroom {
 
     private String markerId;
     private boolean isOpen;
+    private String currentDistance;
 
-    public NearbyRestroom(Restroom that, boolean isOpen) {
+    public NearbyRestroom(Restroom that, boolean isOpen, String currentDistance) {
         super(that);
     }
 
@@ -27,6 +26,10 @@ public class NearbyRestroom extends Restroom {
 
     public boolean isOpen_now() {
         return isOpen;
+    }
+
+    public String getCurrentDistance() {
+        return currentDistance;
     }
 
     public String getOpeningStatus() {

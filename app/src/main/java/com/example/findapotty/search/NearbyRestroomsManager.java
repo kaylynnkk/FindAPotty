@@ -7,7 +7,6 @@ public class NearbyRestroomsManager extends RestroomsManager<NearbyRestroom> {
     private static NearbyRestroomsManager instance;
 
     private NearbyRestroomsManager() {
-
     }
 
     public static NearbyRestroomsManager getInstance() {

@@ -1,28 +1,29 @@
 package com.example.findapotty.model;
 
-import com.example.findapotty.model.Restroom;
-
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class RestroomsManager<T extends Restroom> {
 
     private HashMap<String, T> restrooms = new HashMap<>();
     private ArrayList<T> restroomList = new ArrayList<>();
+
     public HashMap<String, T> getRestrooms() {
         return restrooms;
     }
+
     public ArrayList<T> getRestroomsList() {
         return restroomList;
     }
+
     public T getRestroomByIndex(int index) {
         return restroomList.get(index);
     }
 
     public void setRestrooms(HashMap<String, T> retrievedRestrooms) {
-        if (retrievedRestrooms != null){
+        if (retrievedRestrooms != null) {
             restrooms = retrievedRestrooms;
-
             retrievedRestrooms.forEach((key, value) -> {
                 restroomList.add(value);
             });
@@ -41,6 +42,15 @@ public class RestroomsManager<T extends Restroom> {
 
     public int getCount() {
         return restroomList.size();
+    }
+
+    public void sortByDistance() {
+        restroomList.sort(new Comparator<T>() {
+            @Override
+            public int compare(T t, T t1) {
+                return t.getName().compareToIgnoreCase(t1.getName());
+            }
+        });
     }
 
 }

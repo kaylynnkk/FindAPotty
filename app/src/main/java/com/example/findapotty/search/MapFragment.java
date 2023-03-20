@@ -31,7 +31,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.findapotty.BuildConfig;
 import com.example.findapotty.R;
 import com.example.findapotty.databinding.FragmentMapBinding;
-import com.example.findapotty.history.VisitedRestroomsRecyclerViewAdaptor;
 import com.example.findapotty.model.Restroom;
 import com.example.findapotty.user.User;
 import com.example.findapotty.user.VisitedRestroom;
@@ -64,12 +63,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.maps.DistanceMatrixApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.PlacesApi;
 import com.google.maps.android.ui.IconGenerator;
 import com.google.maps.errors.ApiException;
+import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.PlacesSearchResponse;
 import com.google.maps.model.PlacesSearchResult;
+import com.google.maps.model.Unit;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -79,6 +81,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -97,23 +100,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false);
         binding.setLifecycleOwner(this);
-
         mMapView = binding.mapView;
         mMapView.onCreate(savedInstanceState);
-
         mMapView.onResume(); // needed to get the map to display immediately
         Log.d(TAG, "onCreateView: map create");
-
 //        mSearchText = binding.inputSearch;
-
         recyclerView = binding.fmNearbyRestrooms;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 //        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adaptor = new NearbyRestroomsRecyclerViewAdaptor(getContext());
         recyclerView.setAdapter(adaptor);
-
         scrollToAttach();
-
         return binding.getRoot();
     }
 
@@ -121,14 +118,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onPause() {
         super.onPause();
         Log.d(TAG, "onPause: ");
-
         // save map state
         MapStateManager mgr = new MapStateManager(requireActivity());
         mgr.saveMapState(googleMap);
 //        Toast.makeText(requireActivity()(), "Map State has been save", Toast.LENGTH_SHORT).show();
-
 //        MapStateManager.getInstance().saveGoogleMap(googleMap);
     }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -146,27 +142,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: ");
-
         mMapView.getMapAsync(this);
     }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.googleMap = googleMap;
-
         permissionCheck();
-
         init();
-
         // add marker on long press on map
         addMarker();
-
         // restroom info page
         displayRestroomPage();
-
 //        searchListener();
-
-
         getNearbyRestrooms();
         addRestroomIconOnMap();
 
@@ -184,24 +172,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @SuppressLint("MissingPermission")
     private void init() {
         Log.d(TAG, "init: ");
-
 //        if (MapStateManager.getInstance().getGoogleMap() != null) {
 //            GoogleMap map = MapStateManager.getInstance().getGoogleMap();
 //            googleMap.moveCamera(
 //                    CameraUpdateFactory.newCameraPosition(map.getCameraPosition()));
 //            googleMap.setMapType(map.getMapType());
 //        }
-
         // resume map state
         MapStateManager mgr = new MapStateManager(requireActivity());
         CameraPosition position = mgr.getSavedCameraPosition();
         if (position != null) {
 //            Toast.makeText(requireActivity()(), "entering Resume State", Toast.LENGTH_SHORT).show();
             googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(position));
-
             googleMap.setMapType(mgr.getSavedMapType());
         }
-
         // UI Section
         // zoom in/out button
         googleMap.getUiSettings().setZoomControlsEnabled(true);
@@ -211,27 +195,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         }
     }
-/*
-    private void searchListener() {
-        Log.d(TAG, "init: initializing");
-        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH
-                        || actionId == EditorInfo.IME_ACTION_DONE
-                        || keyEvent.getAction() == KeyEvent.ACTION_DOWN
-                        || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
 
-                    Log.d(TAG, "onEditorAction: " + mSearchText.getText().toString());
+    /*
+        private void searchListener() {
+            Log.d(TAG, "init: initializing");
+            mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH
+                            || actionId == EditorInfo.IME_ACTION_DONE
+                            || keyEvent.getAction() == KeyEvent.ACTION_DOWN
+                            || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
 
-                    //locate the address
-                    searchAddress();
+                        Log.d(TAG, "onEditorAction: " + mSearchText.getText().toString());
+
+                        //locate the address
+                        searchAddress();
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
-    }
-*/
+            });
+        }
+    */
 /*
     private void searchAddress() {
         Log.d(TAG, "geoLocate: geolocating");
@@ -314,18 +299,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 //        }
 //        return resultList;
 //    }
-    static com.google.maps.model.LatLng convertLatLngType(com.google.android.gms.maps.model.LatLng latLng) {
+    // com.google.android.gms.maps.model.LatLng ==> com.google.maps.model.LatLng
+    static com.google.maps.model.LatLng convertLatLngType1_1(com.google.android.gms.maps.model.LatLng latLng) {
         return new com.google.maps.model.LatLng(latLng.latitude, latLng.longitude);
     }
 
-    static com.google.android.gms.maps.model.LatLng convertLatLngTypeV2(com.google.maps.model.LatLng latLng) {
+    // com.google.maps.model.LatLng ==> com.google.android.gms.maps.model.LatLng
+    static com.google.android.gms.maps.model.LatLng convertLatLngTypeV1_2(com.google.maps.model.LatLng latLng) {
         return new com.google.android.gms.maps.model.LatLng(latLng.lat, latLng.lng);
     }
 
+    // com.example.findapotty.model.LatLng ==> com.google.android.gms.maps.model.LatLng
     com.google.android.gms.maps.model.LatLng convertLatLngTypeV3_1(com.example.findapotty.model.LatLng latLng) {
         return new com.google.android.gms.maps.model.LatLng(latLng.getLatitude(), latLng.getLongitude());
     }
 
+    // com.google.android.gms.maps.model.LatLng ==> com.example.findapotty.model.LatLng
     com.example.findapotty.model.LatLng convertLatLngTypeV3_2(com.google.android.gms.maps.model.LatLng latLng) {
         return new com.example.findapotty.model.LatLng(latLng.latitude, latLng.longitude);
     }
@@ -359,7 +348,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         .icon(bitmapDescriptorFromVector(requireActivity(), R.drawable.map_marker_long_press))
                 );
                 moveCamera(latLng, googleMap.getCameraPosition().zoom);
-
                 showDialog(R.layout.bottom_sheet_add_marker);
             }
         });
@@ -398,7 +386,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     } catch (IllegalArgumentException e) {
                         Log.d(TAG, "onMarkerClick: failed to find action");
                     }
-
                     return true;
                 }
                 return false;
@@ -443,7 +430,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public boolean onMyLocationButtonClick() {
                 moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 12);
                 if (currentLocation != null) {
-
                     GeoApiContext geoApiContext = new GeoApiContext.Builder()
                             .apiKey(BuildConfig.MAPS_API_KEY)
                             .build();
@@ -451,16 +437,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         // get nearby restrooms
                         PlacesSearchResponse response = PlacesApi.nearbySearchQuery(
                                         geoApiContext,
-                                        convertLatLngType(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
+                                        convertLatLngType1_1(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
                                 )
                                 .radius(5000)
                                 .keyword("restroom")
                                 .await();
                         Log.d(TAG, "onMyLocationButtonClick: restroom found " + response.results.length);
-
                         // loop through all nearby restrooms
                         for (PlacesSearchResult restroom : response.results) {
-
                             // Specify the fields to return.
                             final List<Place.Field> placeFields = Arrays.asList(
                                     Place.Field.ADDRESS,
@@ -470,15 +454,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                     Place.Field.NAME,
                                     Place.Field.OPENING_HOURS, Place.Field.UTC_OFFSET, Place.Field.BUSINESS_STATUS
                             );
-
                             // Construct a request object, passing the place ID and fields array.
                             final FetchPlaceRequest request = FetchPlaceRequest.newInstance(restroom.placeId, placeFields);
-
                             Places.initialize(requireActivity(), BuildConfig.MAPS_API_KEY);
                             PlacesClient placesClient = Places.createClient(requireActivity());
                             placesClient.fetchPlace(request).addOnSuccessListener((res) -> {
                                 Place place = res.getPlace();
-
+                                String distance;
+                                try {
+                                    DistanceMatrix distanceMatrix =
+                                            DistanceMatrixApi.newRequest(geoApiContext)
+                                                    .origins(new com.google.maps.model.LatLng(currentLocation.getLatitude(), currentLocation.getAltitude()))
+                                                    .destinations(convertLatLngType1_1(Objects.requireNonNull(place.getLatLng())))
+//                                                    .mode(TravelMode.WALKING)
+                                                    .units(Unit.METRIC)// m, km
+                                                    .await();
+                                    distance = distanceMatrix.rows[0].elements[0].distance.humanReadable;
+                                } catch (ApiException | InterruptedException | IOException e) {
+                                    throw new RuntimeException(e);
+                                }
                                 // Get the photo metadata.
                                 final List<PhotoMetadata> metadatas = place.getPhotoMetadatas();
                                 if (metadatas == null || metadatas.isEmpty()) {
@@ -486,7 +480,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                     return;
                                 }
                                 final PhotoMetadata photoMetadata = metadatas.get(0);
-
                                 // Create a FetchPhotoRequest.
                                 final FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
                                         .setMaxWidth(500) // Optional.
@@ -494,7 +487,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                         .build();
                                 placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
                                     Bitmap bitmap = fetchPhotoResponse.getBitmap();
-
                                     NearbyRestroomsManager.getInstance()
                                             .addRestroom(new NearbyRestroom(
                                                             new Restroom(
@@ -505,17 +497,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                                                     place.getName(),
                                                                     place.getAddress()
                                                             ),
-                                                    Boolean.TRUE.equals(place.isOpen())
+                                                            Boolean.TRUE.equals(place.isOpen()),
+                                                            distance
                                                     )
-
                                             );
                                     adaptor.notifyItemInserted(0);
-                                    recyclerView.smoothScrollToPosition(0);
 
                                 }).addOnFailureListener((exception) -> {
                                     if (exception instanceof ApiException) {
                                         final ApiException apiException = (ApiException) exception;
-                                        Log.e(TAG, "Place not found: " + exception.getMessage());
+                                        Log.e(TAG, "Photo not found: " + exception.getMessage());
                                     }
                                 });
 
@@ -550,29 +541,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 Log.d(TAG, "addRestroomIconOnMap: " + restroomsManager.getRestrooms().size());
                 for (int i = 0; i < restroomsManager.getRestrooms().size(); i++) {
                     Log.d(TAG, "addRestroomIconOnMap: added" + i);
-
                     Marker marker = googleMap.addMarker(new MarkerOptions()
                             .position(convertLatLngTypeV3_1(restroomsManager.getRestroomByIndex(i).getLatLng()))
                             .icon(BitmapDescriptorFactory.fromBitmap(
                                     getMarkerIconWithLabel(
                                             requireActivity(),
                                             restroomsManager.getRestroomByIndex(i).getOpeningStatus()))));
-
                     restroomsManager.getRestroomsList().get(i).setMarkerId(marker.getId());
 
                 }
+                NearbyRestroomsManager.getInstance().sortByDistance();
+                adaptor.notifyDataSetChanged();
+                recyclerView.smoothScrollToPosition(0);
             }
         });
-
     }
 
     private String saveRestroomPhotosToStorage(String placeId, Bitmap bitmap) {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
-        
         // hash photo with sha-1
         String sha1Photo;
         try {
@@ -581,7 +570,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
-
         String photoPath = "images/" + placeId + "/" + sha1Photo + ".jpg";
         StorageReference mountainImagesRef = storageRef.child(photoPath);
         UploadTask uploadTask = mountainImagesRef.putBytes(data);
@@ -596,7 +584,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 Log.d(TAG, "onSuccess: photo uploaded");
             }
         });
-
         return photoPath;
     }
 
@@ -607,7 +594,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onSuccess(Uri uri) {
 //                restroom.setPhotoUrl(String.valueOf(uri));
-
             }
         });
     }
@@ -652,10 +638,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         int itemRight = stickyInfoView.getRight();
         int threshold = (rcyWidth - itemWidth) / 2;
         // when item left edge is not attached to threshold
-        if ( (itemWidth + threshold) != itemRight ) {
+        if ((itemWidth + threshold) != itemRight) {
             // over half of the view is visible
             if (itemRight >= (itemWidth / 2)) {
-                recyclerView.smoothScrollBy( -(itemWidth - itemRight + threshold),0);// scroll back to the item
+                recyclerView.smoothScrollBy(-(itemWidth - itemRight + threshold), 0);// scroll back to the item
             }
             // under half of the view is visible
             else {

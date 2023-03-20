@@ -62,7 +62,7 @@ public class FavortieRestroomRecyclerViewAdaptor extends RecyclerView.Adapter<Fa
         holder.restroomAddress.setText(restroom.getAddress());
         holder.parentLayout.setOnClickListener(view -> {
             NavController controller = Navigation.findNavController(view);
-            NavDirections action = FavoriteFragmentDirections.actionNavFavoriteToNavgRrPgFragment(restroom);
+            NavDirections action = FavoriteFragmentDirections.actionNavFavoriteToNavgRrPgFragment(restroom, null, restroom);
             controller.navigate(action);
         });
 

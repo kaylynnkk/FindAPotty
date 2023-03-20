@@ -44,13 +44,4 @@ public class RestroomsManager<T extends Restroom> {
         return restroomList.size();
     }
 
-    public void sortByDistance() {
-        restroomList.sort(new Comparator<T>() {
-            @Override
-            public int compare(T t, T t1) {
-                return t.getName().compareToIgnoreCase(t1.getName());
-            }
-        });
-    }
-
 }

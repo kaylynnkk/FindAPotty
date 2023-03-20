@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.findapotty.databinding.NearbySingleRestroomPreviewBinding;
-import com.example.findapotty.user.FavoriteRestroomsManager;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -42,6 +41,7 @@ public class NearbyRestroomsRecyclerViewAdaptor extends RecyclerView.Adapter<Nea
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         NearbyRestroom restroom = NearbyRestroomsManager.getInstance().getRestroomByIndex(position);
         Log.d(TAG, "onBindViewHolder: " + restroom.getName());
+        Log.d(TAG, "onBindViewHolder: " + restroom.getCurrentDistanceText());
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         StorageReference ref = storageRef.child(restroom.getPhotoPath());
         ref.getDownloadUrl().addOnSuccessListener(uri -> {
@@ -53,10 +53,11 @@ public class NearbyRestroomsRecyclerViewAdaptor extends RecyclerView.Adapter<Nea
         });
         holder.restroomName.setText(restroom.getName());
         holder.restroomAddress.setText(restroom.getAddress());
+        holder.distance.setText(restroom.getCurrentDistanceText());
         holder.parentLayout.setOnClickListener(view -> {
             NavController controller = Navigation.findNavController(view);
             NavDirections action =
-                    MapFragmentDirections.actionMapFragment2ToRestroomPageBottomSheet2(restroom);
+                    MapFragmentDirections.actionMapFragment2ToRestroomPageBottomSheet2(restroom, restroom, null);
             controller.navigate(action);
         });
 
@@ -71,6 +72,7 @@ public class NearbyRestroomsRecyclerViewAdaptor extends RecyclerView.Adapter<Nea
         ImageView restroomPhoto;
         TextView restroomName;
         TextView restroomAddress;
+        TextView distance;
         RelativeLayout parentLayout;
 
         public ViewHolder(NearbySingleRestroomPreviewBinding binding) {
@@ -78,6 +80,7 @@ public class NearbyRestroomsRecyclerViewAdaptor extends RecyclerView.Adapter<Nea
             restroomPhoto = binding.nsrpRestroomPhoto;
             restroomName = binding.nsrpRestroomName;
             restroomAddress = binding.nsrpRestroomAddress;
+            distance = binding.nsrpDistance;
             parentLayout = binding.nearbyRestroomItem;
         }
     }

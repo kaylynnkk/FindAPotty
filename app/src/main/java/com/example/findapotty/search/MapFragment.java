@@ -69,6 +69,7 @@ import com.google.maps.PlacesApi;
 import com.google.maps.android.ui.IconGenerator;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.DistanceMatrix;
+import com.google.maps.model.DistanceMatrixElementStatus;
 import com.google.maps.model.PlacesSearchResponse;
 import com.google.maps.model.PlacesSearchResult;
 import com.google.maps.model.Unit;
@@ -358,7 +359,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
-                Restroom restroom = NearbyRestroomsManager.getInstance().getRestroomByMarkerId(marker.getId());
+                NearbyRestroom restroom = NearbyRestroomsManager.getInstance().getRestroomByMarkerId(marker.getId());
                 if (restroom != null) {
                     // insert to database
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -380,7 +381,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     try {
                         NavController controller = Navigation.findNavController(mMapView);
                         NavDirections action =
-                                MapFragmentDirections.actionMapFragment2ToRestroomPageBottomSheet2(restroom);
+                                MapFragmentDirections.actionMapFragment2ToRestroomPageBottomSheet2(restroom, restroom, null);
                         controller.navigate(action);
                         Log.d(TAG, "onMarkerClick: " + marker.getId());
                     } catch (IllegalArgumentException e) {
@@ -435,16 +436,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             .build();
                     try {
                         // get nearby restrooms
-                        PlacesSearchResponse response = PlacesApi.nearbySearchQuery(
+                        PlacesSearchResponse placesSearchResponse = PlacesApi.nearbySearchQuery(
                                         geoApiContext,
                                         convertLatLngType1_1(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
                                 )
                                 .radius(5000)
                                 .keyword("restroom")
                                 .await();
-                        Log.d(TAG, "onMyLocationButtonClick: restroom found " + response.results.length);
+                        Log.d(TAG, "onMyLocationButtonClick: restroom found " + placesSearchResponse.results.length);
                         // loop through all nearby restrooms
-                        for (PlacesSearchResult restroom : response.results) {
+                        for (PlacesSearchResult restroom : placesSearchResponse.results) {
                             // Specify the fields to return.
                             final List<Place.Field> placeFields = Arrays.asList(
                                     Place.Field.ADDRESS,
@@ -460,19 +461,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             PlacesClient placesClient = Places.createClient(requireActivity());
                             placesClient.fetchPlace(request).addOnSuccessListener((res) -> {
                                 Place place = res.getPlace();
-                                String distance;
-                                try {
-                                    DistanceMatrix distanceMatrix =
-                                            DistanceMatrixApi.newRequest(geoApiContext)
-                                                    .origins(new com.google.maps.model.LatLng(currentLocation.getLatitude(), currentLocation.getAltitude()))
-                                                    .destinations(convertLatLngType1_1(Objects.requireNonNull(place.getLatLng())))
-//                                                    .mode(TravelMode.WALKING)
-                                                    .units(Unit.METRIC)// m, km
-                                                    .await();
-                                    distance = distanceMatrix.rows[0].elements[0].distance.humanReadable;
-                                } catch (ApiException | InterruptedException | IOException e) {
-                                    throw new RuntimeException(e);
-                                }
                                 // Get the photo metadata.
                                 final List<PhotoMetadata> metadatas = place.getPhotoMetadatas();
                                 if (metadatas == null || metadatas.isEmpty()) {
@@ -486,22 +474,39 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                         .setMaxHeight(300) // Optional.
                                         .build();
                                 placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
-                                    Bitmap bitmap = fetchPhotoResponse.getBitmap();
-                                    NearbyRestroomsManager.getInstance()
-                                            .addRestroom(new NearbyRestroom(
-                                                            new Restroom(
-                                                                    convertLatLngTypeV3_2(place.getLatLng()),
-                                                                    place.getId(),
-                                                                    bitmap,
-                                                                    saveRestroomPhotosToStorage(place.getId(), bitmap),
-                                                                    place.getName(),
-                                                                    place.getAddress()
-                                                            ),
-                                                            Boolean.TRUE.equals(place.isOpen()),
-                                                            distance
-                                                    )
-                                            );
-                                    adaptor.notifyItemInserted(0);
+                                    // get distance
+                                    try {
+                                        DistanceMatrix distanceMatrix =
+                                                DistanceMatrixApi.newRequest(geoApiContext)
+                                                        .origins(new com.google.maps.model.LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
+                                                        .destinations(convertLatLngType1_1(Objects.requireNonNull(place.getLatLng())))
+//                                                    .mode(TravelMode.WALKING)
+                                                        .units(Unit.METRIC)// m, km
+                                                        .await();
+                                        Bitmap bitmap = fetchPhotoResponse.getBitmap();
+                                        // ***************** add restroom *****************
+                                        NearbyRestroomsManager.getInstance()
+                                                .addRestroom(new NearbyRestroom(
+                                                                new Restroom(
+                                                                        convertLatLngTypeV3_2(place.getLatLng()),
+                                                                        place.getId(),
+                                                                        bitmap,
+                                                                        saveRestroomPhotosToStorage(place.getId(), bitmap),
+                                                                        place.getName(),
+                                                                        place.getAddress()
+                                                                ),
+                                                                Boolean.TRUE.equals(place.isOpen()),
+                                                                distanceMatrix.rows[0].elements[0].status == DistanceMatrixElementStatus.OK ?
+                                                                        distanceMatrix.rows[0].elements[0].distance.inMeters : -1,
+                                                                distanceMatrix.rows[0].elements[0].status == DistanceMatrixElementStatus.OK ?
+                                                                        distanceMatrix.rows[0].elements[0].distance.humanReadable : "Unknown"
+                                                        )
+                                                );
+                                        adaptor.notifyItemInserted(0);
+
+                                    } catch (ApiException | InterruptedException | IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
 
                                 }).addOnFailureListener((exception) -> {
                                     if (exception instanceof ApiException) {

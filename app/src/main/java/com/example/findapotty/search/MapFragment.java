@@ -94,6 +94,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     FragmentMapBinding binding;
     private static final String TAG = "MapFragment";
     private RecyclerView recyclerView;
+    private LinearLayoutManager layoutManager;
     private NearbyRestroomsRecyclerViewAdaptor adaptor;
     private boolean onActiveScroll = false;
 
@@ -106,12 +107,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMapView.onResume(); // needed to get the map to display immediately
         Log.d(TAG, "onCreateView: map create");
 //        mSearchText = binding.inputSearch;
-        recyclerView = binding.fmNearbyRestrooms;
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adaptor = new NearbyRestroomsRecyclerViewAdaptor(getContext());
-        recyclerView.setAdapter(adaptor);
-        scrollToAttach();
+//        recyclerView = binding.fmNearbyRestrooms;
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+////        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        adaptor = new NearbyRestroomsRecyclerViewAdaptor(getContext(), googleMap);
+//        recyclerView.setAdapter(adaptor);
+//        scrollToAttach();
         return binding.getRoot();
     }
 
@@ -151,6 +152,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         this.googleMap = googleMap;
         permissionCheck();
         init();
+
+        recyclerView = binding.fmNearbyRestrooms;
+        layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adaptor = new NearbyRestroomsRecyclerViewAdaptor(getContext());
+        recyclerView.setAdapter(adaptor);
+        scrollToAttach();
+        
         // add marker on long press on map
         addMarker();
         // restroom info page
@@ -197,68 +207,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    /*
-        private void searchListener() {
-            Log.d(TAG, "init: initializing");
-            mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH
-                            || actionId == EditorInfo.IME_ACTION_DONE
-                            || keyEvent.getAction() == KeyEvent.ACTION_DOWN
-                            || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
-
-                        Log.d(TAG, "onEditorAction: " + mSearchText.getText().toString());
-
-                        //locate the address
-                        searchAddress();
-                    }
-                    return false;
-                }
-            });
-        }
-    */
-/*
-    private void searchAddress() {
-        Log.d(TAG, "geoLocate: geolocating");
-
-        String searchString = mSearchText.getText().toString();
-
-        Geocoder geocoder = new Geocoder(requireActivity()());
-        List<Address> list = new ArrayList<>();
-        try {
-            list = geocoder.getFromLocationName(searchString, 1);
-        } catch (IOException e) {
-            Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
-        }
-
-        if (list.size() > 0) {
-            Address address = list.get(0);
-
-
-            Log.d(TAG, "geoLocate: found a location: " + address.toString());
-            Toast.makeText(requireActivity()(), address.getAddressLine(0), Toast.LENGTH_SHORT).show();
-
-            float zoomLevel = 10f;
-            if (address.getFeatureName().equals(address.getCountryName())) { //probably a country
-                Log.d(TAG, "country");
-                zoomLevel = 3f;
-            } else if (address.getThoroughfare() != null) { // probably a street
-                Log.d(TAG, "street");
-                zoomLevel = 15f;
-            } else if (address.getFeatureName().equals(address.getAdminArea())) { // probably a state
-                Log.d(TAG, "state");
-                zoomLevel = 7f;
-            }
-
-
-            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), zoomLevel);
-
-        } else {
-            Toast.makeText(requireActivity()(), "Unable to fetch the entered address", Toast.LENGTH_SHORT).show();
-        }
-    }
-*/
     private void moveCamera(LatLng latLng, float zoom) {
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude);
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(
@@ -311,7 +259,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     // com.example.findapotty.model.LatLng ==> com.google.android.gms.maps.model.LatLng
-    com.google.android.gms.maps.model.LatLng convertLatLngTypeV3_1(com.example.findapotty.model.LatLng latLng) {
+    static com.google.android.gms.maps.model.LatLng convertLatLngTypeV3_1(com.example.findapotty.model.LatLng latLng) {
         return new com.google.android.gms.maps.model.LatLng(latLng.getLatitude(), latLng.getLongitude());
     }
 
@@ -630,6 +578,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         recyclerView.stopScroll();
                     }
                 }
+                int position = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+                Log.d(TAG, "smoothScrollToCenter: position " + position);
+                if (position >= 0) {
+                    moveCamera(
+                            convertLatLngTypeV3_1(
+                                    NearbyRestroomsManager.getInstance().getRestroomByIndex(
+                                            ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition()
+                                    ).getLatLng()
+                            ),
+                            googleMap.getCameraPosition().zoom
+                    );
+                }
+
             }
         });
 
@@ -653,5 +614,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 recyclerView.smoothScrollBy(itemRight - threshold, 0);// scroll to next item
             }
         }
+
     }
 }

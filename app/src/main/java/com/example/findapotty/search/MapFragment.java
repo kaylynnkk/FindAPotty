@@ -449,6 +449,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             .icon(Utils.getMarkerIconWithLabel(
                                     requireActivity(),
                                     restroomsManager.getRestroomByIndex(i).getOpeningStatus()))
+                            .zIndex(1)
                     );
                     if (marker != null) {
                         MapMarkersManager.getInstance().addMarker(marker);
@@ -494,31 +495,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void highlightMarkerIcon(int position) {
-        // move camera while scrolling
-        if (recyclerView.getLayoutManager() != null) {
-//            int position = currentRecyclerViewPosition;
-            Log.d(TAG, "smoothScrollToCenter: position " + position);
-            if (position >= 0) {
-                Log.d(TAG, "smoothScrollToCenter: jin lai mei???");
-                moveCamera(
-                        Utils.convertLatLngTypeV3_1(
-                                NearbyRestroomsManager.getInstance().getRestroomByIndex(position).getLatLng()
-                        ),
-                        googleMap.getCameraPosition().zoom
+        if (position >= 0) {
+            moveCamera(
+                    Utils.convertLatLngTypeV3_1(
+                            NearbyRestroomsManager.getInstance().getRestroomByIndex(position).getLatLng()
+                    ),
+                    googleMap.getCameraPosition().zoom
+            );
+            // set icon for selected marker
+            NearbyRestroom nearbyRestroom = NearbyRestroomsManager.getInstance().getRestroomByIndex(position);
+            Marker marker = MapMarkersManager.getInstance().getMarkerById(nearbyRestroom.getMarkerId());
+            if (marker != null) {
+                marker.setIcon(Utils.getMarkerIconWithLabelLarge(
+                                getContext(),
+                                nearbyRestroom.getOpeningStatus()
+                        )
                 );
-                // set icon for selected marker
-                NearbyRestroom nearbyRestroom = NearbyRestroomsManager.getInstance().getRestroomByIndex(position);
-                Marker marker = MapMarkersManager.getInstance().getMarkerById(nearbyRestroom.getMarkerId());
-                if (marker != null) {
-                    Log.d(TAG, "smoothScrollToCenter: change icon");
-                    marker.setIcon(Utils.getMarkerIconWithLabelLarge(
-                                    getContext(),
-                                    nearbyRestroom.getOpeningStatus()
-                            )
-                    );
-                }
+                marker.setZIndex(2);
             }
         }
+
     }
 
     private void resetMarkerIcon(int position) {
@@ -531,6 +527,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             nearbyRestroom.getOpeningStatus()
                     )
             );
+            marker.setZIndex(1);
         }
     }
 }

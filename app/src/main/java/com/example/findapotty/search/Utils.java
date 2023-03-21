@@ -13,9 +13,12 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.example.findapotty.R;
+import com.example.findapotty.databinding.MarkerRestroomLargeBinding;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.maps.android.ui.IconGenerator;
+
+import java.util.zip.Inflater;
 
 public class Utils {
 
@@ -34,9 +37,9 @@ public class Utils {
     static BitmapDescriptor getMarkerIconWithLabel(Context context, String markerLabel) {
         IconGenerator iconGenerator = new IconGenerator(context);
         @SuppressLint("InflateParams") View markerView = LayoutInflater.from(context).inflate(R.layout.marker_restroom, null);
-        ImageView imgMarker = markerView.findViewById(R.id.mr_marker_icon);
+//        ImageView imgMarker = markerView.findViewById(R.id.mr_marker_icon);
         TextView tvLabel = markerView.findViewById(R.id.mr_marker_label);
-        imgMarker.setImageResource(R.drawable.ic_map_marker_restroom);
+//        imgMarker.setImageResource(R.drawable.ic_map_marker_restroom);
         tvLabel.setText(markerLabel);
         iconGenerator.setContentView(markerView);
         iconGenerator.setBackground(null);
@@ -45,10 +48,10 @@ public class Utils {
 
     static BitmapDescriptor getMarkerIconWithLabelLarge(Context context, String markerLabel) {
         IconGenerator iconGenerator = new IconGenerator(context);
-        @SuppressLint("InflateParams") View markerView = LayoutInflater.from(context).inflate(R.layout.marker_restroom, null);
-        ImageView imgMarker = markerView.findViewById(R.id.mr_marker_icon);
-        TextView tvLabel = markerView.findViewById(R.id.mr_marker_label);
-        imgMarker.setImageResource(R.drawable.ic_map_marker_restroom_large);
+        @SuppressLint("InflateParams") View markerView = LayoutInflater.from(context).inflate(R.layout.marker_restroom_large, null);
+//        ImageView imgMarker = markerView.findViewById(R.id.mr_marker_icon);
+        TextView tvLabel = markerView.findViewById(R.id.mrl_marker_label);
+//        imgMarker.setImageResource(R.drawable.ic_map_marker_restroom_large);
         tvLabel.setText(markerLabel);
         iconGenerator.setContentView(markerView);
         iconGenerator.setBackground(null);

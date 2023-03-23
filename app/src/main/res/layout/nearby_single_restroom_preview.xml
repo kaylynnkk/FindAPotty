@@ -50,14 +50,13 @@
                     android:numStars="5"
                     android:rating="3.4"
                     app:layout_constraintBottom_toTopOf="@+id/nsrp_vg_2"
-                    app:layout_constraintStart_toStartOf="@+id/nsrp_hg_2"
-                    app:layout_constraintTop_toTopOf="@+id/nsrp_vg_3" />
+                    app:layout_constraintStart_toStartOf="@+id/nsrp_hg_4" />
 
                 <TextView
                     android:id="@+id/nsrp_restroom_address"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:maxLines="2"
+                    android:maxLines="3"
                     android:text="1234 address ave city, state"
                     android:ellipsize="end"
                     app:layout_constraintBottom_toTopOf="@+id/nsrp_vg_3"
@@ -81,16 +80,23 @@
                     app:layout_constraintStart_toStartOf="@+id/nsrp_hg_2"
                     app:layout_constraintTop_toTopOf="@+id/nsrp_vg_1" />
 
-                <ImageView
-                    android:id="@+id/nsrp_restroom_photo"
+                <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_alignParentBottom="true"
-                    app:layout_constraintBottom_toTopOf="@+id/nsrp_vg_2"
+                    app:cardCornerRadius="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/nsrp_vg_3"
                     app:layout_constraintEnd_toStartOf="@+id/nsrp_hg_1"
                     app:layout_constraintStart_toStartOf="@+id/nsrp_hg_4"
-                    app:layout_constraintTop_toTopOf="@+id/nsrp_vg_1"
-                    app:srcCompat="@drawable/ic_launcher_background" />
+                    app:layout_constraintTop_toTopOf="@+id/nsrp_vg_1">
+
+                    <ImageView
+                        android:id="@+id/nsrp_restroom_photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_launcher_background"/>
+                </androidx.cardview.widget.CardView>
+
 
                 <TextView
                     android:id="@+id/nsrp_distance"
@@ -98,8 +104,7 @@
                     android:layout_height="wrap_content"
                     android:text="Distance"
                     app:layout_constraintBottom_toTopOf="@+id/nsrp_vg_2"
-                    app:layout_constraintEnd_toStartOf="@+id/nsrp_hg_3"
-                    app:layout_constraintTop_toTopOf="@+id/nsrp_vg_3" />
+                    app:layout_constraintEnd_toStartOf="@+id/nsrp_hg_3" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/nsrp_hg_1"
@@ -134,14 +139,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.05" />
+                    app:layout_constraintGuide_percent="0.08" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/nsrp_vg_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.76" />
+                    app:layout_constraintGuide_percent="0.63" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/nsrp_vg_2"

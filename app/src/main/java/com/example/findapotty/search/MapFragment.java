@@ -305,10 +305,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         currentLocation = location;
                         Log.d(TAG, "onSuccess: current location fetched" + currentLocation.getLatitude()
                                 + ", " + currentLocation.getLongitude());
+                        moveCamera(new LatLng(location.getLatitude(), location.getLongitude()), 12);
                     } else {
+                        Toast.makeText(requireActivity(), "Failed to fetch current location", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "onSuccess: failed to fetch current location");
                     }
-                    moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 12);
                 }
             });
         }

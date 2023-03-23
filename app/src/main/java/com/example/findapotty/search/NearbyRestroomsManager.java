@@ -2,8 +2,6 @@ package com.example.findapotty.search;
 
 import com.example.findapotty.model.RestroomsManager;
 
-import java.util.Comparator;
-
 public class NearbyRestroomsManager extends RestroomsManager<NearbyRestroom> {
 
     private static NearbyRestroomsManager instance;
@@ -25,6 +23,15 @@ public class NearbyRestroomsManager extends RestroomsManager<NearbyRestroom> {
             }
         }
         return null;
+    }
+
+    public int getRestroomIndexByMarkerId(String markId) {
+        for (int i = 0; i < getRestroomsList().size(); i++) {
+            if (getRestroomByIndex(i).getMarkerId().equals(markId)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public void sortByDistance() {

@@ -125,6 +125,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMapView.getMapAsync(this);
     }
 
+    @SuppressLint("PotentialBehaviorOverride")
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.googleMap = googleMap;
@@ -134,7 +135,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // add marker on long press on map
 //        addMarker();
         // restroom info page
-        displayRestroomPage();
+//        displayRestroomPage();
+        googleMap.setOnMarkerClickListener((Marker marker) -> {
+            scrollRcyToPosition(marker);
+            return true;
+        });
         googleMap.setOnMyLocationButtonClickListener(() -> {
             getDeviceLocation();
             return true;
@@ -481,6 +486,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     )
             );
             marker.setZIndex(1);
+        }
+    }
+
+    private void scrollRcyToPosition(Marker marker) {
+        int index = NearbyRestroomsManager.getInstance().getRestroomIndexByMarkerId(marker.getId());
+        if (index != -1) {
+            recyclerView.smoothScrollToPosition(index);
         }
     }
 

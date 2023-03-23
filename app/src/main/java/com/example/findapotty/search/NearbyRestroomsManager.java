@@ -28,11 +28,9 @@ public class NearbyRestroomsManager extends RestroomsManager<NearbyRestroom> {
     }
 
     public void sortByDistance() {
-        getRestroomsList().sort(new Comparator<NearbyRestroom>() {
-            @Override
-            public int compare(NearbyRestroom nearbyRestroom, NearbyRestroom other) {
-                return Long.compareUnsigned(nearbyRestroom.getCurrentDistance(), other.getCurrentDistance());
-            }
-        });
+        getRestroomsList().sort(
+                (nearbyRestroom, other) ->
+                        Long.compareUnsigned(nearbyRestroom.getCurrentDistance(), other.getCurrentDistance())
+        );
     }
 }

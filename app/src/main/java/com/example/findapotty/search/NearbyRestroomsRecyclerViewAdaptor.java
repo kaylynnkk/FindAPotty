@@ -43,14 +43,16 @@ public class NearbyRestroomsRecyclerViewAdaptor extends RecyclerView.Adapter<Nea
         Log.d(TAG, "onBindViewHolder: " + restroom.getName());
         Log.d(TAG, "onBindViewHolder: " + restroom.getCurrentDistanceText());
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        StorageReference ref = storageRef.child(restroom.getPhotoPath());
-        ref.getDownloadUrl().addOnSuccessListener(uri -> {
-            Glide.with(context)
-                    .asBitmap()
-                    .dontAnimate()
-                    .load(uri)
-                    .into(holder.restroomPhoto);
-        });
+        if (restroom.getPhotoPath() != null) {
+            StorageReference ref = storageRef.child(restroom.getPhotoPath());
+            ref.getDownloadUrl().addOnSuccessListener(uri -> {
+                Glide.with(context)
+                        .asBitmap()
+                        .dontAnimate()
+                        .load(uri)
+                        .into(holder.restroomPhoto);
+            });
+        }
         holder.restroomName.setText(restroom.getName());
         holder.restroomAddress.setText(restroom.getAddress());
         holder.distance.setText(restroom.getCurrentDistanceText());

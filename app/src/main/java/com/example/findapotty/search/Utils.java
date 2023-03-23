@@ -7,18 +7,14 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
 import com.example.findapotty.R;
-import com.example.findapotty.databinding.MarkerRestroomLargeBinding;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.maps.android.ui.IconGenerator;
-
-import java.util.zip.Inflater;
 
 public class Utils {
 
@@ -43,7 +39,7 @@ public class Utils {
         tvLabel.setText(markerLabel);
         iconGenerator.setContentView(markerView);
         iconGenerator.setBackground(null);
-        return BitmapDescriptorFactory.fromBitmap( iconGenerator.makeIcon(markerLabel) );
+        return BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon(markerLabel));
     }
 
     static BitmapDescriptor getMarkerIconWithLabelLarge(Context context, String markerLabel) {
@@ -55,7 +51,7 @@ public class Utils {
         tvLabel.setText(markerLabel);
         iconGenerator.setContentView(markerView);
         iconGenerator.setBackground(null);
-        return BitmapDescriptorFactory.fromBitmap( iconGenerator.makeIcon(markerLabel) );
+        return BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon(markerLabel));
     }
 
     // com.google.android.gms.maps.model.LatLng ==> com.google.maps.model.LatLng
@@ -66,6 +62,11 @@ public class Utils {
     // com.google.maps.model.LatLng ==> com.google.android.gms.maps.model.LatLng
     static com.google.android.gms.maps.model.LatLng convertLatLngTypeV1_2(com.google.maps.model.LatLng latLng) {
         return new com.google.android.gms.maps.model.LatLng(latLng.lat, latLng.lng);
+    }
+
+    //
+    static com.example.findapotty.model.LatLng convertLatLngTypeV2_1(com.google.maps.model.LatLng latLng) {
+        return new com.example.findapotty.model.LatLng(latLng.lat, latLng.lng);
     }
 
     // com.example.findapotty.model.LatLng ==> com.google.android.gms.maps.model.LatLng

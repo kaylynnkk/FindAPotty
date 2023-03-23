@@ -3,6 +3,7 @@ package com.example.findapotty.search;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,7 +27,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.findapotty.BuildConfig;
 import com.example.findapotty.R;
 import com.example.findapotty.databinding.FragmentMapBinding;
-import com.example.findapotty.model.Restroom;
 import com.example.findapotty.user.User;
 import com.example.findapotty.user.VisitedRestroom;
 import com.example.findapotty.user.VisitedRestroomsManager;
@@ -43,12 +43,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.PhotoMetadata;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.FetchPhotoRequest;
-import com.google.android.libraries.places.api.net.FetchPlaceRequest;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DatabaseReference;
@@ -56,12 +50,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.google.maps.DistanceMatrixApi;
+import com.google.maps.DistanceMatrixApiRequest;
 import com.google.maps.GeoApiContext;
+import com.google.maps.ImageResult;
+import com.google.maps.PhotoRequest;
+import com.google.maps.PlaceDetailsRequest;
 import com.google.maps.PlacesApi;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.DistanceMatrixElementStatus;
+import com.google.maps.model.PlaceDetails;
 import com.google.maps.model.PlacesSearchResponse;
 import com.google.maps.model.PlacesSearchResult;
 import com.google.maps.model.Unit;
@@ -71,10 +69,7 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Objects;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -87,9 +82,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private NearbyRestroomsRecyclerViewAdaptor adaptor;
-    private int currentRecyclerViewPosition;
     private int prevSnapPosition = 0;
-    private boolean onActiveScroll = false;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -109,8 +102,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // save map state
         MapStateManager mgr = new MapStateManager(requireActivity());
         mgr.saveMapState(googleMap);
-//        Toast.makeText(requireActivity()(), "Map State has been save", Toast.LENGTH_SHORT).show();
-//        MapStateManager.getInstance().saveGoogleMap(googleMap);
     }
 
     @Override
@@ -124,6 +115,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy: ");
+        MapMarkersManager.getInstance().getMarkers().clear();
     }
 
     @Override
@@ -140,11 +132,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         init();
         initRecyclerView();
         // add marker on long press on map
-        addMarker();
+//        addMarker();
         // restroom info page
         displayRestroomPage();
-        getNearbyRestrooms();
-        addRestroomIconOnMap();
+        googleMap.setOnMyLocationButtonClickListener(() -> {
+            getDeviceLocation();
+            return true;
+        });
+        binding.mapShowRrButton.setOnClickListener((view) -> addRestroomIconOnMap());
 
 
     }
@@ -176,7 +171,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
         // UI Section
         // zoom in/out button
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
+//        googleMap.getUiSettings().setZoomControlsEnabled(true);
         // device location
         if (grantedDeviceLocation) {
             googleMap.setMyLocationEnabled(true);
@@ -201,6 +196,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 int position = linearSnapHelper.findTargetSnapPosition(layoutManager, 0, 0);
                 Log.d(TAG, "onScrollStateChanged: cur pos " + position);
                 if (prevSnapPosition != position) {
+                    Log.d(TAG, "onScrollStateChanged: going another restroom");
+                    Log.d(TAG, "onScrollStateChanged: prev" + prevSnapPosition + " " + "cur pos");
                     resetMarkerIcon(prevSnapPosition);
                     highlightMarkerIcon(position);
                     prevSnapPosition = position;
@@ -300,168 +297,125 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 public void onSuccess(Location location) {
                     // Got last known location. In some rare situations this can be null.
                     if (location != null) {
-                        currentLocation = new Location(location);
-//                        setCurrentLocation(location);
-//                        currentLocation = location;
+                        currentLocation = location;
                         Log.d(TAG, "onSuccess: current location fetched" + currentLocation.getLatitude()
                                 + ", " + currentLocation.getLongitude());
-//                                moveCamera(new LatLng(location.getLatitude(), location.getLongitude()), 12);
-                        // Logic to handle location object
                     } else {
                         Log.d(TAG, "onSuccess: failed to fetch current location");
                     }
+                    moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 12);
                 }
             });
         }
     }
 
     /*
-     * 1. get device location
-     * 2. http request using okhttp object
-     * 3. parse json response to get restroom lat and lng
-     * 4. add marker on map using lat and lng
+     * 1. fetch nearby places
+     * 2. fetch place metadata
+     * 3. fetch photos
+     * 4. fetch distance
      */
     private void getNearbyRestrooms() {
-        getDeviceLocation();
-        googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-            @Override
-            public boolean onMyLocationButtonClick() {
-                moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 12);
-                if (currentLocation != null) {
-                    GeoApiContext geoApiContext = new GeoApiContext.Builder()
-                            .apiKey(BuildConfig.MAPS_API_KEY)
-                            .build();
-                    try {
-                        // get nearby restrooms
-                        PlacesSearchResponse placesSearchResponse = PlacesApi.nearbySearchQuery(
-                                        geoApiContext,
-                                        Utils.convertLatLngType1_1(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
-                                )
-                                .radius(5000)
-                                .keyword("restroom")
-                                .await();
-                        Log.d(TAG, "onMyLocationButtonClick: restroom found " + placesSearchResponse.results.length);
-                        // loop through all nearby restrooms
-                        for (PlacesSearchResult restroom : placesSearchResponse.results) {
-                            // Specify the fields to return.
-                            final List<Place.Field> placeFields = Arrays.asList(
-                                    Place.Field.ADDRESS,
-                                    Place.Field.LAT_LNG,
-                                    Place.Field.PHOTO_METADATAS,
-                                    Place.Field.ID,
-                                    Place.Field.NAME,
-                                    Place.Field.OPENING_HOURS, Place.Field.UTC_OFFSET, Place.Field.BUSINESS_STATUS
-                            );
-                            // Construct a request object, passing the place ID and fields array.
-                            final FetchPlaceRequest request = FetchPlaceRequest.newInstance(restroom.placeId, placeFields);
-                            Places.initialize(requireActivity(), BuildConfig.MAPS_API_KEY);
-                            PlacesClient placesClient = Places.createClient(requireActivity());
-                            placesClient.fetchPlace(request).addOnSuccessListener((res) -> {
-                                Place place = res.getPlace();
-                                // Get the photo metadata.
-                                final List<PhotoMetadata> metadatas = place.getPhotoMetadatas();
-                                if (metadatas == null || metadatas.isEmpty()) {
-                                    Log.w(TAG, "No photo metadata.");
-                                    return;
-                                }
-                                final PhotoMetadata photoMetadata = metadatas.get(0);
-                                // Create a FetchPhotoRequest.
-                                final FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
-                                        .setMaxWidth(500) // Optional.
-                                        .setMaxHeight(300) // Optional.
-                                        .build();
-                                placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
-                                    // get distance
-                                    try {
-                                        DistanceMatrix distanceMatrix =
-                                                DistanceMatrixApi.newRequest(geoApiContext)
-                                                        .origins(new com.google.maps.model.LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
-                                                        .destinations(Utils.convertLatLngType1_1(Objects.requireNonNull(place.getLatLng())))
-//                                                    .mode(TravelMode.WALKING)
-                                                        .units(Unit.METRIC)// m, km
-                                                        .await();
-                                        Bitmap bitmap = fetchPhotoResponse.getBitmap();
-                                        // ***************** add restroom *****************
-                                        NearbyRestroomsManager.getInstance()
-                                                .addRestroom(new NearbyRestroom(
-                                                                new Restroom(
-                                                                        Utils.convertLatLngTypeV3_2(place.getLatLng()),
-                                                                        place.getId(),
-                                                                        bitmap,
-                                                                        saveRestroomPhotosToStorage(place.getId(), bitmap),
-                                                                        place.getName(),
-                                                                        place.getAddress()
-                                                                ),
-                                                                Boolean.TRUE.equals(place.isOpen()),
-                                                                distanceMatrix.rows[0].elements[0].status == DistanceMatrixElementStatus.OK ?
-                                                                        distanceMatrix.rows[0].elements[0].distance.inMeters : -1,
-                                                                distanceMatrix.rows[0].elements[0].status == DistanceMatrixElementStatus.OK ?
-                                                                        distanceMatrix.rows[0].elements[0].distance.humanReadable : "Unknown"
-                                                        )
-                                                );
-                                        adaptor.notifyItemInserted(0);
-
-                                    } catch (ApiException | InterruptedException | IOException e) {
-                                        throw new RuntimeException(e);
-                                    }
-
-                                }).addOnFailureListener((exception) -> {
-                                    if (exception instanceof ApiException) {
-                                        final ApiException apiException = (ApiException) exception;
-                                        Log.e(TAG, "Photo not found: " + exception.getMessage());
-                                    }
-                                });
-
-
-                            }).addOnFailureListener((exception) -> {
-                                if (exception instanceof ApiException) {
-                                    final ApiException apiException = (ApiException) exception;
-                                    Log.e(TAG, "Place not found: " + exception.getMessage());
-                                }
-                            });
-
-                        }
-
-                    } catch (ApiException | InterruptedException | IOException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                } else {
-                    Log.d(TAG, "getNearbyRestrooms: failed to fetch current location ");
-                }
-                return true;
-            }
-        });
-    }
-
-    private void addRestroomIconOnMap() {
-//        getNearbyRestrooms();
-        binding.mapShowRrButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recyclerView.setVisibility(View.VISIBLE);
-                NearbyRestroomsManager restroomsManager = NearbyRestroomsManager.getInstance();
-                Log.d(TAG, "addRestroomIconOnMap: " + restroomsManager.getRestrooms().size());
-                for (int i = 0; i < restroomsManager.getRestrooms().size(); i++) {
-                    Log.d(TAG, "addRestroomIconOnMap: added" + i);
+        if (currentLocation != null) {
+            GeoApiContext geoApiContext = new GeoApiContext.Builder()
+                    .apiKey(BuildConfig.MAPS_API_KEY)
+                    .build();
+            try {
+                // 1. fetch nearby places
+                PlacesSearchResponse placesSearchResponse = PlacesApi.nearbySearchQuery(
+                                geoApiContext,
+                                Utils.convertLatLngType1_1(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
+                        )
+                        .radius(5000)
+                        .keyword("restroom")
+                        .await();
+                Log.d(TAG, "onMyLocationButtonClick: restroom found " + placesSearchResponse.results.length);
+                for (PlacesSearchResult restroom : placesSearchResponse.results) {
+                    NearbyRestroom nearbyRestroom = new NearbyRestroom();
+                    // Specify the fields to return.
+                    final PlaceDetailsRequest.FieldMask[] placeFieldMasks = {
+                            PlaceDetailsRequest.FieldMask.FORMATTED_ADDRESS,
+                            PlaceDetailsRequest.FieldMask.GEOMETRY_LOCATION_LAT,
+                            PlaceDetailsRequest.FieldMask.GEOMETRY_LOCATION_LNG,
+                            PlaceDetailsRequest.FieldMask.PHOTOS,
+                            PlaceDetailsRequest.FieldMask.PLACE_ID,
+                            PlaceDetailsRequest.FieldMask.NAME,
+                            PlaceDetailsRequest.FieldMask.OPENING_HOURS,
+                            PlaceDetailsRequest.FieldMask.UTC_OFFSET,
+                            PlaceDetailsRequest.FieldMask.BUSINESS_STATUS
+                    };
+                    // 2. fetch place metadata
+                    PlaceDetails placeDetails = new PlaceDetailsRequest(geoApiContext).
+                            placeId(restroom.placeId)
+                            .fields(placeFieldMasks)
+                            .await();
+                    // set attributes for restrooms
+                    nearbyRestroom.setLatLng(Utils.convertLatLngTypeV2_1(placeDetails.geometry.location));
+                    nearbyRestroom.setPlaceID(placeDetails.placeId);
+                    nearbyRestroom.setName(placeDetails.name);
+                    nearbyRestroom.setAddress(placeDetails.formattedAddress);
+                    nearbyRestroom.setOpenNow(placeDetails.openingHours != null ?
+                            placeDetails.openingHours.openNow : false);
+                    // add marker on map
                     Marker marker = googleMap.addMarker(new MarkerOptions()
-                            .position(Utils.convertLatLngTypeV3_1(restroomsManager.getRestroomByIndex(i).getLatLng()))
+                            .position(Utils.convertLatLngTypeV1_2(placeDetails.geometry.location))
                             .icon(Utils.getMarkerIconWithLabel(
                                     requireActivity(),
-                                    restroomsManager.getRestroomByIndex(i).getOpeningStatus()))
+                                    nearbyRestroom.getOpeningStatus()))
                             .zIndex(1)
                     );
                     if (marker != null) {
                         MapMarkersManager.getInstance().addMarker(marker);
-                        restroomsManager.getRestroomsList().get(i).setMarkerId(marker.getId());
+                        nearbyRestroom.setMarkerId(marker.getId());
                     }
+                    // 3. fetch photos
+                    if (placeDetails.photos != null) {
+                        ImageResult imageResult = new PhotoRequest(geoApiContext)
+                                .photoReference(placeDetails.photos[0].photoReference)
+                                .maxWidth(500)
+                                .maxHeight(300)
+                                .await();
+                        // set attributes for restrooms
+                        Bitmap photoBitmap =
+                                BitmapFactory.decodeByteArray(imageResult.imageData, 0, imageResult.imageData.length);
+                        nearbyRestroom.setPhotoBitmap(photoBitmap);
+                        nearbyRestroom.setPhotoPath(saveRestroomPhotosToStorage(placeDetails.placeId, photoBitmap));
+                    }
+                    // 4. fetch distance
+                    DistanceMatrix distanceMatrix = new DistanceMatrixApiRequest(geoApiContext)
+                            .origins(new com.google.maps.model.LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
+                            .destinations(placeDetails.geometry.location)
+//                            .mode(TravelMode.WALKING)
+                            .units(Unit.METRIC)// m, km
+                            .await();
+                    // set attributes for restrooms
+                    nearbyRestroom.setCurrentDistance(
+                            distanceMatrix.rows[0].elements[0].status == DistanceMatrixElementStatus.OK ?
+                                    distanceMatrix.rows[0].elements[0].distance.inMeters : Long.MAX_VALUE
+                    );
+                    nearbyRestroom.setCurrentDistanceText(
+                            distanceMatrix.rows[0].elements[0].status == DistanceMatrixElementStatus.OK ?
+                                    distanceMatrix.rows[0].elements[0].distance.humanReadable : "Unknown"
+                    );
+                    NearbyRestroomsManager.getInstance().addRestroom(nearbyRestroom);
                 }
-                // sort restrooms
-                NearbyRestroomsManager.getInstance().sortByDistance();
-                adaptor.notifyDataSetChanged();
-                recyclerView.smoothScrollToPosition(0);
+
+            } catch (ApiException | InterruptedException | IOException e) {
+                throw new RuntimeException(e);
             }
-        });
+
+        } else {
+            Log.d(TAG, "getNearbyRestrooms: failed to fetch current location ");
+        }
+    }
+
+    private void addRestroomIconOnMap() {
+        recyclerView.setVisibility(View.VISIBLE);
+        getNearbyRestrooms();
+        // sort restrooms
+        NearbyRestroomsManager.getInstance().sortByDistance();
+        adaptor.notifyDataSetChanged();
+        recyclerView.smoothScrollToPosition(0);
     }
 
     private String saveRestroomPhotosToStorage(String placeId, Bitmap bitmap) {
@@ -514,7 +468,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 marker.setZIndex(2);
             }
         }
-
     }
 
     private void resetMarkerIcon(int position) {
@@ -530,4 +483,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             marker.setZIndex(1);
         }
     }
+
 }

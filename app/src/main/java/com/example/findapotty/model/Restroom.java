@@ -28,34 +28,14 @@ public class Restroom implements Parcelable {
         this.address = address;
     }
 
-    public Restroom(Restroom that){
+    public Restroom(Restroom that) {
         this(
                 that.getLatLng(), that.getPlaceID(), that.getPhotoBitmap(),
                 that.getPhotoPath(), that.getName(), that.getAddress()
         );
     }
 
-    public Restroom(){}
-
-    protected Restroom(Parcel in) {
-        latLng = in.readParcelable(LatLng.class.getClassLoader());
-        placeID = in.readString();
-        photoBitmap = in.readParcelable(Bitmap.class.getClassLoader());
-        name = in.readString();
-        address = in.readString();
-    }
-
-    public static final Creator<Restroom> CREATOR = new Creator<Restroom>() {
-        @Override
-        public Restroom createFromParcel(Parcel in) {
-            return new Restroom(in);
-        }
-
-        @Override
-        public Restroom[] newArray(int size) {
-            return new Restroom[size];
-        }
-    };
+    public Restroom() {}
 
     public String getName() {
         return name;
@@ -84,6 +64,30 @@ public class Restroom implements Parcelable {
         return photoPath;
     }
 
+    public void setLatLng(LatLng latLng) {
+        this.latLng = latLng;
+    }
+
+    public void setPlaceID(String placeID) {
+        this.placeID = placeID;
+    }
+
+    public void setPhotoBitmap(Bitmap photoBitmap) {
+        this.photoBitmap = photoBitmap;
+    }
+
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -97,4 +101,24 @@ public class Restroom implements Parcelable {
         parcel.writeString(name);
         parcel.writeString(address);
     }
+
+    protected Restroom(Parcel in) {
+        latLng = in.readParcelable(LatLng.class.getClassLoader());
+        placeID = in.readString();
+        photoBitmap = in.readParcelable(Bitmap.class.getClassLoader());
+        name = in.readString();
+        address = in.readString();
+    }
+
+    public static final Creator<Restroom> CREATOR = new Creator<Restroom>() {
+        @Override
+        public Restroom createFromParcel(Parcel in) {
+            return new Restroom(in);
+        }
+
+        @Override
+        public Restroom[] newArray(int size) {
+            return new Restroom[size];
+        }
+    };
 }

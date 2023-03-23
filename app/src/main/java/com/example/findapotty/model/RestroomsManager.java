@@ -40,6 +40,11 @@ public class RestroomsManager<T extends Restroom> {
         restrooms.remove(placeId);
     }
 
+    public void clear() {
+        restrooms.clear();
+        restroomList.clear();
+    }
+
     public int getCount() {
         return restroomList.size();
     }

@@ -20,6 +20,8 @@ public class NearbyRestroom extends Restroom {
         this.currentDistanceText = currentDistanceText;
     }
 
+    public NearbyRestroom() {}
+
     public String getMarkerId() {
         return markerId;
     }
@@ -28,7 +30,7 @@ public class NearbyRestroom extends Restroom {
         this.markerId = markerId;
     }
 
-    public boolean isOpen_now() {
+    public boolean isOpenNow() {
         return isOpen;
     }
 
@@ -46,6 +48,18 @@ public class NearbyRestroom extends Restroom {
         } else {
             return "Closed";
         }
+    }
+
+    public void setOpenNow(boolean open) {
+        isOpen = open;
+    }
+
+    public void setCurrentDistance(long currentDistance) {
+        this.currentDistance = currentDistance;
+    }
+
+    public void setCurrentDistanceText(String currentDistanceText) {
+        this.currentDistanceText = currentDistanceText;
     }
 
     public static final Creator<NearbyRestroom> CREATOR = new Creator<NearbyRestroom>() {

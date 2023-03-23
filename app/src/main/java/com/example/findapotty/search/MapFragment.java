@@ -356,7 +356,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                         PlaceDetailsRequest.FieldMask.NAME,
                                         PlaceDetailsRequest.FieldMask.OPENING_HOURS,
                                         PlaceDetailsRequest.FieldMask.UTC_OFFSET,
-                                        PlaceDetailsRequest.FieldMask.BUSINESS_STATUS
+                                        PlaceDetailsRequest.FieldMask.BUSINESS_STATUS,
+                                        PlaceDetailsRequest.FieldMask.RATING
                                 };
                                 // 2. fetch place metadata
                                 PlaceDetails placeDetails = new PlaceDetailsRequest(geoApiContext).
@@ -372,6 +373,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 nearbyRestroom.setAddress(placeDetails.formattedAddress);
                                 nearbyRestroom.setOpenNow(placeDetails.openingHours != null ?
                                         placeDetails.openingHours.openNow : false);
+                                nearbyRestroom.setRating(placeDetails.rating);
                                 // 3. fetch photos
                                 if (placeDetails.photos != null) {
                                     ImageResult imageResult = new PhotoRequest(geoApiContext)

@@ -1,10 +1,12 @@
 package com.example.findapotty.search;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -56,6 +58,10 @@ public class NearbyRestroomsRecyclerViewAdaptor extends RecyclerView.Adapter<Nea
         holder.restroomName.setText(restroom.getName());
         holder.restroomAddress.setText(restroom.getAddress());
         holder.distance.setText(restroom.getCurrentDistanceText());
+        holder.ratingText.setText(String.valueOf(restroom.getRating()));
+        holder.ratingBar.setRating(restroom.getRating());
+        holder.openingStatus.setText(restroom.getOpeningStatus());
+        holder.openingStatus.setTextColor(restroom.isOpenNow() ? Color.parseColor("#169d48") : Color.RED);
         holder.parentLayout.setOnClickListener(view -> {
             NavController controller = Navigation.findNavController(view);
             NavDirections action =
@@ -75,6 +81,9 @@ public class NearbyRestroomsRecyclerViewAdaptor extends RecyclerView.Adapter<Nea
         TextView restroomName;
         TextView restroomAddress;
         TextView distance;
+        TextView ratingText;
+        RatingBar ratingBar;
+        TextView openingStatus;
         RelativeLayout parentLayout;
 
         public ViewHolder(NearbySingleRestroomPreviewBinding binding) {
@@ -83,6 +92,9 @@ public class NearbyRestroomsRecyclerViewAdaptor extends RecyclerView.Adapter<Nea
             restroomName = binding.nsrpRestroomName;
             restroomAddress = binding.nsrpRestroomAddress;
             distance = binding.nsrpDistance;
+            ratingText = binding.nsrpRatingText;
+            ratingBar = binding.nsrpRatingBar;
+            openingStatus = binding.nsrpOpeningStatus;
             parentLayout = binding.nearbyRestroomItem;
         }
     }

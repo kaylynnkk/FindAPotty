@@ -39,15 +39,15 @@
 
             <ImageView
                 android:id="@+id/icon_segment"
-                android:layout_width="64dp"
+                android:layout_width="68dp"
                 android:layout_height="55dp"
-                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginStart="344dp"
-                android:layout_marginEnd="3dp"
-                android:src="@drawable/icon_segment"
+                android:layout_marginTop="49dp"
+                android:layout_marginEnd="6dp"
                 android:clickable="true"
-                android:onClick="myOnClickMethod"/>
+                android:onClick="myOnClickMethod"
+                android:src="@drawable/icon_segment" />
 
         </RelativeLayout>
 

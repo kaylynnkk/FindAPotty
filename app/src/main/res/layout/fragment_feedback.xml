@@ -5,22 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/inputMessage"
+    <EditText
+        android:id="@+id/messagedata"
         android:layout_width="349dp"
-        android:layout_height="180dp"
+        android:layout_height="72dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/rectangle"
         android:inputType="textLongMessage"
+        android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/message" />
 
-    <TextView
-        android:id="@+id/input_Email"
+    <EditText
+        android:id="@+id/emaildata"
         android:layout_width="349dp"
         android:layout_height="46dp"
         android:layout_marginTop="16dp"
+        android:padding="8dp"
         android:background="@drawable/rectangle"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +40,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.089"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_Email" />
+        app:layout_constraintTop_toBottomOf="@+id/emaildata" />
 
     <TextView
         android:id="@+id/email"
@@ -51,7 +53,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.083"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputName" />
+        app:layout_constraintTop_toBottomOf="@+id/namedata" />
 
     <TextView
         android:id="@+id/feedback"
@@ -78,11 +80,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
-    <TextView
-        android:id="@+id/inputName"
+    <EditText
+        android:id="@+id/namedata"
         android:layout_width="349dp"
         android:layout_height="46dp"
         android:layout_marginTop="8dp"
+        android:padding="8dp"
         android:background="@drawable/rectangle"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
@@ -97,7 +100,9 @@
         android:text="submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputMessage" />
+        app:layout_constraintTop_toBottomOf="@+id/messagedata"
+        android:clickable="true"
+        android:onClick="onClick"/>
 
     <TextView
         android:id="@+id/textView12"

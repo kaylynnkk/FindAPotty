@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/overall_navigation"
-    app:startDestination="@id/navg_login_fragment">
+    app:startDestination="@id/navg_login_fragment"
+    tools:ignore="ExtraText">
     <fragment
         android:id="@+id/navg_login_fragment"
         android:name="com.example.findapotty.login.LoginFragment"
@@ -86,6 +87,7 @@
     <fragment
         android:id="@+id/addRestroomReviewFragment"
         android:name="com.example.findapotty.search.restroompage.AddRestroomReviewFragment"
+
         android:label="Add Review" />
     <fragment
         android:id="@+id/nav_favorite"
@@ -109,4 +111,30 @@
         android:id="@+id/nav_history"
         android:name="com.example.findapotty.history.HistoryFragment"
         android:label="History" />
+
+        android:label="AddRestroomReviewFragment" />
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.findapotty.profile.ProfileFragment"
+        android:label="activity_not_login"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_nav_profile_to_nav_segment"
+            app:destination="@id/nav_segment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_segment"
+        android:name="com.example.findapotty.segment.SegmentFragment"
+        android:label="SegmentFragment"
+        tools:layout="@layout/fragment_segment" >
+        <action
+            android:id="@+id/action_nav_segment_to_nav_feedback"
+            app:destination="@id/nav_feedback" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_feedback"
+        android:name="com.example.findapotty.feedback.FeedbackFragment"
+        android:label="FeedbackFragment"
+        tools:layout="@layout/fragment_feedback" />
+
 </navigation>

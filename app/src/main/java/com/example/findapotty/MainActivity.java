@@ -1,8 +1,8 @@
 package com.example.findapotty;
 
 import android.Manifest;
+import androidx.appcompat.app.ActionBar;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -166,4 +165,10 @@ public class MainActivity extends AppCompatActivity {
         // permissions this app might request.
     }
 
+    // https://stackoverflow.com/a/41646358
+    @Override
+    public void setTitle(final CharSequence title) {
+        binding.appBarMain.mainToolbar.postDelayed(
+                () -> getSupportActionBar().setTitle(title), 10);
+    }
 }

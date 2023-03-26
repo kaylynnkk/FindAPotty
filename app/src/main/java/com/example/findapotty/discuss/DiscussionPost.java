@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import com.example.findapotty.user.User;
+import com.google.firebase.database.Exclude;
 
 public class DiscussionPost implements Parcelable {
 
@@ -20,6 +21,7 @@ public class DiscussionPost implements Parcelable {
     private String postTag;
     private int postCommentCount;
     private int postLikeCount;
+    private String postId;
 
 
     public DiscussionPost() {}
@@ -69,6 +71,10 @@ public class DiscussionPost implements Parcelable {
         this.userName = userName;
     }
 
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
+
     public String getUserAvatar() {
         return userAvatar;
     }
@@ -91,6 +97,11 @@ public class DiscussionPost implements Parcelable {
 
     public String getUploadTime() {
         return uploadTime;
+    }
+
+    @Exclude
+    public String getPostId() {
+        return postId;
     }
 
     @Override

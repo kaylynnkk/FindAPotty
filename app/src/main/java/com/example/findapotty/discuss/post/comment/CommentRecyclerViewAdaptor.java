@@ -3,15 +3,12 @@ package com.example.findapotty.discuss.post.comment;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.findapotty.R;
-import com.example.findapotty.databinding.DiscussionBoardSinglePostCommentSectionBinding;
 import com.example.findapotty.databinding.DiscussionBoardSinglePostSingleCommentBinding;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -39,7 +36,7 @@ public class CommentRecyclerViewAdaptor extends RecyclerView.Adapter<CommentRecy
         Comment comment = CommentsManager.getInstance().getItemByIndex(position);
         holder.userName.setText(comment.getUserName());
         holder.content.setText(comment.getContent());
-        holder.dateTime.setText(comment.getDateTime());
+        holder.dateTime.setText(comment.getUploadTime());
     }
 
     @Override

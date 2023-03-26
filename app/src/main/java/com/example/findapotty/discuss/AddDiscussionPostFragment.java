@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -104,13 +105,17 @@ public class AddDiscussionPostFragment extends Fragment {
 
         NavController controller = Navigation.findNavController(view);
         NavDirections action =
-                AddDiscussionPostFragmentDirections.actionAddDiscussionPostFragmentToSinglePostDiscussionBoard(newPost);
+                AddDiscussionPostFragmentDirections.actionAddDiscussionPostFragmentToDiscussionBoardSinglePost(newPost);
         controller.navigate(action);
 
         // send post to database
         DatabaseReference postRef = FirebaseDatabase.getInstance().getReference("discussion_posts");
         String postId = postRef.push().getKey();
-        postRef.child(postId).setValue(newPost);
+        if (postId != null) {
+            postRef.child(postId).child("main").setValue(newPost);
+        } else {
+            Toast.makeText(getContext(), "Failed to upload your post", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

@@ -19,10 +19,13 @@ import com.example.findapotty.discuss.DiscussionPost;
 public class MainFragment extends Fragment {
 
     private DiscussionBoardSinglePostMainBinding binding;
-    private final DiscussionPost discussionPost;
+    private DiscussionPost discussionPost;
 
     public MainFragment(DiscussionPost post) {
         discussionPost = post;
+    }
+
+    public MainFragment() {
     }
 
     @Nullable

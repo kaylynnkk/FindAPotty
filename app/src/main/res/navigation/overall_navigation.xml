@@ -60,9 +60,6 @@
         android:label="Discussion Board"
         tools:layout="@layout/fragment_discuss">
         <action
-            android:id="@+id/action_nav_discuss_to_singlePostDiscussionBoard"
-            app:destination="@id/singlePostDiscussionBoard"></action>
-        <action
             android:id="@+id/action_nav_discuss_to_addDiscussionPostFragment"
             app:destination="@id/addDiscussionPostFragment" />
         <action
@@ -86,15 +83,6 @@
             app:destination="@id/navg_login_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/singlePostDiscussionBoard"
-        android:name="com.example.findapotty.discuss.post.main.MainFragment"
-        android:label="Post"
-        tools:layout="@layout/discussion_board_single_post_main">
-        <argument
-            android:name="discussionPost"
-            app:argType="com.example.findapotty.discuss.DiscussionPost" />
-    </fragment>
-    <fragment
         android:id="@+id/addRestroomReviewFragment"
         android:name="com.example.findapotty.search.restroompage.AddRestroomReviewFragment"
         android:label="Add Review" />
@@ -111,8 +99,8 @@
         android:name="com.example.findapotty.discuss.AddDiscussionPostFragment"
         android:label="Add Post">
         <action
-            android:id="@+id/action_addDiscussionPostFragment_to_singlePostDiscussionBoard"
-            app:destination="@id/singlePostDiscussionBoard"
+            android:id="@+id/action_addDiscussionPostFragment_to_discussionBoardSinglePost"
+            app:destination="@id/discussionBoardSinglePost"
             app:popUpTo="@+id/nav_discuss"
             app:popUpToInclusive="false" />
     </fragment>
@@ -122,7 +110,7 @@
         android:label="History" />
     <fragment
         android:id="@+id/discussionBoardSinglePost"
-        android:name="com.example.findapotty.discuss.post.PostViewPager2Fragment">
+        android:name="com.example.findapotty.discuss.post.PostFragment">
         <argument
             android:name="post"
             app:argType="com.example.findapotty.discuss.DiscussionPost" />

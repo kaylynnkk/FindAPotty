@@ -80,7 +80,11 @@ public class DiscussFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot post : snapshot.getChildren()) {
-                    discussionPostManager.addDiscussionPost(post.getValue(DiscussionPost.class), adaptor);
+                    DiscussionPost discussionPost = post.child("main").getValue(DiscussionPost.class);
+                    if (discussionPost != null) {
+                        discussionPost.setPostId(post.getKey());
+                        discussionPostManager.addDiscussionPost(discussionPost, adaptor);
+                    }
                 }
                 postRef.orderByChild("uploadTime").removeEventListener(this);
             }

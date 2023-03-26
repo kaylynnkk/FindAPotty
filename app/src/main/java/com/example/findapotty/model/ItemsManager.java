@@ -23,23 +23,24 @@ public class ItemsManager<T extends Item> {
     public void setItems(HashMap<String, T> retrievedItems) {
         if (retrievedItems != null) {
             items = retrievedItems;
-            retrievedItems.forEach((key, value) -> {
-                itemList.add(value);
+            retrievedItems.forEach((id, item) -> {
+                itemList.add(0, item);
+                item.setId(id);
             });
         }
     }
 
-    public void addItem(T item) {
+    public void addItem(int index, T item) {
         items.put(item.getId(), item);
-        itemList.add(0, item);
+        itemList.add(index, item);
     }
 
-    public void removeItem(String placeId) {
-        itemList.remove(items.get(placeId));
-        items.remove(placeId);
+    public void removeItem(String id) {
+        itemList.remove(items.get(id));
+        items.remove(id);
     }
 
-    public void clear() {
+    public void clearItems() {
         items.clear();
         itemList.clear();
     }

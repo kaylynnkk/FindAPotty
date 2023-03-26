@@ -4,19 +4,21 @@ import com.example.findapotty.model.Item;
 
 public class Comment extends Item {
 
-    private String dateTime;
+    private String uploadTime;
     private String userAvatar;
     private String userName;
     private String content;
 
-    public Comment(String dateTime, String userName, String content) {
-        this.dateTime = dateTime;
+    public Comment(String uploadTime, String userName, String content) {
+        this.uploadTime = uploadTime;
         this.userName = userName;
         this.content = content;
     }
 
-    public String getDateTime() {
-        return dateTime;
+    public Comment() {}
+
+    public String getUploadTime() {
+        return uploadTime;
     }
 
     public String getUserAvatar() {

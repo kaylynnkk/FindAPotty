@@ -1,4 +1,4 @@
-package com.example.findapotty.discuss.post;
+package com.example.findapotty.discuss.post.main;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,12 +16,12 @@ import com.example.findapotty.databinding.DiscussionBoardSinglePostMainBinding;
 import com.example.findapotty.discuss.DiscussionPost;
 
 
-public class DiscussionBoardSinglePostMain extends Fragment {
+public class MainFragment extends Fragment {
 
     private DiscussionBoardSinglePostMainBinding binding;
     private final DiscussionPost discussionPost;
 
-    public DiscussionBoardSinglePostMain(DiscussionPost post) {
+    public MainFragment(DiscussionPost post) {
         discussionPost = post;
     }
 

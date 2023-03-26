@@ -11,11 +11,13 @@ import androidx.fragment.app.Fragment;
 
 import com.example.findapotty.databinding.DiscussionBoardSinglePostBinding;
 import com.example.findapotty.discuss.DiscussionPost;
+import com.example.findapotty.discuss.post.comment.CommentFragment;
+import com.example.findapotty.discuss.post.main.MainFragment;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 
-public class DiscussionBoardSinglePost extends Fragment {
+public class PostViewPager2Fragment extends Fragment {
 
     private DiscussionBoardSinglePostBinding binding;
 
@@ -28,11 +30,11 @@ public class DiscussionBoardSinglePost extends Fragment {
     }
 
     public void setViewPagerAdapter() {
-        SinglePostStateAdaptor singlePostStateAdaptor = new SinglePostStateAdaptor(this);
+        PostStateAdaptor singlePostStateAdaptor = new PostStateAdaptor(this);
         ArrayList<Fragment> fragmentList = new ArrayList<>();
-        DiscussionPost post = DiscussionBoardSinglePostArgs.fromBundle(getArguments()).getPost();
-        fragmentList.add(new DiscussionBoardSinglePostMain(post));
-        fragmentList.add(new DiscussionBoardSinglePostComments());
+        DiscussionPost post = PostViewPager2FragmentArgs.fromBundle(getArguments()).getPost();
+        fragmentList.add(new MainFragment(post));
+        fragmentList.add(new CommentFragment());
         singlePostStateAdaptor.setData(fragmentList);
         binding.dbspPages.setAdapter(singlePostStateAdaptor);
         new TabLayoutMediator(binding.dbspTabs, binding.dbspPages,

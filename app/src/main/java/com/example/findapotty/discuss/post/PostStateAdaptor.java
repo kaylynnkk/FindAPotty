@@ -2,17 +2,15 @@ package com.example.findapotty.discuss.post;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import java.util.ArrayList;
 
-public class SinglePostStateAdaptor extends FragmentStateAdapter {
+public class PostStateAdaptor extends FragmentStateAdapter {
 
     private ArrayList<Fragment> fragments;
 
-    public SinglePostStateAdaptor(@NonNull Fragment fragment) {
+    public PostStateAdaptor(@NonNull Fragment fragment) {
         super(fragment);
     }
 

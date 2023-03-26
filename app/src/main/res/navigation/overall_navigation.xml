@@ -87,7 +87,7 @@
     </fragment>
     <fragment
         android:id="@+id/singlePostDiscussionBoard"
-        android:name="com.example.findapotty.discuss.post.DiscussionBoardSinglePostMain"
+        android:name="com.example.findapotty.discuss.post.main.MainFragment"
         android:label="Post"
         tools:layout="@layout/discussion_board_single_post_main">
         <argument
@@ -122,7 +122,7 @@
         android:label="History" />
     <fragment
         android:id="@+id/discussionBoardSinglePost"
-        android:name="com.example.findapotty.discuss.post.DiscussionBoardSinglePost">
+        android:name="com.example.findapotty.discuss.post.PostViewPager2Fragment">
         <argument
             android:name="post"
             app:argType="com.example.findapotty.discuss.DiscussionPost" />

@@ -21,7 +21,7 @@ public class DeveloperFragment extends Fragment{
     @Override
     public View onCreateView (@NonNull LayoutInflater inflater , @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // inflate the feedback layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_devpage, container, false);
+        rootView = inflater.inflate(R.layout.devpage_recyclerview, container, false);
 
         // Create list of developers
         List<Developer> devList = new ArrayList<>();

@@ -34,11 +34,6 @@ public class DevAdapter extends RecyclerView.Adapter<DevViewHolder> {
         Developer dev = devList.get(position);
         // Set the values for the views in the ViewHolder
         holder.bind(dev);
-//        holder.devImage.setImageResource(dev.getImage());
-//        holder.devName.setText(dev.getName());
-//        holder.devSchool.setText(dev.getSchool());
-//        holder.devEmail.setText(dev.getEmail());
-//        holder.devQuote.setText(dev.getQuote());
     }
 
     @Override

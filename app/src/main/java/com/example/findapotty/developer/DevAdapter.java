@@ -29,6 +29,7 @@ public class DevAdapter extends RecyclerView.Adapter<DevViewHolder> {
         return new DevViewHolder(itemView);
     }
 
+    // Assigning values to the views in the recycler view
     @Override
     public void onBindViewHolder(@NonNull DevViewHolder holder, int position) {
         Developer dev = devList.get(position);
@@ -36,6 +37,7 @@ public class DevAdapter extends RecyclerView.Adapter<DevViewHolder> {
         holder.bind(dev);
     }
 
+    // Number of items to be displayed
     @Override
     public int getItemCount() {
         return devList.size();

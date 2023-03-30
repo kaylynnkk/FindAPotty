@@ -13,10 +13,7 @@ import com.example.findapotty.R;
 // Hold the views for each item in the Recycler View
 public class DevViewHolder extends RecyclerView.ViewHolder {
     public ImageView devImage;
-    public TextView devName;
-    public TextView devSchool;
-    public TextView devEmail;
-    public TextView devQuote;
+    public TextView devName, devSchool, devEmail, devQuote;
 
     public DevViewHolder(@NonNull View itemView) {
         super(itemView);

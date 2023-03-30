@@ -81,4 +81,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage'
     implementation 'com.firebaseui:firebase-ui-database:8.0.2'
 
+    // CardView widget
+    implementation "androidx.cardview:cardview:1.0.0"
+
+    // RecyclerView
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+
 }

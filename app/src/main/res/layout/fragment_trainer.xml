@@ -4,11 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".trainer.TrainerFragment"
     android:paddingTop="?attr/actionBarSize">
-
 
 <!--        <SearchView-->
 <!--            android:id="@+id/search_view"-->
@@ -18,9 +16,6 @@
 <!--            android:queryHint="Search"-->
 <!--            app:layout_constraintStart_toStartOf="parent"-->
 <!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-
-
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -65,8 +60,7 @@
                 android:textSize="16sp" />
 
         </RelativeLayout>
-
-
+        
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

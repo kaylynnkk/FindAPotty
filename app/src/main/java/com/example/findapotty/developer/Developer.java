@@ -8,6 +8,7 @@ public class Developer {
     private String email;
     private String quote;
 
+    // Assigning values to image, name, school, email, and quote
     public Developer(int image, String name, String school, String email, String quote) {
         this.image = image;
         this.name = name;

@@ -1,18 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".trainer.TrainerFragment"
     android:paddingTop="?attr/actionBarSize">
 
+
+<!--        <SearchView-->
+<!--            android:id="@+id/search_view"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:iconifiedByDefault="false"-->
+<!--            android:queryHint="Search"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+
+
+
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:elevation="4dp"
         app:cardCornerRadius="8dp"
-        android:elevation="4dp">
+        card_view:layout_constraintEnd_toEndOf="parent"
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -20,37 +39,34 @@
             android:padding="16dp">
 
             <ImageView
-                android:id="@+id/tip_image"
+                android:id="@+id/trainer_image"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:background="@color/quantum_pink"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true" />
 
             <TextView
-                android:id="@+id/tip_title"
+                android:id="@+id/trainer_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_toRightOf="@+id/tip_image"
+                android:layout_marginStart="16dp"
+                android:layout_toRightOf="@+id/trainer_image"
                 android:text="tip_title"
-                android:layout_marginStart="16dp"/>
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tip_description"
+                android:id="@+id/trainer_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:layout_below="@+id/tip_title"
-                android:layout_toRightOf="@+id/tip_image"
+                android:layout_below="@+id/trainer_title"
+                android:layout_marginStart="16dp"
+                android:layout_toRightOf="@+id/trainer_image"
                 android:text="tip_description"
-                android:layout_marginStart="16dp"/>
+                android:textSize="16sp" />
 
         </RelativeLayout>
 
+
     </androidx.cardview.widget.CardView>
 
-
-
-
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -133,6 +133,9 @@
         <action
             android:id="@+id/action_nav_segment_to_nav_devpage"
             app:destination="@id/nav_devpage" />
+        <action
+            android:id="@+id/action_nav_segment_to_nav_trainer"
+            app:destination="@id/nav_trainer" />
     </fragment>
     <fragment
         android:id="@+id/nav_feedback"
@@ -144,5 +147,11 @@
         android:name="com.example.findapotty.developer.DeveloperFragment"
         android:label="FeedbackDeveloper"
         tools:layout="@layout/fragment_devpage" />
+
+    <fragment
+        android:id="@+id/nav_trainer"
+        android:name="com.example.findapotty.trainer.TrainerFragment"
+        android:label="TrainerFragment"
+        tools:layout="@layout/fragment_trainer" />
 
 </navigation>

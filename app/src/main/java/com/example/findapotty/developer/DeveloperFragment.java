@@ -20,13 +20,15 @@ public class DeveloperFragment extends Fragment{
     private View rootView;
     @Override
     public View onCreateView (@NonNull LayoutInflater inflater , @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // inflate the feedback layout for this fragment
+        // inflate the devpage layout for this fragment
         rootView = inflater.inflate(R.layout.devpage_recyclerview, container, false);
 
         // Create list of developers
         List<Developer> devList = new ArrayList<>();
-        devList.add(new Developer(R.drawable.flowers, "John Doe", "ABC University", "john.doe@example.com", "Code is poetry."));
-        devList.add(new Developer(R.drawable.flowers, "Jane Smith", "XYZ College", "jane.smith@example.com", "I love to code."));
+        devList.add(new Developer(R.drawable.flowers, "Sara Hamidi", "CSULB", "SaraHamidi@example.com", "I love to code"));
+        devList.add(new Developer(R.drawable.flowers, "Melissa Gaines", "CSULB", "MelissaGaines@example.com", "I love to code."));
+        devList.add(new Developer(R.drawable.flowers, "Keyi Wang", "CSULB", "KeyiWang@example.com", "I love to code."));
+        devList.add(new Developer(R.drawable.flowers, "Kaylynn Khem", "CSULB", "KaylynnKhem@example.com", "I love to code."));
 
         // Create a new devadapter with the list of developers
         DevAdapter devAdapter = new DevAdapter(devList);

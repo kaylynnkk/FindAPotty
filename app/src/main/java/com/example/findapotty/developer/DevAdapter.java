@@ -29,7 +29,7 @@ public class DevAdapter extends RecyclerView.Adapter<DevViewHolder> {
         return new DevViewHolder(itemView);
     }
 
-    // Assigning values to the views in the recycler view
+    // Assigning values to the views in the recycler view based on position
     @Override
     public void onBindViewHolder(@NonNull DevViewHolder holder, int position) {
         Developer dev = devList.get(position);

@@ -17,6 +17,7 @@ public class Developer {
         this.quote = quote;
     }
 
+    // Constructors for image, name, school, email, and quote
     public int getImage() {
         return image;
     }

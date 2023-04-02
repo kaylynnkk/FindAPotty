@@ -20,7 +20,7 @@ public class DeveloperFragment extends Fragment{
     private View rootView;
     @Override
     public View onCreateView (@NonNull LayoutInflater inflater , @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // inflate the devpage layout for this fragment
+        // inflate the devpage recycler layout for this fragment
         rootView = inflater.inflate(R.layout.devpage_recyclerview, container, false);
 
         // Create list of developers

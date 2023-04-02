@@ -25,10 +25,10 @@ public class DeveloperFragment extends Fragment{
 
         // Create list of developers
         List<Developer> devList = new ArrayList<>();
-        devList.add(new Developer(R.drawable.flowers, "Sara Hamidi", "CSULB", "SaraHamidi@example.com", "I love to code"));
-        devList.add(new Developer(R.drawable.flowers, "Melissa Gaines", "CSULB", "MelissaGaines@example.com", "I love to code."));
-        devList.add(new Developer(R.drawable.flowers, "Keyi Wang", "CSULB", "KeyiWang@example.com", "I love to code."));
-        devList.add(new Developer(R.drawable.flowers, "Kaylynn Khem", "CSULB", "KaylynnKhem@example.com", "I love to code."));
+        devList.add(new Developer(R.drawable.icon1, "Sara Hamidi", "CSULB", "SaraHamidi@example.com", "\"The best way to predict the future is to invent it.\""));
+        devList.add(new Developer(R.drawable.icon2, "Melissa Gaines", "CSULB", "MelissaGaines@example.com", "\"The only way to do great work is to love what you do.\""));
+        devList.add(new Developer(R.drawable.icon3, "Keyi Wang", "CSULB", "KeyiWang@example.com", "\"Don't watch the clock; do what it does. Keep going.\""));
+        devList.add(new Developer(R.drawable.icon4, "Kaylynn Khem", "CSULB", "KaylynnKhem@example.com", "\"Success is not final, failure is not fatal: it is the courage to continue that counts.\""));
 
         // Create a new devadapter with the list of developers
         DevAdapter devAdapter = new DevAdapter(devList);

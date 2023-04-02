@@ -29,6 +29,10 @@ public class TrainerFragment extends Fragment {
         List<Trainer> trainerList = new ArrayList<>();
         trainerList.add(new Trainer(R.drawable.lightbulb, "Offer plenty of fluids", "Make sure your child drinks enough water and other fluids to keep them hydrated."));
         trainerList.add(new Trainer(R.drawable.lightbulb, "Praise your child for their progress", "Celebrate every milestone and progress your child makes in potty training."));
+        trainerList.add(new Trainer(R.drawable.lightbulb, "Be consistent", "Establish a consistent routine for using the potty and stick to it. Encourage your child to use the potty at regular intervals, such as after meals and before bedtime."));
+        trainerList.add(new Trainer(R.drawable.lightbulb, "Be patient", "Potty training can take time and there will likely be setbacks along the way. Be patient and don't get discouraged if progress is slow."));
+        trainerList.add(new Trainer(R.drawable.lightbulb, "Teach proper hygiene", "Teach your child how to wipe properly and wash their hands after using the potty."));
+        trainerList.add(new Trainer(R.drawable.lightbulb, "Consider using training pants", "Training pants can be a helpful transition from diapers to underwear, as they allow your child to feel wetness without the mess of an accident."));
 
         // Create a new traineradapter with the list of trainers
         TrainerAdapter trainerAdapter = new TrainerAdapter(trainerList);

@@ -1,5 +1,6 @@
 package com.example.findapotty.discuss.post.comment;
 
+import com.example.findapotty.discuss.post.comment.reply.RepliesManager;
 import com.example.findapotty.model.Item;
 
 public class Comment extends Item {
@@ -8,6 +9,7 @@ public class Comment extends Item {
     private String userAvatar;
     private String userName;
     private String content;
+    private RepliesManager repliesManager = new RepliesManager();
 
     public Comment(String uploadTime, String userName, String content) {
         this.uploadTime = uploadTime;
@@ -31,5 +33,9 @@ public class Comment extends Item {
 
     public String getContent() {
         return content;
+    }
+
+    public RepliesManager getRepliesManager() {
+        return repliesManager;
     }
 }

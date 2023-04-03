@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findapotty.R;
 import com.example.findapotty.databinding.DiscussionBoardSinglePostCommentSectionBinding;
+import com.example.findapotty.discuss.post.comment.reply.Reply;
 import com.example.findapotty.user.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -68,6 +69,10 @@ public class CommentFragment extends Fragment {
                         for (DataSnapshot commentSnapShot : snapshot.getChildren()) {
                             Comment comment = commentSnapShot.getValue(Comment.class);
                             comment.setId(commentSnapShot.getKey());
+                            // replies
+                            comment.getRepliesManager().addItem(0, new Reply("this is a reply 1"));
+                            comment.getRepliesManager().addItem(0, new Reply("this is a reply 2"));
+                            comment.getRepliesManager().addItem(0, new Reply("this is a reply 3"));
                             Log.d(TAG, "onDataChange: id: " + commentSnapShot.getKey());
                             CommentsManager.getInstance().addItem(0, comment);
                             adaptor.notifyItemInserted(0);

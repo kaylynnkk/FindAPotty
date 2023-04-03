@@ -18,14 +18,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner;
 import com.example.findapotty.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

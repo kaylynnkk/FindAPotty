@@ -18,7 +18,7 @@ import com.example.findapotty.R;
 /* Page that displays the additional features options: diary, trends, trainer, reminders, tunes, contact us*/
 public class SegmentFragment extends Fragment {
 
-    private TextView diary_bt , trends_bt, trainer_bt, reminders_bt, tunes_bt, contactus_bt;
+    private TextView diary_bt , trends_bt, trainer_bt, reminders_bt, tunes_bt, contactus_bt, aboutus_bt;
     private View rootView;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -34,10 +34,13 @@ public class SegmentFragment extends Fragment {
         reminders_bt = rootView.findViewById(R.id.reminders_bt);
         tunes_bt = rootView.findViewById(R.id.tunes_bt);
         contactus_bt = rootView.findViewById(R.id.contactus_bt);
+        aboutus_bt = rootView.findViewById(R.id.aboutus_bt);
 
         // NAVIGATIONS
         // navigates from segment page to feedback page when user clicks on 'contact us'
         contactus_bt.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_segment_to_nav_feedback));
+        // navigates from segment page to dev page when user clicks on 'about us'
+        aboutus_bt.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_segment_to_nav_devpage));
 
         return rootView;
     }

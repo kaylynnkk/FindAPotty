@@ -2,6 +2,7 @@ package com.example.findapotty.discuss.post.comment;
 
 import com.example.findapotty.discuss.post.comment.reply.RepliesManager;
 import com.example.findapotty.model.Item;
+import com.google.firebase.database.Exclude;
 
 public class Comment extends Item {
 
@@ -35,6 +36,7 @@ public class Comment extends Item {
         return content;
     }
 
+    @Exclude
     public RepliesManager getRepliesManager() {
         return repliesManager;
     }

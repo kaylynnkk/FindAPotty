@@ -1,10 +1,13 @@
 package com.example.findapotty.discuss.post.comment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,7 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findapotty.R;
+import com.example.findapotty.databinding.DiscussionBoardSinglePostBinding;
 import com.example.findapotty.databinding.DiscussionBoardSinglePostCommentSectionBinding;
+import com.example.findapotty.discuss.post.CommentBoxManager;
 import com.example.findapotty.discuss.post.comment.reply.Reply;
 import com.example.findapotty.user.User;
 import com.google.firebase.database.DataSnapshot;
@@ -33,9 +38,12 @@ public class CommentFragment extends Fragment {
     private CommentsManager commentsManager = CommentsManager.getInstance();
     private static final String TAG = "CommentFragment";
     private final String postId;
+    private DiscussionBoardSinglePostBinding postBinding;
+    private CommentBoxManager commentBoxManager;
 
-    public CommentFragment(String postId) {
+    public CommentFragment(String postId, CommentBoxManager commentBoxManager) {
         this.postId = postId;
+        this.commentBoxManager = commentBoxManager;
     }
 
     @Nullable
@@ -45,7 +53,8 @@ public class CommentFragment extends Fragment {
                 DiscussionBoardSinglePostCommentSectionBinding.inflate(inflater, container, false);
         recyclerView = binding.dbspceCommentSection;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adaptor = new CommentRecyclerViewAdaptor(getContext());
+        commentBoxManager.setPostId(postId);
+        adaptor = new CommentRecyclerViewAdaptor(getContext(), commentBoxManager);
         recyclerView.setAdapter(adaptor);
         init();
         binding.dbspceSwipeRefresh.setOnRefreshListener(() -> {
@@ -53,8 +62,10 @@ public class CommentFragment extends Fragment {
             commentsManager.clearItems();
             adaptor.notifyItemRangeRemoved(0, size);
             init();
+            commentBoxManager.getEditText().setHint(getResources().getString(R.string.comment_box_hint));
             binding.dbspceSwipeRefresh.setRefreshing(false);
         });
+
         return binding.getRoot();
     }
 
@@ -67,12 +78,16 @@ public class CommentFragment extends Fragment {
 //                        HashMap<String, Comment> comments = (HashMap<String, Comment>) snapshot.getValue();
 //                        CommentsManager.getInstance().setItems(comments);
                         for (DataSnapshot commentSnapShot : snapshot.getChildren()) {
-                            Comment comment = commentSnapShot.getValue(Comment.class);
+                            Comment comment = commentSnapShot.child("main").getValue(Comment.class);
                             comment.setId(commentSnapShot.getKey());
                             // replies
-                            comment.getRepliesManager().addItem(0, new Reply("this is a reply 1"));
-                            comment.getRepliesManager().addItem(0, new Reply("this is a reply 2"));
-                            comment.getRepliesManager().addItem(0, new Reply("this is a reply 3"));
+                            for (DataSnapshot replySnapShot : commentSnapShot.child("replies").getChildren()) {
+                                Reply reply = replySnapShot.getValue(Reply.class);
+                                comment.getRepliesManager().addItem(0, reply);
+                            }
+//                            comment.getRepliesManager().addItem(0, new Reply("this is a reply 1"));
+//                            comment.getRepliesManager().addItem(0, new Reply("this is a reply 2"));
+//                            comment.getRepliesManager().addItem(0, new Reply("this is a reply 3"));
                             Log.d(TAG, "onDataChange: id: " + commentSnapShot.getKey());
                             CommentsManager.getInstance().addItem(0, comment);
                             adaptor.notifyItemInserted(0);

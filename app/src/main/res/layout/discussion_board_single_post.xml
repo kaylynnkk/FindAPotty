@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:ems="10"
-                    android:hint="Post a friendly comment"
+                    android:hint="@string/comment_box_hint"
                     android:inputType="textMultiLine"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/dbsp_upload_comment"

@@ -2,7 +2,11 @@ package com.example.findapotty.discuss.post.comment;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -10,9 +14,12 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.findapotty.databinding.DiscussionBoardSinglePostBinding;
 import com.example.findapotty.databinding.DiscussionBoardSinglePostSingleCommentPreviewBinding;
+import com.example.findapotty.discuss.post.CommentBoxManager;
 import com.example.findapotty.discuss.post.comment.reply.RepliesManager;
 import com.example.findapotty.discuss.post.comment.reply.ReplyRecyclerViewAdaptor;
+import com.google.firebase.database.FirebaseDatabase;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -21,10 +28,13 @@ public class CommentRecyclerViewAdaptor extends RecyclerView.Adapter<CommentRecy
     private static final String TAG = "CommentRecyclerViewAdaptor";
     Context context;
     private DiscussionBoardSinglePostSingleCommentPreviewBinding binding;
-    private CommentsManager discussionPostManager = CommentsManager.getInstance();
+    private DiscussionBoardSinglePostBinding postBinding;
+    private InputMethodManager imm;
+    private CommentBoxManager commentBoxManager;
 
-    public CommentRecyclerViewAdaptor(Context context) {
+    public CommentRecyclerViewAdaptor(Context context, CommentBoxManager commentBoxManager) {
         this.context = context;
+        this.commentBoxManager = commentBoxManager;
     }
 
     @NonNull
@@ -44,6 +54,20 @@ public class CommentRecyclerViewAdaptor extends RecyclerView.Adapter<CommentRecy
         holder.replySection.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
         holder.replySection.setAdapter(new ReplyRecyclerViewAdaptor(
                 binding.getRoot().getContext(), comment.getRepliesManager()));
+        // https://stackoverflow.com/a/28596779
+        holder.content.setOnClickListener(view -> {
+            //
+            EditText commentBox = commentBoxManager.getEditText();
+            commentBox.requestFocus();
+            commentBoxManager.getInputMethodManager()
+                    .toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+            commentBoxManager.setOnComment(false);
+            commentBoxManager.setDatabaseReference(
+                    FirebaseDatabase.getInstance().getReference("discussion_posts")
+                            .child(commentBoxManager.getPostId()).child("comments").child(comment.getId()).child("replies")
+            );
+            commentBox.setHint("Replying to " + comment.getId());
+        });
     }
 
     @Override

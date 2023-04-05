@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="bg_toolbar_feeds">#573636</color>
     <color name="bg_toolbar_map">#5be2b2</color>
+    <color name="reply_section_background">#dbdbdb</color>
 </resources>

@@ -1,7 +1,0 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:drawable="@drawable/icon_restroom_bg" />
-
-    <item android:drawable="@drawable/icon_restroom" />
-
-</layer-list>

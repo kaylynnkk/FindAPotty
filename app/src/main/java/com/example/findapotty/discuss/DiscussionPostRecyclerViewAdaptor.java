@@ -57,9 +57,8 @@ public class DiscussionPostRecyclerViewAdaptor extends RecyclerView.Adapter<Disc
             @Override
             public void onClick(View view) {
                 NavController controller = Navigation.findNavController(view);
-//                NavDirections action =
                 NavDirections action =
-                        DiscussFragmentDirections.actionNavDiscussToSinglePostDiscussionBoard(discussionPost);
+                        DiscussFragmentDirections.actionNavDiscussToDiscussionBoardSinglePost(discussionPost);
                 controller.navigate(action);
             }
         });

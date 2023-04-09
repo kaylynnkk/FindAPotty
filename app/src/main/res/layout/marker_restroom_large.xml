@@ -7,25 +7,29 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <TextView
-            android:id="@+id/mr_marker_label"
+            android:id="@+id/mrl_marker_label"
             android:layout_width="121dp"
             android:layout_height="30dp"
-            android:text="TextView"
-            app:layout_constraintStart_toEndOf="@+id/mr_marker_icon"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textSize="18dp" />
+            android:text="Opening Status"
+            android:textColor="@color/quantum_googred"
+            android:textSize="18dp"
+            app:layout_constraintStart_toEndOf="@+id/mrl_marker_icon"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/mr_marker_icon"
+            android:id="@+id/mrl_marker_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_map_marker_restroom" />
+            app:srcCompat="@drawable/ic_map_marker_restroom_large" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

@@ -1,21 +1,26 @@
 package com.example.findapotty.search;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
 import com.example.findapotty.model.Restroom;
-import com.google.firebase.database.Exclude;
 
 public class NearbyRestroom extends Restroom {
 
     private String markerId;
     private boolean isOpen;
+    private long currentDistance;
+    private String currentDistanceText;
 
-    public NearbyRestroom(Restroom that, boolean isOpen) {
+    public NearbyRestroom(Restroom that, boolean isOpen, long currentDistance, String currentDistanceText) {
         super(that);
+        this.isOpen = isOpen;
+        this.currentDistance = currentDistance;
+        this.currentDistanceText = currentDistanceText;
     }
+
+    public NearbyRestroom() {}
 
     public String getMarkerId() {
         return markerId;
@@ -25,8 +30,16 @@ public class NearbyRestroom extends Restroom {
         this.markerId = markerId;
     }
 
-    public boolean isOpen_now() {
+    public boolean isOpenNow() {
         return isOpen;
+    }
+
+    public long getCurrentDistance() {
+        return currentDistance;
+    }
+
+    public String getCurrentDistanceText() {
+        return currentDistanceText;
     }
 
     public String getOpeningStatus() {
@@ -35,6 +48,18 @@ public class NearbyRestroom extends Restroom {
         } else {
             return "Closed";
         }
+    }
+
+    public void setOpenNow(boolean open) {
+        isOpen = open;
+    }
+
+    public void setCurrentDistance(long currentDistance) {
+        this.currentDistance = currentDistance;
+    }
+
+    public void setCurrentDistanceText(String currentDistanceText) {
+        this.currentDistanceText = currentDistanceText;
     }
 
     public static final Creator<NearbyRestroom> CREATOR = new Creator<NearbyRestroom>() {
@@ -53,6 +78,8 @@ public class NearbyRestroom extends Restroom {
         super(in);
         isOpen = in.readByte() != 0;
         markerId = in.readString();
+        currentDistance = in.readLong();
+        currentDistanceText = in.readString();
     }
 
     @Override
@@ -65,5 +92,7 @@ public class NearbyRestroom extends Restroom {
         super.writeToParcel(parcel, i);
         parcel.writeString(markerId);
         parcel.writeByte((byte) (isOpen ? 1 : 0));
+        parcel.writeLong(currentDistance);
+        parcel.writeString(currentDistanceText);
     }
 }

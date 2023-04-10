@@ -25,7 +25,7 @@
     <ImageView
         android:id="@+id/music_icon"
         android:layout_width="240dp"
-        android:layout_height="240dp"
+        android:layout_height="280dp"
         android:layout_above="@id/controls"
         android:layout_centerHorizontal="true"
         android:src="@drawable/tunes_toilet_paper_512" />

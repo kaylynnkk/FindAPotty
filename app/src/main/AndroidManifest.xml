@@ -35,6 +35,8 @@
         </activity>
         <activity  android:name=".diary.DiaryEntryActivity" android:screenOrientation="portrait" />
         <activity  android:name=".diary.DiaryResultsActivity" android:screenOrientation="portrait" />
+        <activity  android:name=".tunes.SongListActivity" android:screenOrientation="portrait" />
+        <activity  android:name=".tunes.MusicPlayerActivity" android:screenOrientation="portrait" />
         <service
             android:name=".search.MapFragment"
             android:foregroundServiceType="location">

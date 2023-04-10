@@ -1,4 +1,4 @@
-package com.example.findapotty.music;
+package com.example.findapotty.tunes;
 
 import android.content.Context;
 import android.content.Intent;

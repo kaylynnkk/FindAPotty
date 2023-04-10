@@ -1,4 +1,4 @@
-package com.example.findapotty.music;
+package com.example.findapotty.tunes;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,9 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.findapotty.R;
+
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class SongListActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     TextView noMusicTextView;

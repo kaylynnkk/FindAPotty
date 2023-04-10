@@ -1,4 +1,4 @@
-package com.example.findapotty.music;
+package com.example.findapotty.tunes;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;

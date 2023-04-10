@@ -241,7 +241,7 @@ public class DiaryEntryActivity extends AppCompatActivity{
     }
     public void nextActivity(DiaryEntry entry){
         try{
-            Intent i = new Intent(this, ResultsActivity.class);
+            Intent i = new Intent(this, DiaryResultsActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("diary_data", entry);
             i.putExtras(bundle);

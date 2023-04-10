@@ -105,7 +105,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="NO PAIN"
+                            android:text="No Pain"
                             android:textSize="18dp"
                             android:layout_margin="10dp"/>
                         <TextView
@@ -113,10 +113,10 @@
                             android:gravity="right"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="EXTREME PAIN"
+                            android:text="Extreme Pain"
                             android:textSize="18dp"
                             android:textColor="@color/red"
-                            android:layout_marginTop="10dp"/>
+                            android:layout_margin="10dp"/>
                     </LinearLayout>
                     <SeekBar
                         android:id="@+id/seekBar"
@@ -160,6 +160,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:layout_margin="10dp"
                         >
 
                        <RadioButton

@@ -12,7 +12,7 @@ import com.example.findapotty.R;
 import java.io.Serializable;
 
 
-public class ResultsActivity extends AppCompatActivity implements Serializable {
+public class DiaryResultsActivity extends AppCompatActivity implements Serializable {
 
     TextView waterIntakeTV, durationTV, painRatingTV, pottyTypeTV, stoolTypeTV, stoolColorTV,
             urineColorTV, notesTV,prediction1TV,prediction2TV, prediction3TV;
@@ -69,7 +69,7 @@ public class ResultsActivity extends AppCompatActivity implements Serializable {
         submitBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ResultsActivity.this, DiaryEntryActivity.class);
+                Intent i = new Intent(DiaryResultsActivity.this, DiaryEntryActivity.class);
                 startActivity(i);
 
             }

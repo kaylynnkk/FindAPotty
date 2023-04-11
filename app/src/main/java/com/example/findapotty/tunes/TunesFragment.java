@@ -25,8 +25,8 @@ public class TunesFragment extends Fragment {
         binding = FragmentTunesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textTunes;
-        tunesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        //final TextView textView = binding.textTunes;
+        //tunesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

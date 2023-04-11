@@ -12,7 +12,7 @@
         android:background="#000000"
         android:adjustViewBounds="true"
         android:padding="3dp"
-        app:srcCompat="@drawable/stool_chart_info" />
+        app:srcCompat="@drawable/diary_stool_chart_info" />
 
 
 </RelativeLayout>

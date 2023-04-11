@@ -11,7 +11,7 @@
         android:background="#000000"
         android:adjustViewBounds="true"
         android:padding="3dp"
-        app:srcCompat="@drawable/urinary_chart_info" />
+        app:srcCompat="@drawable/diary_urinary_chart_info" />
 
 
 </RelativeLayout>

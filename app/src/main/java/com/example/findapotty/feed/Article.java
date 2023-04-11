@@ -3,15 +3,17 @@ package com.example.findapotty.feed;
 // Article class to be used to retrieve the components of an article for newAPI
 public class Article {
     private String author, title, description, url, urlToImage, publishedAt;
+    private int image;
 
     //Constructors for the articles components which consist of title, description, url, urlToImage, and publishedAt
-    public Article(String author, String title, String description, String url, String urlToImage, String publishedAt) {
+    public Article(String author, String title, String description, int image) {
         this.author = author;
         this.title = title;
         this.description = description;
         this.url = url;
         this.urlToImage = urlToImage;
         this.publishedAt = publishedAt;
+        this.image = image;
     }
 
     //Getters and setters for title, description, url, urlToImage, and publishedAt
@@ -68,5 +70,8 @@ public class Article {
 
     public void setPublishedAt(String publishedAt) {
         this.publishedAt = publishedAt;
+    }
+
+    public int getImage() { return image;
     }
 }

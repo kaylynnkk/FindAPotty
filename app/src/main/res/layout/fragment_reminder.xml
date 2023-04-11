@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/reminder1"
     android:paddingTop="?attr/actionBarSize"
     tools:context=".reminder.ReminderFragment">
     <TextView
@@ -37,7 +38,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="50dp"
-        android:src="@drawable/plus_icon" />
+        android:src="@drawable/plus_icon"
+        app:elevation="0dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

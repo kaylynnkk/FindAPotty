@@ -31,9 +31,9 @@
                 android:icon="@drawable/bottomsheet_drag"
                 android:title="Trainer" />
             <item
-                android:id="@+id/nav_reminers"
+                android:id="@+id/nav_reminder"
                 android:icon="@drawable/bottomsheet_drag"
-                android:title="Reminders" />
+                android:title="Reminder" />
             <item
                 android:id="@+id/nav_tunes"
                 android:icon="@drawable/bottomsheet_drag"

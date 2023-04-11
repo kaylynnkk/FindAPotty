@@ -1,4 +1,4 @@
-package com.example.findapotty.diary;
+package com.example.findapotty.tunes;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,21 +11,22 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.findapotty.databinding.FragmentDiaryBinding;
+import com.example.findapotty.databinding.FragmentTunesBinding;
 
-public class DiaryFragment extends Fragment {
+public class TunesFragment extends Fragment {
 
-    private FragmentDiaryBinding binding;
+    private FragmentTunesBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        DiaryViewModel diaryViewModel =
-                new ViewModelProvider(this).get(DiaryViewModel.class);
+        TunesViewModel tunesViewModel =
+                new ViewModelProvider(this).get(TunesViewModel.class);
 
-        binding = FragmentDiaryBinding.inflate(inflater, container, false);
+        binding = FragmentTunesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        //final TextView textView = binding.textDiary;
-        //diaryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        final TextView textView = binding.textTunes;
+        tunesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

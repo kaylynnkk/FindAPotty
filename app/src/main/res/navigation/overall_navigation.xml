@@ -124,12 +124,12 @@
         android:label="Tunes"
         tools:layout="@layout/tunes_song_recycler"
         />
-   <!-- <activity
+    <activity
         android:id="@+id/nav_reminders"
-        android:name="com.example.findapotty.reminder.DiaryEntryActivity"
-        android:label="DiaryEntry"
-        tools:layout="@layout/diary_entry_activity"
-        /> -->
+        android:name="com.example.findapotty.reminder.MainActivity"
+        android:label="Reminders"
+        tools:layout="@layout/reminder_activity"
+        />
     <fragment
         android:id="@+id/nav_profile"
         android:name="com.example.findapotty.profile.ProfileFragment"

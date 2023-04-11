@@ -33,7 +33,7 @@
             <item
                 android:id="@+id/nav_reminders"
                 android:icon="@drawable/bottomsheet_drag"
-                android:title="Reminers" />
+                android:title="Reminders" />
             <item
                 android:id="@+id/nav_tunes"
                 android:icon="@drawable/bottomsheet_drag"

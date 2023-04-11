@@ -89,9 +89,15 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-database:8.0.2'
 
     // CardView widget
-    implementation "androidx.cardview:cardview:1.0.0"
+    implementation 'androidx.cardview:cardview:1.0.0'
 
     // RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
+    // For Reminder
+    implementation 'com.firebaseui:firebase-ui-database:8.0.2'
+    implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'
+
+    // For Diary
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }

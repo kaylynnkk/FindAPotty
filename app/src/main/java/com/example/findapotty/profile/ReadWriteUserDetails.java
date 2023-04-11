@@ -12,4 +12,6 @@ public class ReadWriteUserDetails
         this.gender = textGender;
         this.mobile = textMobile;
     }
+
+    public ReadWriteUserDetails() {}
 }

@@ -2,6 +2,7 @@ package com.example.findapotty.profile;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import com.example.findapotty.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -60,6 +64,9 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //intent stuff goes here for switching to upload photo activity
+                NavController controller = Navigation.findNavController(rootView);
+                controller.navigate(R.id.action_nav_profile_to_uploadProfilePic);
+                Log.d(TAG, "onComplete: 1111111111111111111");
             }
         });
 
@@ -128,6 +135,7 @@ public class ProfileFragment extends Fragment {
         });
 
     }
+    private String TAG ="ProfileFragment";
 
     private void addUserProfile()
     {

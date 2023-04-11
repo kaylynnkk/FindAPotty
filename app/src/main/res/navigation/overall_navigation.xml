@@ -90,5 +90,14 @@
         android:id="@+id/nav_profile"
         android:name="com.example.findapotty.profile.ProfileFragment"
         android:label="activity_not_login"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_nav_profile_to_uploadProfilePic"
+            app:destination="@id/uploadProfilePic" />
+    </fragment>
+    <fragment
+        android:id="@+id/uploadProfilePic"
+        android:name="com.example.findapotty.profile.UploadProfilePic"
+        android:label="fragment_upload_profile_pic"
+        tools:layout="@layout/fragment_upload_profile_pic" />
 </navigation>

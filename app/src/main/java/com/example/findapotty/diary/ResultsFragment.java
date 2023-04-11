@@ -1,19 +1,22 @@
 package com.example.findapotty.diary;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.findapotty.R;
-import java.io.Serializable;
-
-
-public class ResultsActivity extends AppCompatActivity implements Serializable {
-
+import com.example.findapotty.databinding.FragmentDiaryresultsBinding;
+public class ResultsFragment extends Fragment {
+    private FragmentDiaryresultsBinding binding;
     TextView waterIntakeTV, durationTV, painRatingTV, pottyTypeTV, stoolTypeTV, stoolColorTV,
             urineColorTV, notesTV,prediction1TV,prediction2TV, prediction3TV;
     Button submitBT;
@@ -21,33 +24,39 @@ public class ResultsActivity extends AppCompatActivity implements Serializable {
     View answersView;
     ImageButton dropdownBT;
     Boolean visibilityFlag = false;
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentDiaryresultsBinding.inflate(inflater, container, false);
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.diary_results_activity);
         // added references to all data in view
-        waterIntakeTV = (TextView) findViewById(R.id.intake);
-        durationTV = (TextView) findViewById(R.id.time_spent);
-        painRatingTV= (TextView) findViewById(R.id.pain_level);
-        pottyTypeTV = (TextView) findViewById(R.id.potty_type);
-        stoolTypeTV = (TextView) findViewById(R.id.stool_type);
-        stoolColorTV = (TextView) findViewById(R.id.stool_color);
-        urineColorTV = (TextView) findViewById(R.id.urine_color);
-        notesTV = (TextView) findViewById(R.id.notes);
-        submitBT = (Button) findViewById(R.id.submit);
-        dropdownBT = (ImageButton) findViewById(R.id.dropdown_button);
-        answersView = (View) findViewById(R.id.displayed_answers);
-        prediction1TV = (TextView) findViewById(R.id.predict_1);
-        prediction2TV = (TextView) findViewById(R.id.predict_2);
-        prediction3TV = (TextView) findViewById(R.id.predict_3);
+        waterIntakeTV = binding.intake;
+        durationTV = binding.timeSpent;
+        painRatingTV= binding.painLevel;
+        pottyTypeTV = binding.pottyType;
+        stoolTypeTV = binding.stoolType;
+        stoolColorTV = binding.stoolColor;
+        urineColorTV = binding.urineColor;
+        notesTV = binding.notes;
+        submitBT = binding.submit;
+        dropdownBT = binding.dropdownButton;
+        answersView = binding.displayedAnswers;
+        prediction1TV = binding.predict1;
+        prediction2TV = binding.predict2;
+        prediction3TV = binding.predict3;
+
+
 
         // retrieve object from previos activity
-        DiaryEntry d = (DiaryEntry) getIntent().getExtras().getSerializable("diary_data");
-
+       // DiaryEntry d = (DiaryEntry) getIntent().getExtras().getSerializable("diary_data");
+        DiaryEntry d = new DiaryEntry("04-11-2023","Mar", "Both","Brown",
+                "Pale or Transparent",
+                " ",3,4,4,4);
         // call methods to populate information in the view
         waterIntakeClassifer(d);
         populateAnswers(d);
         predictConditions(d);
+
+
 
         // answers from preovios activity is hidden until expand more buttom is selected
         // and can be rehidden if expand less btton is selected
@@ -69,12 +78,19 @@ public class ResultsActivity extends AppCompatActivity implements Serializable {
         submitBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ResultsActivity.this, DiaryEntryActivity.class);
-                startActivity(i);
+                nextActivity();
 
             }
         });
+        return binding.getRoot();
+    }
 
+    public void nextActivity(){
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.diary2, new DiaryFragment())
+                .addToBackStack(null)
+                .commit();
     }
     // retrieve data from object and set text to corresponding text view
     public void populateAnswers(DiaryEntry d){
@@ -88,7 +104,6 @@ public class ResultsActivity extends AppCompatActivity implements Serializable {
     }
     // switch statement to determine water intake classification based on peecolor
     public void waterIntakeClassifer(DiaryEntry d) {
-
         String peeColor = d.getUrineColor();
         String waterIntake;
         switch (peeColor) {

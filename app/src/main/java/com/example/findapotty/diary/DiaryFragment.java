@@ -1,5 +1,6 @@
 package com.example.findapotty.diary;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,19 +19,28 @@ import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner;
+import com.example.findapotty.MainActivity;
 import com.example.findapotty.R;
+import com.example.findapotty.databinding.FragmentDiaryBinding;
+import com.example.findapotty.tunes.TunesPlayerFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+public class DiaryFragment extends Fragment {
 
-//this class is to add the take the reminders from the user and inserts into database
-public class DiaryEntryActivity extends AppCompatActivity{
+    private FragmentDiaryBinding binding;
     RadioGroup pottyTypeRG;
     SeekBar painRatingSB;
     Button  submitBT;
@@ -46,24 +57,24 @@ public class DiaryEntryActivity extends AppCompatActivity{
     Integer pain;
     Calendar c = Calendar.getInstance();
     Format simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy");
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.diary_entry_activity);
 
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+
+        binding = FragmentDiaryBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
         // added references to all data in view
-        durationET = (EditText) findViewById(R.id.time_length);
-        painRatingSB = (SeekBar) findViewById(R.id.seekBar);
-        pottyTypeRG = (RadioGroup) findViewById(R.id.potty_options);
-        stoolTypeSP = findViewById(R.id.stool_type);
-        stoolColorSP = findViewById(R.id.color_poop);
-        urineColorSP = findViewById(R.id.color_pee);
-        notesET = (EditText) findViewById(R.id.notes);
-        submitBT = (Button) findViewById(R.id.submit);
-        stoolTypeIV = (ImageView) findViewById(R.id.stool_type_chart);
-        stoolColorIV = (ImageView) findViewById(R.id.stool_color_chart);
-        urineColorIV = (ImageView) findViewById(R.id.urine_color_chart);
-
+        durationET = binding.timeLength;
+        painRatingSB = binding.seekBar;
+        pottyTypeRG = binding.pottyOptions;
+        stoolTypeSP = binding.stoolType;
+        stoolColorSP = binding.colorPoop;
+        urineColorSP = binding.colorPee;
+        notesET = binding.notes;
+        submitBT = binding.submit;
+        stoolTypeIV = binding.stoolTypeChart;
+        stoolColorIV = binding.stoolColorChart;
+        urineColorIV = binding.urineColorChart;
         //  saves user input to variable when radio button is selected
         pottyTypeRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -76,21 +87,18 @@ public class DiaryEntryActivity extends AppCompatActivity{
         /*create dropdown men when finite options and save user input into variable when selected
         Dropdown options created for stoolcolor, stooltype, and urinecolor
          */
-        ArrayAdapter ad1 = new ArrayAdapter(this, android.R.layout.simple_spinner_item,
-                stoolColorsList);
-        ad1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        stoolColorSP.setAdapter(ad1);
+        ArrayAdapter ad1 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, stoolColorsList);
+        ad1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);stoolColorSP.setAdapter(ad1);
         stoolColorSP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                stoolColor = stoolColorsList[position];
-            }
+                stoolColor = stoolColorsList[position];}
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
 
-        ArrayAdapter ad2 = new ArrayAdapter(this, android.R.layout.simple_spinner_item,
+        ArrayAdapter ad2 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item,
                 urineColorsList);
         ad2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         urineColorSP.setAdapter(ad2);
@@ -104,7 +112,7 @@ public class DiaryEntryActivity extends AppCompatActivity{
             }
         });
 
-        ArrayAdapter ad3 = new ArrayAdapter(this, android.R.layout.simple_spinner_item,
+        ArrayAdapter ad3 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item,
                 stoolTypeList);
         ad3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stoolTypeSP.setAdapter(ad3);
@@ -171,16 +179,16 @@ public class DiaryEntryActivity extends AppCompatActivity{
                 // if label string is empty user hasnt entered na input
                 // prompt user to enter tinput for date and time
                 if (duration.equals(0)) {
-                    Toast.makeText(getApplicationContext(), "Potty time can't be 0 minutes!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Potty time can't be 0 minutes!", Toast.LENGTH_SHORT).show();
                 } else if (pottyTypeRG.getCheckedRadioButtonId() == -1) {
-                    Toast.makeText(getApplicationContext(), "Must pick potty type!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Must pick potty type!", Toast.LENGTH_SHORT).show();
                 } else if ((pottyType.equals("Pee") || pottyType.equals("Both")) && urineColor.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Please enter urine color!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please enter urine color!", Toast.LENGTH_SHORT).show();
                 } else if ((pottyType.equals("Poop") || pottyType.equals("Both")) && (stoolType.equals("0") || stoolColor.equals(""))){
-                    Toast.makeText(getApplicationContext(), "Please answer stool questions!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please answer stool questions!", Toast.LENGTH_SHORT).show();
                 } else if((pottyType.equals("Pee")  && !(stoolType.equals("0") || stoolColor.equals("")))
-                || (pottyType.equals("Poop") & !urineColor.isEmpty())){
-                    Toast.makeText(getApplicationContext(), "Incompatible potty type!", Toast.LENGTH_SHORT).show();
+                        || (pottyType.equals("Poop") & !urineColor.isEmpty())){
+                    Toast.makeText(getContext(), "Incompatible potty type!", Toast.LENGTH_SHORT).show();
                 } else {
                     // creates reference to firebase
                     DatabaseReference ref = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
@@ -194,9 +202,14 @@ public class DiaryEntryActivity extends AppCompatActivity{
                     // use userid as key
                     ref.child(entryId).setValue(entry);
                     // alert user that entry has been saves and go to results
-                    Toast.makeText(getApplicationContext(), "DIARY ENTRY SUBMITTED",
+                    Toast.makeText(getContext(), "DIARY ENTRY SUBMITTED",
                             Toast.LENGTH_LONG).show();
-                    nextActivity(entry);
+
+                    getActivity().getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.diary1, new ResultsFragment())
+                            .addToBackStack(null)
+                            .commit();
 
 
                 }
@@ -204,7 +217,7 @@ public class DiaryEntryActivity extends AppCompatActivity{
             }
 
         });
-
+        return root;
     }
     // convert month of submission from integer to abbreviations
     public String monthOfSubmission(){
@@ -239,38 +252,22 @@ public class DiaryEntryActivity extends AppCompatActivity{
 
         }
     }
-    public void nextActivity(DiaryEntry entry){
-        try{
-            Intent i = new Intent(this, ResultsActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("diary_data", entry);
-            i.putExtras(bundle);
-            startActivity(i);
-        }
-        catch (Exception e) {
-            Log.e("nextActivity", e.getMessage());
-        }
-    }
-
     public void onButtonShowPopupWindowClick(View view, String layoutName) {
         // pass string layoutname to inflater
         int layoutID =getResources().getIdentifier(layoutName,
-                "layout", getPackageName());
+                "layout", getActivity().getPackageName());
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)
-                getSystemService(LAYOUT_INFLATER_SERVICE);
+                getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(layoutID, null);
-
         // create the popup window
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         // lets taps outside the popup also dismiss it
         boolean focusable = true;
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-
         // show the popup window
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
         // dismiss the popup window when touched
         popupView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -280,5 +277,9 @@ public class DiaryEntryActivity extends AppCompatActivity{
             }
         });
     }
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }

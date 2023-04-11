@@ -13,4 +13,5 @@
     <color name="bg_toolbar_map">#5be2b2</color>
     <color name="light_gray">#D3D3D3</color>
     <color name="reply_section_background">#dbdbdb</color>
+    <color name="cardwhite">#FFFFFF</color>
 </resources>

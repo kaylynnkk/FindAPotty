@@ -8,180 +8,190 @@
     android:background="@color/teal_200"
     android:layout_marginBottom="70dp">
 
+    <!--Profile Page UI-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!--code for profile pic box-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:background="@color/light_gray">
 
             <ImageView
-                android:id="@+id/imageView_profile_dp"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
+                android:id="@+id/imageView_profile_dp"
                 android:layout_centerInParent="true"
-                android:background="@drawable/baseline_account_box_24" />
+                android:background="@drawable/baseline_account_box_24"/>
 
             <TextView
-                android:id="@+id/textView_show_welcome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/textView_show_welcome"
                 android:layout_below="@id/imageView_profile_dp"
+                android:hint="User"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
-                android:hint="User"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"/>
 
         </RelativeLayout>
 
+        <!--code for full name textbox-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="15dp"
             android:layout_margin="15dp"
-            android:background="@color/white"
-            android:padding="15dp">
+            android:background="@color/white">
 
             <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:id="@+id/ic_profile"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:background="@drawable/baseline_person_outline_24" />
+                android:background="@drawable/baseline_person_outline_24"/>
+
 
             <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/textView_show_full_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_alignStart="@id/ic_profile"
-                android:layout_marginStart="50dp"
                 android:hint="Full Name"
-                android:textSize="18sp" />
+                android:layout_marginStart="50dp"
+                android:textSize="18sp"/>
+
 
             <View
-                android:id="@+id/divider_name"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginTop = "20dp"
                 android:layout_below="@id/textView_show_full_name"
-                android:layout_marginTop="20dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/darker_gray"
+                android:id="@+id/divider_name"/>
 
 
-            <!--the second textbox-->
+            <!--code for email textbox-->
             <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:id="@+id/ic_email"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:background="@drawable/baseline_email_24"
                 android:layout_below="@id/divider_name"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/baseline_email_24" />
+                android:layout_marginTop="20dp"/>
 
             <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/textView_show_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/divider_name"
                 android:layout_alignStart="@id/ic_email"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="20dp"
                 android:hint="Email"
-                android:textSize="18sp" />
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/divider_name"
+                android:textSize="18sp"/>
 
             <View
-                android:id="@+id/divider_email"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginTop = "20dp"
                 android:layout_below="@id/textView_show_email"
-                android:layout_marginTop="20dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/darker_gray"
+                android:id="@+id/divider_email"/>
 
-            <!--third row of textboxes-->
+            <!--code for birthday textbox-->
             <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:id="@+id/ic_dob"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:background="@drawable/baseline_calendar_month_24"
                 android:layout_below="@id/divider_email"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/baseline_calendar_month_24" />
+                android:layout_marginTop="20dp"/>
 
             <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/textView_show_dob"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/divider_email"
                 android:layout_alignStart="@id/ic_dob"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="20dp"
                 android:hint="Birthday"
-                android:textSize="18sp" />
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/divider_email"
+                android:textSize="18sp"/>
 
             <View
-                android:id="@+id/divider_dob"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginTop = "20dp"
                 android:layout_below="@id/textView_show_dob"
-                android:layout_marginTop="20dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/darker_gray"
+                android:id="@+id/divider_dob"/>
 
-            <!--fourth textbox-->
+            <!--code for gender textbox-->
             <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:id="@+id/ic_gender"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:background="@drawable/baseline_wc_24"
                 android:layout_below="@id/divider_dob"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/baseline_wc_24" />
+                android:layout_marginTop="20dp"/>
 
             <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/textView_show_gender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/divider_dob"
                 android:layout_alignStart="@id/ic_gender"
+                android:hint="Gender"
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="20dp"
-                android:hint="Gender"
-                android:textSize="18sp" />
+                android:layout_below="@id/divider_dob"
+                android:textSize="18sp"/>
 
             <View
-                android:id="@+id/divider_gender"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginTop = "20dp"
                 android:layout_below="@id/textView_show_dob"
-                android:layout_marginTop="20dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/darker_gray"
+                android:id="@+id/divider_gender"/>
 
-            <!--5th textbox-->
+            <!--code for phone number textbox-->
             <ImageView
-                android:id="@+id/ic_mobile"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
+                android:id="@+id/ic_mobile"
+                android:background="@drawable/baseline_phone_24"
                 android:layout_below="@id/divider_gender"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/baseline_phone_24" />
+                android:layout_marginTop="20dp"/>
 
             <EditText
-                android:id="@+id/textView_show_mobile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/divider_gender"
+                android:id="@+id/textView_show_mobile"
                 android:layout_alignStart="@id/ic_mobile"
+                android:hint="Phone Number"
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="20dp"
-                android:hint="Phone Number"
-                android:textSize="18sp" />
+                android:layout_below="@id/divider_gender"
+                android:textSize="18sp"/>
 
             <View
-                android:id="@id/divider_gender"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginTop = "20dp"
                 android:layout_below="@id/textView_show_gender"
-                android:layout_marginTop="20dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/darker_gray"
+                android:id="@id/divider_gender"/>
 
 
+
+
+
+            <!--code for done button-->
         </RelativeLayout>
 
         <Button

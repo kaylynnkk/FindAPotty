@@ -41,6 +41,8 @@ public class SegmentFragment extends Fragment {
         contactus_bt.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_segment_to_nav_feedback));
         // navigates from segment page to dev page when user clicks on 'about us'
         aboutus_bt.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_segment_to_nav_devpage));
+        // naviagets from segment page to trainer page when user clicks on 'trainer'
+        trainer_bt.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_segment_to_nav_trainer));
 
         return rootView;
     }

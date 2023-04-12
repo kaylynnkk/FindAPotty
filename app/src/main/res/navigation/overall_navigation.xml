@@ -149,6 +149,9 @@
         <action
             android:id="@+id/action_nav_profile_to_nav_segment"
             app:destination="@id/nav_segment" />
+        <action
+            android:id="@+id/action_nav_profile_to_uploadProfilePic"
+            app:destination="@id/uploadProfilePic" />
     </fragment>
     <fragment
         android:id="@+id/nav_segment"
@@ -188,5 +191,10 @@
         android:name="com.example.findapotty.trainer.TrainerFragment"
         android:label="TrainerFragment"
         tools:layout="@layout/fragment_trainer" />
+    <fragment
+        android:id="@+id/uploadProfilePic"
+        android:name="com.example.findapotty.profile.UploadProfilePic"
+        android:label="fragment_upload_profile_pic"
+        tools:layout="@layout/fragment_upload_profile_pic" />
 
 </navigation>

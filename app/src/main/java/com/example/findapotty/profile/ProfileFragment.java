@@ -1,6 +1,8 @@
 package com.example.findapotty.profile;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.findapotty.R;
@@ -19,8 +23,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+
 
 public class ProfileFragment extends Fragment {
 
@@ -53,41 +63,84 @@ public class ProfileFragment extends Fragment {
 
         //navigates from user profile to segment page when user clicks on segment icon
         icon_segment.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_segment));
+        imageView = rootView.findViewById(R.id.imageView_profile_dp);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //intent stuff goes here for switching to upload photo activity
+                NavController controller = Navigation.findNavController(rootView);
+                controller.navigate(R.id.action_nav_profile_to_uploadProfilePic);
+                Log.d(TAG, "onComplete: 1111111111111111111");
+            }
+        });
 
         authProfile = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = authProfile.getCurrentUser();
 
-        if(firebaseUser == null)
+        if(firebaseUser != null)
         {
-//            Toast.makeText(NotLogin.this, "Something went wrong! User's details" +
-//                    "are not available at the moment.", Toast.LENGTH_LONG).show();
-
-            addUserProfile();
+            showUserProfile();
         }
         else
         {
-            showUserProfile();
+            //figure out how to make a toast
+            Toast.makeText(rootView.getContext(), "Something went wrong! User's details" + "are not" +
+                    "available at the moment.", Toast.LENGTH_LONG).show();
         }
 
         return rootView;
     }
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView();
-//
-//        getSupportActionBar().setTitle("Home");
-//
-//
-//
-//    }
 
     //if the user doesn't already exist in the database
     private void showUserProfile()
     {
+        firebaseUser = authProfile.getCurrentUser();
+        String userID = firebaseUser.getUid();
+
+        DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("Registered Users");
+        referenceProfile.child(userID).addListenerForSingleValueEvent(new ValueEventListener(){
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                ReadWriteUserDetails readUserDetails = snapshot.getValue(ReadWriteUserDetails.class);
+
+                if(readUserDetails != null)
+                {
+                    fullName = readUserDetails.fullName;
+                    email = readUserDetails.email;
+                    dob = readUserDetails.dob;
+                    gender = readUserDetails.gender;
+                    mobile = readUserDetails.mobile;
+
+                    textViewWelcome.setText("Welcome " + fullName + "!");
+                    textViewFullName.setText(fullName);
+                    textViewEmail.setText(email);
+                    textViewDoB.setText(dob);
+                    textViewGender.setText(gender);
+                    textViewMobile.setText(mobile);
+
+                    Uri uri = firebaseUser.getPhotoUrl();
+                    Picasso.get().load(uri).into(imageView);
+                }
+                else
+                {
+                    addUserProfile();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+                Toast.makeText(rootView.getContext(), "Something went wrong.", Toast.LENGTH_LONG).show();
+
+            }
+        });
 
     }
+    private String TAG ="ProfileFragment";
 
     private void addUserProfile()
     {
@@ -100,6 +153,9 @@ public class ProfileFragment extends Fragment {
         firebaseUser = authProfile.getCurrentUser();
         String userId = firebaseUser.getUid();
 
+        Uri uri = firebaseUser.getPhotoUrl();
+        Picasso.get().load(uri).into(imageView);
+
         ReadWriteUserDetails writeUserDetails = new ReadWriteUserDetails(fullName, email, dob, gender, mobile);
         DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("Registered Users");
 
@@ -109,6 +165,7 @@ public class ProfileFragment extends Fragment {
                 if(task.isSuccessful())
                 {
                     Toast.makeText(rootView.getContext(), "User Profile Information was Successfully added", Toast.LENGTH_LONG).show();
+                    showUserProfile();
                     //put intent statements here to switch to new activity
                 }
                 else

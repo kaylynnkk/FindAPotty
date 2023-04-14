@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,6 +83,13 @@ public class UploadProfilePic extends Fragment {
             public void onClick(View view)
             {
                 UploadPic();
+                NavController controller = Navigation.findNavController(rootView);
+                controller.navigate(R.id.action_uploadProfilePic_to_nav_profile);
+//                binding.flAccountButton.setOnClickListener(view -> {
+//                    NavController navController = Navigation.findNavController(binding.getRoot());
+//                    navController.navigate(R.id.action_nav_signup_fragment_to_navg_login_fragment);
+//                    //need to change to the login page again
+//                });
             }
         });
 
@@ -119,6 +128,8 @@ public class UploadProfilePic extends Fragment {
 //                    Intent intent = new Intent(UploadProfilePicActivity.this, NotLogin.class);
 //                    startActivity(intent);
 //                    finish();
+                      //need to go back to Profile Page - also make done button
+                      //more accessible
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 //displays the exception

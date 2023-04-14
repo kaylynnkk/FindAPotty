@@ -195,6 +195,10 @@
         android:id="@+id/uploadProfilePic"
         android:name="com.example.findapotty.profile.UploadProfilePic"
         android:label="fragment_upload_profile_pic"
-        tools:layout="@layout/fragment_upload_profile_pic" />
+        tools:layout="@layout/fragment_upload_profile_pic" >
+        <action
+            android:id="@+id/action_uploadProfilePic_to_nav_profile"
+            app:destination="@id/nav_profile" />
+    </fragment>
 
 </navigation>

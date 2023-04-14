@@ -1,5 +1,6 @@
 package com.example.findapotty.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +21,11 @@ import com.example.findapotty.user.FavoriteRestroomsManager;
 import com.example.findapotty.user.User;
 import com.example.findapotty.databinding.FragmentLoginBinding;
 import com.example.findapotty.user.VisitedRestroomsManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,9 +54,9 @@ public class LoginFragment extends Fragment {
         binding.flSignupButton.setOnClickListener(view -> {
             actionSignUpPage(view);
         });
-        binding.flLoginButton2.setOnClickListener(view -> {
-            quickLogin();
-        });
+//        binding.flLoginButton2.setOnClickListener(view -> {
+//            quickLogin();
+//        });
 
         return binding.getRoot();
     }
@@ -66,8 +71,8 @@ public class LoginFragment extends Fragment {
 //            @Override
 //            public void onClick(View view) {
 //                DatabaseReference mdb = FirebaseDatabase.getInstance().getReference();
-//                User user = new User("ano", "100");
-//                mdb.child("users").child(mdb.push().getKey()).setValue(user);
+//              //  User user = new User("ano", "100");
+//               // mdb.child("users").child(mdb.push().getKey()).setValue(user);
 //
 //                NavController controller = Navigation.findNavController(view);
 //                controller.navigate(R.id.action_loginFragment2_to_nav_search);
@@ -95,13 +100,21 @@ public class LoginFragment extends Fragment {
                             DatabaseReference mdb = FirebaseDatabase.getInstance().getReference();
 
                             String userId = mAuth.getCurrentUser().getUid();
-                            User user =  User.getInstance();
+                            User user = User.getInstance();
 
                             // retrieve user info
                             mdb.child("users").child(userId).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    User retrievedUser = snapshot.getValue( User.class );
+                                    //
+                                    if (!snapshot.exists()) {
+                                        return;
+                                    }
+
+
+                                    User user = snapshot.getValue(User.class);
+                                    //
+                                    User retrievedUser = snapshot.getValue(User.class);
 
                                     User currentUser = User.getInstance();
 
@@ -121,7 +134,7 @@ public class LoginFragment extends Fragment {
 
                                     // user favorite restrooms
                                     FavoriteRestroomsManager.getInstance()
-                                                    .setRestrooms(retrievedUser.getFavoriteRestrooms());
+                                            .setRestrooms(retrievedUser.getFavoriteRestrooms());
 
                                     // visited retrooms
                                     VisitedRestroomsManager.getInstance()
@@ -132,6 +145,7 @@ public class LoginFragment extends Fragment {
 
                                     mdb.child("users").child(userId).removeEventListener(this);
                                 }
+
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
 
@@ -152,13 +166,15 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    private void showError(EditText input, String s) {
+
+
+    private void showError(EditText input, String s){
         input.setError(s);
         input.requestFocus();
     }
 
-    private void quickLogin() {
-        NavController controller = Navigation.findNavController(binding.getRoot());
-        controller.navigate(R.id.action_loginFragment2_to_nav_search);
-    }
+//    private void quickLogin() {
+//        NavController controller = Navigation.findNavController(binding.getRoot());
+//        controller.navigate(R.id.action_loginFragment2_to_nav_search);
+//    }
 }

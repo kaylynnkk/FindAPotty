@@ -6,13 +6,14 @@
     <data>
 
     </data>
-
+    <!--XML Layout file for loginActivity - UI for the Login Page-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".login.LoginFragment"
+        tools:context=".loginActivity"
         android:background="@drawable/login_bg">
 
+        <!--Login Button for Login Page-->
         <Button
             android:id="@+id/fl_login_button"
             android:layout_width="0dp"
@@ -20,23 +21,13 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/input_background"
             android:text="Login"
-            app:layout_constraintEnd_toEndOf="@+id/login_input_password"
+            app:layout_constraintEnd_toEndOf="@+id/loginInputPassword"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/login_input_password"
+            app:layout_constraintStart_toStartOf="@+id/loginInputPassword"
             app:layout_constraintTop_toBottomOf="@+id/forgotPassword" />
 
-        <Button
-            android:id="@+id/fl_login_button2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="216dp"
-            android:background="@drawable/input_background"
-            android:text="Login"
-            app:layout_constraintEnd_toEndOf="@+id/login_input_password"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/login_input_password"
-            app:layout_constraintTop_toBottomOf="@+id/forgotPassword" />
 
+        <!--Name of the App on Login Page-->
         <TextView
             android:id="@+id/logo"
             android:layout_width="wrap_content"
@@ -51,8 +42,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.13" />
 
+        <!--username text box-->
         <EditText
-            android:id="@+id/login_input_username"
+            android:id="@+id/loginInputUsername"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -60,7 +52,7 @@
             android:layout_marginEnd="32dp"
             android:background="@drawable/input_background"
             android:ems="10"
-            android:hint="Username"
+            android:hint="Email"
             android:inputType="textPersonName"
             android:paddingLeft="20dp"
             android:paddingTop="10dp"
@@ -71,8 +63,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/logo" />
 
+        <!--password textbox-->
         <EditText
-            android:id="@+id/login_input_password"
+            android:id="@+id/loginInputPassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -84,11 +77,12 @@
             android:paddingTop="10dp"
             android:paddingRight="10dp"
             android:paddingBottom="10dp"
-            app:layout_constraintEnd_toEndOf="@+id/login_input_username"
+            app:layout_constraintEnd_toEndOf="@+id/loginInputUsername"
             app:layout_constraintHorizontal_bias="0.496"
-            app:layout_constraintStart_toStartOf="@+id/login_input_username"
-            app:layout_constraintTop_toBottomOf="@+id/login_input_username" />
+            app:layout_constraintStart_toStartOf="@+id/loginInputUsername"
+            app:layout_constraintTop_toBottomOf="@+id/loginInputUsername" />
 
+        <!--forgot password? text on login page-->
         <TextView
             android:id="@+id/forgotPassword"
             android:layout_width="wrap_content"
@@ -97,20 +91,22 @@
             android:text="Forgot Password?"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/login_input_password"
-            app:layout_constraintTop_toBottomOf="@+id/login_input_password" />
+            app:layout_constraintEnd_toEndOf="@+id/loginInputPassword"
+            app:layout_constraintTop_toBottomOf="@+id/loginInputPassword" />
 
+        <!--Don't have an account text on Login page-->
         <TextView
             android:id="@+id/alreadyhaveanaccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Do not have an account?"
+            android:text="Don't have an account?"
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="@+id/fl_login_button"
             app:layout_constraintStart_toStartOf="@+id/fl_login_button"
             app:layout_constraintTop_toBottomOf="@+id/fl_login_button" />
 
+        <!--Sign up button that redirects to register page-->
         <Button
             android:id="@+id/fl_signup_button"
             android:layout_width="wrap_content"

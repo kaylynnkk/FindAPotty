@@ -39,6 +39,12 @@ public class SignUpFragment extends Fragment {
             checkCredentials(view);
         });
 
+        binding.flAccountButton.setOnClickListener(view -> {
+            NavController navController = Navigation.findNavController(binding.getRoot());
+            navController.navigate(R.id.action_nav_signup_fragment_to_navg_login_fragment);
+            //need to change to the login page again
+        });
+
         return binding.getRoot();
     }
 

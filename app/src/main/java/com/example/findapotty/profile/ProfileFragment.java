@@ -71,7 +71,7 @@ public class ProfileFragment extends Fragment {
                 //intent stuff goes here for switching to upload photo activity
                 NavController controller = Navigation.findNavController(rootView);
                 controller.navigate(R.id.action_nav_profile_to_uploadProfilePic);
-                Log.d(TAG, "onComplete: 1111111111111111111");
+
             }
         });
 

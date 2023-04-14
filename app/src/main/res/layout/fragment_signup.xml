@@ -24,6 +24,19 @@
             app:layout_constraintStart_toStartOf="@+id/confirmPassword"
             app:layout_constraintTop_toBottomOf="@+id/confirmPassword" />
 
+        <!--Implementation of the "Already have an account?" button-->
+        <Button
+            android:id="@+id/fl_account_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="148dp"
+            android:background="@drawable/input_background"
+            android:text="Already Have an Account?"
+            app:layout_constraintEnd_toEndOf="@+id/confirmPassword"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/confirmPassword"
+            app:layout_constraintTop_toBottomOf="@+id/confirmPassword" />
+
         <EditText
             android:id="@+id/confirmPassword"
             android:layout_width="0dp"

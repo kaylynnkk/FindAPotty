@@ -46,7 +46,7 @@ public class ResultsFragment extends Fragment {
 
 
 
-        // retrieve object from previos activity
+        // retrieve object from previous activity
        // DiaryEntry d = (DiaryEntry) getIntent().getExtras().getSerializable("diary_data");
         DiaryEntry d = new DiaryEntry("04-11-2023","Mar", "Both","Brown",
                 "Pale or Transparent",

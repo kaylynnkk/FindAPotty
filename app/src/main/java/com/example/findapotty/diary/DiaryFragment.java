@@ -31,6 +31,7 @@ import com.example.findapotty.MainActivity;
 import com.example.findapotty.R;
 import com.example.findapotty.databinding.FragmentDiaryBinding;
 import com.example.findapotty.tunes.TunesPlayerFragment;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -194,13 +195,12 @@ public class DiaryFragment extends Fragment {
                     DatabaseReference ref = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                             .getReference("diary_entries");
 
-                    // entryId = FirebaseAuth.getInstance().getCurrentUser().getUid;
-                    entryId = "mgtco5YF59Qrso120oH04onMH1z2";
+                   String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     // create object with user inputs
                     DiaryEntry entry = new DiaryEntry(submissionDate, monthOfSubmission(),
                             pottyType, stoolColor, urineColor,notes,dayOfWeek, duration,pain, Integer.parseInt(stoolType));
                     // use userid as key
-                    ref.child(entryId).setValue(entry);
+                    ref.child(uid).setValue(entry);
                     // alert user that entry has been saves and go to results
                     Toast.makeText(getContext(), "DIARY ENTRY SUBMITTED",
                             Toast.LENGTH_LONG).show();

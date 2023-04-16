@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.findapotty.R;
 import com.example.findapotty.databinding.FragmentTunesplayerBinding;
+import com.example.findapotty.diary.DiaryEntry;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,12 +25,7 @@ public class TunesPlayerFragment extends Fragment {
     TextView titleTv,currentTimeTv,totalTimeTv;
     SeekBar seekBar;
     ImageView pausePlay,nextBtn,previousBtn,musicIcon;
-    Song songOption = new Song("https://firebasestorage.googleapis.com/v0/b/findapotty." +
-            "appspot.com/o/songs%2FMorgan%20Freeman%20Reads%20Everyone%20Poops.mp3?alt=media&" +
-            "token=c34dd9e5-91e3-485e-81b9-837bf78d774b",
-            "Morgan Freeman Reads Everyone Poops",
-            "89443");
-    ArrayList<Song> songsList = new ArrayList<Song>();
+    ArrayList<Song> songsList;
     Song currentSong;
     MediaPlayer mediaPlayer = MyMediaPlayer.getInstance();
     int x=0;
@@ -49,8 +45,9 @@ public class TunesPlayerFragment extends Fragment {
 
         titleTv.setSelected(true);
 
-        //songsList = (ArrayList<Song>) getActivity().getIntent().getSerializableExtra("LIST");
-        songsList.add(songOption);
+        Bundle bundle = getArguments();
+        songsList = (ArrayList<Song>) bundle.getSerializable("song_data");
+
         setResourcesWithMusic();
 
         getActivity().runOnUiThread(new Runnable() {
@@ -59,7 +56,10 @@ public class TunesPlayerFragment extends Fragment {
                 if(mediaPlayer!=null){
                     seekBar.setProgress(mediaPlayer.getCurrentPosition());
                     currentTimeTv.setText(convertToMMSS(mediaPlayer.getCurrentPosition()+""));
-
+                    totalTimeTv.setText(convertToMMSS(String.valueOf(
+                            Integer.parseInt(currentSong.getDuration())
+                            - Integer.parseInt(String.valueOf(mediaPlayer.getCurrentPosition()))
+                            )));
                     if(mediaPlayer.isPlaying()){
                         pausePlay.setImageResource(R.drawable.ic_baseline_pause_circle_outline_24);
                         musicIcon.setRotation(x++);
@@ -98,18 +98,13 @@ public class TunesPlayerFragment extends Fragment {
 
     void setResourcesWithMusic(){
         currentSong = songsList.get(MyMediaPlayer.currentIndex);
-
         titleTv.setText(currentSong.getTitle());
-
         totalTimeTv.setText(convertToMMSS(currentSong.getDuration()));
-
         pausePlay.setOnClickListener(v-> pausePlay());
         nextBtn.setOnClickListener(v-> playNextSong());
         previousBtn.setOnClickListener(v-> playPreviousSong());
 
         playMusic();
-
-
     }
 
 
@@ -125,8 +120,6 @@ public class TunesPlayerFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     private void playNextSong(){

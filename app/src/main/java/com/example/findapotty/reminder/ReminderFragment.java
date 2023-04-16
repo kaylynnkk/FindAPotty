@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.example.findapotty.MainActivity;
 import com.example.findapotty.R;
 import com.example.findapotty.databinding.FragmentDiaryBinding;
 import com.example.findapotty.databinding.FragmentReminderBinding;
+import com.example.findapotty.diary.ResultsFragment;
 import com.example.findapotty.history.VisitedRestroomsRecyclerViewAdaptor;
 import com.example.findapotty.tunes.SongListRecyclerAdapter;
 import com.example.findapotty.tunes.TunesPlayerFragment;
@@ -49,7 +51,7 @@ public class ReminderFragment extends Fragment {
                         .commit();
             }
         });
-        /*dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                 .getReference().child("reminders");
 
         Log.i("ProblemFOUND", "dbr is null");
@@ -59,15 +61,12 @@ public class ReminderFragment extends Fragment {
                 .build();
         mRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
         reminderListAdapter = new ReminderListAdapter(fbo);
-        mRecyclerview.setAdapter(reminderListAdapter);//Binds the adapter with recyclerview
-
-
- */
+        mRecyclerview.setAdapter(reminderListAdapter);
         return binding.getRoot();
 
 
     }
-    /*
+
     @Override
     public void onStart() {
         super.onStart();
@@ -80,6 +79,4 @@ public class ReminderFragment extends Fragment {
         super.onStop();
         reminderListAdapter.stopListening();
     }
-
-     */
 }

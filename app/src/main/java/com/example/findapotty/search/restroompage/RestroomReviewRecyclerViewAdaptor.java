@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -49,6 +50,8 @@ public class RestroomReviewRecyclerViewAdaptor extends RecyclerView.Adapter<Rest
                 .into(holder.avatar);
 
         holder.username.setText(restroomReviews.get(position).getUsername());
+        holder.date.setText(restroomReviews.get(position).getTimestamp());
+        holder.rating.setRating(restroomReviews.get(position).getRating());
 
 //        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -73,14 +76,18 @@ public class RestroomReviewRecyclerViewAdaptor extends RecyclerView.Adapter<Rest
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView avatar;
-        TextView username;
+        TextView username, date;
         RelativeLayout parentLayout;
+        RatingBar rating;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
             avatar = itemView.findViewById(R.id.rr_rv_avatar);
             username = itemView.findViewById(R.id.rr_rv_username);
             parentLayout = itemView.findViewById(R.id.restroom_review_item);
+            rating = itemView.findViewById(R.id.rr_rv_rating);
+            date = itemView.findViewById(R.id.rr_rv_timestamp);
         }
     }
 }

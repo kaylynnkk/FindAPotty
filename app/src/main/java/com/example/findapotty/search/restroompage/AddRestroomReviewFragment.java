@@ -45,10 +45,10 @@ public class AddRestroomReviewFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_restroom_review, container, false);
         dbr = FirebaseDatabase.getInstance().getReference("Potty/Ratings");
 
-        binding.farrSubmit.setOnClickListener(view -> {
+        binding.submit.setOnClickListener(view -> {
             onSubmit(view);
         });
-        binding.farrBack.setOnClickListener(view -> {
+        binding.back.setOnClickListener(view -> {
 //            onBackPressed();
         });
 

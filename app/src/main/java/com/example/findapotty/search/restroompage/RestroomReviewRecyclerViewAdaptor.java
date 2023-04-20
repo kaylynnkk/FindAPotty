@@ -76,7 +76,7 @@ public class RestroomReviewRecyclerViewAdaptor extends RecyclerView.Adapter<Rest
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView avatar;
-        TextView username, date;
+        TextView username, date, comment;
         RelativeLayout parentLayout;
         RatingBar rating;
 
@@ -88,6 +88,8 @@ public class RestroomReviewRecyclerViewAdaptor extends RecyclerView.Adapter<Rest
             parentLayout = itemView.findViewById(R.id.restroom_review_item);
             rating = itemView.findViewById(R.id.rr_rv_rating);
             date = itemView.findViewById(R.id.rr_rv_timestamp);
+            comment = itemView.findViewById(R.id.rr_rv_review);
+
         }
     }
 }

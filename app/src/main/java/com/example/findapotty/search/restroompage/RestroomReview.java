@@ -3,6 +3,7 @@ package com.example.findapotty.search.restroompage;
 import android.widget.ImageView;
 
 public class RestroomReview {
+    public String restroomId;
 
     private String avatarUrl;
     private String username;
@@ -12,20 +13,31 @@ public class RestroomReview {
     public String comment;
     public String timestamp;
 
-    public RestroomReview(String avatarUrl, String username, Float rating, String comment, String timestamp) {
+    public RestroomReview(String restroomId, String avatarUrl, String username,
+                          Float rating, String comment, String timestamp) {
+        this.restroomId = restroomId;
         this.avatarUrl = avatarUrl;
         this.username = username;
         this.rating = rating;
         this.comment = comment;
         this.timestamp = timestamp;
     }
-
-    public RestroomReview(ImageView avatar, String username, Float rating, String comment, String timestamp) {
+    public RestroomReview(String restroomId, ImageView avatar, String username,
+                          Float rating, String comment, String timestamp) {
+        this.restroomId = restroomId;
         this.username = username;
         this.avatar = avatar;
         this.rating = rating;
         this.comment = comment;
         this.timestamp = timestamp;
+    }
+
+    public String getRestroomId() {
+        return restroomId;
+    }
+
+    public void setRestroomId(String restroomId) {
+        this.restroomId = restroomId;
     }
 
     public String getAvatarUrl() {

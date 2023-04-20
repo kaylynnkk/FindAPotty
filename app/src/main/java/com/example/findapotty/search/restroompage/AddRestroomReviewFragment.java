@@ -1,5 +1,6 @@
 package com.example.findapotty.search.restroompage;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,11 +16,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.findapotty.R;
 import com.example.findapotty.databinding.FragmentAddRestroomReviewBinding;
+import com.example.findapotty.diary.ResultsFragment;
+import com.example.findapotty.model.Restroom;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
@@ -33,11 +38,11 @@ public class AddRestroomReviewFragment extends Fragment {
     private FragmentAddRestroomReviewBinding binding;
 
     private DatabaseReference dbr;
-//    private Button backBT, submitBT, imgBT;
-//    private ImageView imgIV;
-//    private RatingBar ratingRB;
-//    private EditText reviewET;
-//    private String userId, userName, imgURL;
+    private Button backBT, submitBT, imgBT;
+    private ImageView imgIV;
+    private RatingBar ratingRB;
+    private EditText reviewET;
+    private String userId, userName, imgURL;
 
     @Nullable
     @Override
@@ -45,6 +50,8 @@ public class AddRestroomReviewFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_restroom_review, container, false);
         dbr = FirebaseDatabase.getInstance().getReference("Potty/Ratings");
 
+        ratingRB = binding.rating;
+        reviewET = binding.comment;
         binding.submit.setOnClickListener(view -> {
             onSubmit(view);
         });
@@ -56,22 +63,25 @@ public class AddRestroomReviewFragment extends Fragment {
     }
 
     private void onSubmit(View view) {
-//        String userId = dbr.push().getKey();
-//        String userName = "joeKing";
-//
-//        Review rev = new Review(ratingRB.getRating(),
-//                reviewET.getText().toString().trim(),
-//                String.valueOf(System.currentTimeMillis()), 0,imgURL,userName);
-
+        String restroomId = "abc";
+        String reviewId = dbr.push().getKey();
+        String avatarUrl = "https://firebasestorage.googleapis.com/v0/b/findapotty.appspot.com/o/" +
+                "avatars%2Fdefault_avatar.jpg?alt=media&token=bfa281bd-bfc5-4f47-b62a-258f6698b6d6";
+        String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        // Create review object
+        RestroomReview rev = new RestroomReview(restroomId, avatarUrl, username, ratingRB.getRating(),
+                reviewET.getText().toString().trim(),
+                String.valueOf(System.currentTimeMillis()));
         // go to userId branch of databse and insert review object
-//        dbr.child(userId).setValue(rev);
-
+        dbr.child(reviewId).setValue(rev);
         // Pop up to alert user that review has been submitted
-        Toast.makeText(view.getContext(), "Review Submitted Successfully", Toast.LENGTH_SHORT).show();
-
+        Toast.makeText(getContext(), "Review Submitted Successfully", Toast.LENGTH_SHORT).show();
         // leave write review activity and start display review activity
-//        Intent intent = new Intent(WriteReviewActivity.this, RestroomPageBottomSheet.class);
-//        startActivity(intent);
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.replace(R.id.diary1, new RestroomPageBottomSheet())
+                .addToBackStack(null)
+                .commit();
 
     }
 

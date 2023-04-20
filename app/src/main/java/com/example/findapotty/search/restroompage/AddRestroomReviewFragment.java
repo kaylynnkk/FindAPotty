@@ -56,7 +56,7 @@ public class AddRestroomReviewFragment extends Fragment {
             onSubmit(view);
         });
         binding.back.setOnClickListener(view -> {
-//            onBackPressed();
+            onBackPressed();
         });
 
         return binding.getRoot();
@@ -79,14 +79,21 @@ public class AddRestroomReviewFragment extends Fragment {
         // leave write review activity and start display review activity
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft.replace(R.id.diary1, new RestroomPageBottomSheet())
+        ft.replace(R.id.add_review, new RestroomPageBottomSheet())
                 .addToBackStack(null)
                 .commit();
 
     }
 
-//    private void onBackPressed() {
-//    }
+    private void onBackPressed() {
+        // leave write review activity and start display review activity
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.replace(R.id.add_review, new RestroomPageBottomSheet())
+                .addToBackStack(null)
+                .commit();
+
+    }
 
     /*private void loadPhotos() {
         Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));

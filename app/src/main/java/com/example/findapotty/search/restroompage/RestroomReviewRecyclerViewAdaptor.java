@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.findapotty.R;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import java.util.ArrayList;
 
@@ -22,15 +24,14 @@ import java.util.ArrayList;
  * Created by User on 1/1/2018.
  */
 
-public class RestroomReviewRecyclerViewAdaptor extends RecyclerView.Adapter<RestroomReviewRecyclerViewAdaptor.ViewHolder> {
+public class RestroomReviewRecyclerViewAdaptor extends FirebaseRecyclerAdapter<RestroomReview,
+        RestroomReviewRecyclerViewAdaptor.ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapter";
-    private ArrayList<RestroomReview> restroomReviews;
     Context context;
 
-    public RestroomReviewRecyclerViewAdaptor(Context context, ArrayList<RestroomReview> restroomReviews) {
-        this.context = context;
-        this.restroomReviews = restroomReviews;
+    public RestroomReviewRecyclerViewAdaptor(@NonNull FirebaseRecyclerOptions<RestroomReview> options) {
+        super(options);
     }
 
     @NonNull
@@ -41,19 +42,17 @@ public class RestroomReviewRecyclerViewAdaptor extends RecyclerView.Adapter<Rest
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
-        Log.d(TAG, "onBindViewHolder: called.");
-
+    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull RestroomReview model) {
         Glide.with(context)
                 .asBitmap()
-                .load(restroomReviews.get(position).getAvatarUrl())
+                .load(model.getAvatarUrl())
                 .into(holder.avatar);
 
-        holder.username.setText(restroomReviews.get(position).getUsername());
-        holder.date.setText(restroomReviews.get(position).getTimestamp());
-        holder.rating.setRating(restroomReviews.get(position).getRating());
-
-//        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+        holder.username.setText(model.getUsername());
+        holder.date.setText(model.getTimestamp());
+        holder.rating.setRating(model.getRating());
+        holder.comment.setText(model.getComment());
+        //        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
 //                Log.d(TAG, "onClick: clicked on: " + mImageNames.get(position));
@@ -67,21 +66,23 @@ public class RestroomReviewRecyclerViewAdaptor extends RecyclerView.Adapter<Rest
 //            }
 //        });
     }
-
+/*
     @Override
     public int getItemCount() {
         return restroomReviews.size();
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+ */
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView avatar;
         TextView username, date, comment;
         RelativeLayout parentLayout;
         RatingBar rating;
 
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             avatar = itemView.findViewById(R.id.rr_rv_avatar);
             username = itemView.findViewById(R.id.rr_rv_username);

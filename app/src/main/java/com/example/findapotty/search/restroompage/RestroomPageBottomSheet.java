@@ -25,11 +25,13 @@ import com.example.findapotty.search.NearbyRestroom;
 import com.example.findapotty.user.FavoriteRestroom;
 import com.example.findapotty.user.FavoriteRestroomsManager;
 import com.example.findapotty.user.User;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -38,13 +40,15 @@ import java.util.ArrayList;
 public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 
     private static final String TAG = "RestroomPageBottomSheet";
-    private final ArrayList<RestroomReview> restroomReviews = new ArrayList<>();
+ //   private final ArrayList<RestroomReview> restroomReviews = new ArrayList<>();
     private ImageView rr_photo;
 
     private BottomSheetRestroomPageBinding binding;
     private View rootView;
     private RecyclerView recyclerView;
     private RestroomReviewRecyclerViewAdaptor adaptor;
+    Query dbr;
+    FirebaseRecyclerOptions<RestroomReview> fbo;
 
     private boolean isFavorite = false;
 
@@ -69,10 +73,19 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 //                null, false);
 //        binding.setLifecycleOwner(this);
         dialog.setContentView(binding.getRoot());
+
         recyclerView = binding.rrPgReviewSection;
+        dbr = FirebaseDatabase.getInstance(
+                        "https://reviewpractice-36ce6-default-rtdb.firebaseio.com/")
+                .getReference().child("Potty/Ratings");
+        // use firebas eui to populate recycler straigther form databse
+        fbo = new FirebaseRecyclerOptions.Builder<RestroomReview>()
+                .setQuery(dbr, RestroomReview.class)
+                .build();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adaptor = new RestroomReviewRecyclerViewAdaptor(getContext(), restroomReviews);
+        adaptor = new RestroomReviewRecyclerViewAdaptor(fbo);
         recyclerView.setAdapter(adaptor);
+
         assert getArguments() != null;
         restroom = RestroomPageBottomSheetArgs.fromBundle(getArguments()).getRestroom();
         nearbyRestroom = RestroomPageBottomSheetArgs.fromBundle(getArguments()).getNearByRestroom();
@@ -81,7 +94,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         refFavoriteRestrooms = mdb.child("users")
                 .child(User.getInstance().getUserId()).child("favoriteRestrooms");
         initRestroomPage();
-        initReviews();
+       // initReviews();
         addReviewListener();
         editPageListener();
         binding.bsrpBtnFavorite.setOnClickListener(view -> {
@@ -89,12 +102,14 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         });
         return dialog;
     }
-
+/*
     private void initReviews() {
         restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "Trondheim1"));
         restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "Trondheim2"));
         restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "Trondheim3"));
     }
+
+ */
 
     private void initRestroomPage() {
 //        if (favoriteRestroom!= null) {
@@ -188,6 +203,17 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             FavoriteRestroomsManager.getInstance().removeRestroom(restroom.getPlaceID());
         }
         refFavoriteRestrooms.setValue(FavoriteRestroomsManager.getInstance().getRestrooms());
+    }
+    //called to continue data being retrievedfrom friebase
+    @Override public void onStart() {
+        super.onStart();
+        adaptor.startListening();
+    }
+
+    //called to stop data  retrieval from friebase
+    @Override public void onStop() {
+        super.onStop();
+        adaptor.stopListening();
     }
 
 }

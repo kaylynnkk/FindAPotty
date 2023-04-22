@@ -28,6 +28,11 @@ public class AccountViewModel {
         editor.apply();
     }
 
+    public void clearCredential() {
+        saveCredential(null, null);
+        setLoginState(false);
+    }
+
     public String[] getCredential() {
         return new String[] {
                 sharedPreferences.getString(USERNAME, ""),

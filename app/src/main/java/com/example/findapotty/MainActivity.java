@@ -21,7 +21,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -131,19 +130,20 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                navController.navigateUp();
-                navController.navigate(item.getItemId());
-                if (item.getItemId() == R.id.appStartFragment) {
-                    Log.d(TAG, "onNavigationItemSelected: clear cred");
+                if (item.getItemId() == R.id.navg_login_fragment) {
+                    Log.d(TAG, "onNavigationItemSelected: 11111111111222");
                     AccountViewModel accountViewModel = new AccountViewModel(binding.getRoot().getContext());
                     accountViewModel.clearCredential();
                 }
+                navController.navigate(item.getItemId());
+//                navController.popBackStack(R.id.nav_search, false);
                 drawer.close();
                 return true;
             }
         });
 
         grantPermissions();
+
 
     }
 
@@ -218,5 +218,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.dispatchTouchEvent(event);
     }
-
 }

@@ -46,7 +46,7 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/appStartFragment"
+                    android:id="@+id/navg_login_fragment"
                     android:icon="@drawable/ic_logout_24"
                     android:title="Log out" />
             </group>

@@ -44,7 +44,7 @@ public class LoginFragment extends Fragment {
 //        binding.setLifecycleOwner(this);
         mAuth = FirebaseAuth.getInstance();
         accountViewModel = new AccountViewModel(binding.getRoot().getContext());
-        //directLogin();
+        directLogin();
         binding.flLoginButton.setOnClickListener(view -> {
             login();
         });

@@ -1,6 +1,10 @@
 package com.example.findapotty;
 
 import android.Manifest;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
@@ -13,12 +17,14 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -49,9 +55,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 //        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         navController = ((NavHostFragment) binding.navHostFragment.getFragment()).getNavController();
-
-        AccountViewModel accountViewModel = new AccountViewModel(binding.getRoot().getContext());
-        accountViewModel.setUseState(false);
 
         // - init variables
         Toolbar toolbar = binding.appBarMain.mainToolbar;
@@ -112,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
             switch (navDestination.getId()) {
                 case R.id.navg_login_fragment:
                 case R.id.nav_signup_fragment:
-                case R.id.appStartFragment:
                     toolbar.setVisibility(View.GONE);
                     break;
 //                case R.id.nav_search:
@@ -140,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.appStartFragment) {
                     Log.d(TAG, "onNavigationItemSelected: clear cred");
                     AccountViewModel accountViewModel = new AccountViewModel(binding.getRoot().getContext());
-                    accountViewModel.setUseState(false);
                     accountViewModel.clearCredential();
                 }
                 drawer.close();

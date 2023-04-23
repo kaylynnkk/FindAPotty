@@ -41,10 +41,8 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false);
-//        binding.setLifecycleOwner(this);
         mAuth = FirebaseAuth.getInstance();
         accountViewModel = new AccountViewModel(binding.getRoot().getContext());
-        //directLogin();
         binding.flLoginButton.setOnClickListener(view -> {
             login();
         });
@@ -57,27 +55,6 @@ public class LoginFragment extends Fragment {
     private void actionSignUpPage(View view) {
         NavController controller = Navigation.findNavController(view);
         controller.navigate(R.id.action_navg_login_fragment_to_nav_signup_fragment);
-    }
-//    private void loginListener() {
-//        binding.flLoginButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                DatabaseReference mdb = FirebaseDatabase.getInstance().getReference();
-//                User user = new User("ano", "100");
-//                mdb.child("users").child(mdb.push().getKey()).setValue(user);
-//
-//                NavController controller = Navigation.findNavController(view);
-//                controller.navigate(R.id.action_loginFragment2_to_nav_search);
-//            }
-//        });
-//    }
-
-    private void directLogin() {
-        if (accountViewModel.getLoginState()) {
-            Log.d(TAG, "login: direct login");
-            String[] credential = accountViewModel.getCredential();
-            checkCredentials(credential[0], credential[1]);
-        }
     }
 
     private void login() {

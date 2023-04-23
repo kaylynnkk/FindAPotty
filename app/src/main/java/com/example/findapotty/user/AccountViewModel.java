@@ -9,6 +9,7 @@ public class AccountViewModel {
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String ONLOGIN = "onlogin";
+    private static final String ONUSE = "onuse";
     private static final String PREFS_NAME = "accountState";
 
     public AccountViewModel(Context context) {
@@ -28,6 +29,12 @@ public class AccountViewModel {
         editor.apply();
     }
 
+    public void setUseState(boolean onUse) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(ONUSE, onUse);
+        editor.apply();
+    }
+
     public void clearCredential() {
         saveCredential(null, null);
         setLoginState(false);
@@ -43,4 +50,9 @@ public class AccountViewModel {
     public boolean getLoginState() {
         return sharedPreferences.getBoolean(ONLOGIN, false);
     }
+
+    public boolean getUseState() {
+        return sharedPreferences.getBoolean(ONUSE, false);
+    }
+
 }

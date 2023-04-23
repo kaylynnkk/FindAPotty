@@ -14,6 +14,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.findapotty.databinding.FragmentAppStartBinding;
+import com.example.findapotty.login.LoginFragment;
 import com.example.findapotty.user.AccountViewModel;
 import com.example.findapotty.user.FavoriteRestroomsManager;
 import com.example.findapotty.user.User;
@@ -91,7 +92,6 @@ public class AppStartFragment extends Fragment {
                                 StorageReference ref = storageRef.child(currentUser.getAvatarPath());
                                 ref.getDownloadUrl().addOnSuccessListener(uri -> {
                                     currentUser.setAvatarUrl(uri);
-                                    ((MainActivity) requireActivity()).setUpNavViewHeader();
                                 });
                                 // user favorite restrooms
                                 FavoriteRestroomsManager.getInstance()

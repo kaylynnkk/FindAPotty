@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -60,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navigationView;
         BottomNavigationView bottomNavigationView = binding.bottomNavigation;
+
+        // https://developer.android.com/reference/android/view/WindowManager.LayoutParams
+        // allow window to extend outside of the screen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         // - tool bar
         setSupportActionBar(toolbar);

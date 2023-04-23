@@ -1,16 +1,12 @@
 package com.example.findapotty;
 
 import android.Manifest;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -28,7 +24,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.findapotty.databinding.ActivityMainBinding;
-import com.example.findapotty.user.AccountViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -123,22 +118,6 @@ public class MainActivity extends AppCompatActivity {
                 default:
                     toolbar.setVisibility(View.VISIBLE);
 //                    toolbar.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.bg_common_toolbar, getTheme()));
-            }
-        });
-
-        // manage navigation view
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.navg_login_fragment) {
-                    Log.d(TAG, "onNavigationItemSelected: 11111111111222");
-                    AccountViewModel accountViewModel = new AccountViewModel(binding.getRoot().getContext());
-                    accountViewModel.clearCredential();
-                }
-                navController.navigate(item.getItemId());
-//                navController.popBackStack(R.id.nav_search, false);
-                drawer.close();
-                return true;
             }
         });
 

@@ -89,16 +89,17 @@ public class AppStartFragment extends Fragment {
                                 currentUser.setAvatarPath(retrievedUser.getAvatarPath());
                                 StorageReference storageRef = FirebaseStorage.getInstance().getReference();
                                 StorageReference ref = storageRef.child(currentUser.getAvatarPath());
-                                ref.getDownloadUrl().addOnSuccessListener(uri -> {
-                                    currentUser.setAvatarUrl(uri);
-                                    ((MainActivity) requireActivity()).setUpNavViewHeader();
-                                });
                                 // user favorite restrooms
                                 FavoriteRestroomsManager.getInstance()
                                         .setRestrooms(retrievedUser.getFavoriteRestrooms());
-                                // visited retrooms
+                                // visited restrooms
                                 VisitedRestroomsManager.getInstance()
                                         .setRestrooms(retrievedUser.getVisitedRestrooms());
+                                ref.getDownloadUrl().addOnSuccessListener(uri -> {
+                                    currentUser.setAvatarUrl(uri);
+                                    ((MainActivity) requireActivity()).setUpNavViewHeader();
+                                    navController.navigate(R.id.action_appStartFragment_to_nav_search);
+                                });
                                 Toast.makeText(binding.getRoot().getContext(), "Welcome " + currentUser.getUserName(),
                                         Toast.LENGTH_SHORT).show();
                                 mdb.child("users").child(userId).removeEventListener(this);
@@ -108,7 +109,6 @@ public class AppStartFragment extends Fragment {
                             public void onCancelled(@NonNull DatabaseError error) {
                             }
                         });
-                        navController.navigate(R.id.action_appStartFragment_to_nav_search);
 
                     } else {
                         // If sign in fails, display a message to the user.

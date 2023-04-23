@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="?attr/actionBarSize"
+        android:paddingTop="@dimen/action_bar_size"
         android:paddingBottom="?attr/actionBarSize"
         tools:context=".favorite.FavortieFragment">
 

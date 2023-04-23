@@ -8,7 +8,7 @@
     android:gravity="center"
     android:id="@+id/reminder2"
     android:orientation="vertical"
-    android:paddingTop="?attr/actionBarSize"
+    android:paddingTop="@dimen/action_bar_size"
     tools:context=".reminder.ReminderBuilderFragment">
 
     <LinearLayout

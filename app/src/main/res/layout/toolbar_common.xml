@@ -20,9 +20,8 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/mainToolbar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/action_bar_size"
-                android:background="@drawable/bg_common_toolbar"
-                android:paddingTop="@dimen/action_bar_nav_icon_padding_top" />
+                android:layout_height="?attr/actionBarSize"
+                android:background="@drawable/bg_common_toolbar"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 

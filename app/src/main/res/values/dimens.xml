@@ -2,7 +2,4 @@
 <resources>
     <dimen name="reply_textsize">15dp</dimen>
     <dimen name="reply_lineheight">23dp</dimen>
-    <dimen name="action_bar_size">70dp</dimen>
-    <!-- action_bar_size - 53 = action_bar_nav_icon_padding_top -->
-    <dimen name="action_bar_nav_icon_padding_top">17dp</dimen>
 </resources>

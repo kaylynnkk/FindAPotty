@@ -12,7 +12,7 @@
         android:id="@+id/fd_swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/action_bar_size"
+        android:paddingTop="?attr/actionBarSize"
         android:paddingBottom="?attr/actionBarSize">
 
         <androidx.constraintlayout.widget.ConstraintLayout

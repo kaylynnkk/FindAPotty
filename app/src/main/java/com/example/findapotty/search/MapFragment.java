@@ -196,8 +196,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         adaptor = new NearbyRestroomsRecyclerViewAdaptor(getContext());
         recyclerView.setAdapter(adaptor);
         LinearSnapHelper linearSnapHelper = new SnapHelperOneByOne();
-        // fixed "An instance of OnFlingListener already set"
-        recyclerView.setOnFlingListener(null);
         linearSnapHelper.attachToRecyclerView(recyclerView);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

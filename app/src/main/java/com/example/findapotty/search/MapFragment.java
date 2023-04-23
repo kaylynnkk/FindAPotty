@@ -389,22 +389,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                     nearbyRestroom.setPhotoPath(saveRestroomPhotosToStorage(placeDetails.placeId, photoBitmap));
                                 }
                                 // 4. fetch distance
-                                DistanceMatrix distanceMatrix = new DistanceMatrixApiRequest(geoApiContext)
-                                        .origins(new com.google.maps.model.LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
-                                        .destinations(placeDetails.geometry.location)
-//                            .mode(TravelMode.WALKING)
-                                        .units(Unit.METRIC)// m, km
-                                        .await();
-                                Log.d(TAG, rrName + " run: distance fetched");
-                                // set attributes for restrooms
-                                nearbyRestroom.setCurrentDistance(
-                                        distanceMatrix.rows[0].elements[0].status == DistanceMatrixElementStatus.OK ?
-                                                distanceMatrix.rows[0].elements[0].distance.inMeters : Long.MAX_VALUE
-                                );
-                                nearbyRestroom.setCurrentDistanceText(
-                                        distanceMatrix.rows[0].elements[0].status == DistanceMatrixElementStatus.OK ?
-                                                distanceMatrix.rows[0].elements[0].distance.humanReadable : "Unknown"
-                                );
+//                                DistanceMatrix distanceMatrix = new DistanceMatrixApiRequest(geoApiContext)
+//                                        .origins(new com.google.maps.model.LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
+//                                        .destinations(placeDetails.geometry.location)
+////                            .mode(TravelMode.WALKING)
+//                                        .units(Unit.METRIC)// m, km
+//                                        .await();
+//                                Log.d(TAG, rrName + " run: distance fetched");
+//                                // set attributes for restrooms
+//                                nearbyRestroom.setCurrentDistance(
+//                                        distanceMatrix.rows[0].elements[0].status == DistanceMatrixElementStatus.OK ?
+//                                                distanceMatrix.rows[0].elements[0].distance.inMeters : Long.MAX_VALUE
+//                                );
+//                                nearbyRestroom.setCurrentDistanceText(
+//                                        distanceMatrix.rows[0].elements[0].status == DistanceMatrixElementStatus.OK ?
+//                                                distanceMatrix.rows[0].elements[0].distance.humanReadable : "Unknown"
+//                                );
                                 NearbyRestroomsManager.getInstance().addRestroom(nearbyRestroom);
 
 

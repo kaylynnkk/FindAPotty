@@ -19,7 +19,6 @@ import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -34,20 +33,26 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
+//        setContentView(R.layout.activity_main);
+
+
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
     }
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-//        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        navController = ((NavHostFragment) binding.navHostFragment.getFragment()).getNavController();
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         // - init variables
         Toolbar toolbar = binding.appBarMain.mainToolbar;
@@ -133,24 +138,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // private final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+    private final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
 
     public void grantPermissions() {
-        String[] permissions = {
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.INTERNET
-        };
-        for (String permission : permissions) {
-            if ( ContextCompat.checkSelfPermission(
-                    this, permission) != PackageManager.PERMISSION_GRANTED ) {
-                requestPermissions(
-                        new String[] {permission},
-                        1234);
-            }
+        if (ContextCompat.checkSelfPermission(
+                this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+                this, android.Manifest.permission.INTERNET) ==
+                PackageManager.PERMISSION_GRANTED) {
+            ;
+        } else {
+            // You can directly ask for the permission.
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET},
+                    LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
 
-    /*@Override
+    @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
@@ -171,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         }
         // Other 'case' lines to check for other
         // permissions this app might request.
-    }*/
+    }
 
     // https://stackoverflow.com/a/41646358
     @Override

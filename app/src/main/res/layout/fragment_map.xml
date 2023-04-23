@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".search.MapFragment"
-        android:paddingTop="?attr/actionBarSize"
+        android:paddingTop="@dimen/action_bar_size"
         android:paddingBottom="?attr/actionBarSize">
 
         <androidx.constraintlayout.widget.ConstraintLayout

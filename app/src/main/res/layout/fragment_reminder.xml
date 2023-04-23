@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/reminder1"
-    android:paddingTop="?attr/actionBarSize"
+    android:paddingTop="@dimen/action_bar_size"
     tools:context=".reminder.ReminderFragment">
     <TextView
         android:id="@+id/title"

@@ -16,7 +16,7 @@ public class NearbyRestroom extends Restroom {
     //added this private variable
     private float rating;
 
-    public NearbyRestroom(Restroom that, boolean isOpen, long currentDistance, String currentDistanceText, float rating) {
+    public NearbyRestroom(Restroom that, boolean isOpen, long currentDistance, String currentDistanceText,float rating) {
         super(that);
         this.isOpen = isOpen;
         this.currentDistance = currentDistance;

@@ -448,7 +448,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // sort restrooms
         NearbyRestroomsManager.getInstance().sortByDistance();
         //added this line
-        NearbyRestroomsManager.getInstance().sortByReview();
+        //NearbyRestroomsManager.getInstance().sortByReview();
         adaptor.notifyDataSetChanged();
         recyclerView.smoothScrollToPosition(0);
     }

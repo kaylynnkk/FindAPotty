@@ -13,11 +13,16 @@ public class NearbyRestroom extends Restroom {
     private long currentDistance;
     private String currentDistanceText;
 
-    public NearbyRestroom(Restroom that, boolean isOpen, long currentDistance, String currentDistanceText) {
+    //added this private variable
+    private float rating;
+
+    public NearbyRestroom(Restroom that, boolean isOpen, long currentDistance, String currentDistanceText, float rating) {
         super(that);
         this.isOpen = isOpen;
         this.currentDistance = currentDistance;
         this.currentDistanceText = currentDistanceText;
+        //add rating to the constructor
+        this.rating = rating;
     }
 
     public NearbyRestroom() {}
@@ -37,6 +42,9 @@ public class NearbyRestroom extends Restroom {
     public long getCurrentDistance() {
         return currentDistance;
     }
+
+    //added this function
+    public float getRating(){return rating;}
 
     public String getCurrentDistanceText() {
         return currentDistanceText;
@@ -80,6 +88,8 @@ public class NearbyRestroom extends Restroom {
         markerId = in.readString();
         currentDistance = in.readLong();
         currentDistanceText = in.readString();
+        //added this line too
+        rating = in.readFloat();
     }
 
     @Override
@@ -94,5 +104,7 @@ public class NearbyRestroom extends Restroom {
         parcel.writeByte((byte) (isOpen ? 1 : 0));
         parcel.writeLong(currentDistance);
         parcel.writeString(currentDistanceText);
+        //added this line too
+        parcel.writeFloat(rating);
     }
 }

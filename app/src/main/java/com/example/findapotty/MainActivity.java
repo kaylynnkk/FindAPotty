@@ -23,8 +23,11 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.bumptech.glide.Glide;
 import com.example.findapotty.databinding.ActivityMainBinding;
+import com.example.findapotty.databinding.NavigationViewHeaderBinding;
 import com.example.findapotty.user.AccountViewModel;
+import com.example.findapotty.user.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private NavController navController;
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
-
+    private NavigationView navigationView;
 
 
     @Override
@@ -44,29 +47,23 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 //        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         navController = ((NavHostFragment) binding.navHostFragment.getFragment()).getNavController();
-
         AccountViewModel accountViewModel = new AccountViewModel(binding.getRoot().getContext());
         accountViewModel.setUseState(false);
-
         // - init variables
         Toolbar toolbar = binding.appBarMain.mainToolbar;
         DrawerLayout drawer = binding.drawerLayout;
-        NavigationView navigationView = binding.navigationView;
+        navigationView = binding.navigationView;
         BottomNavigationView bottomNavigationView = binding.bottomNavigation;
-
         // https://developer.android.com/reference/android/view/WindowManager.LayoutParams
         // allow window to extend outside of the screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
         // - tool bar
         setSupportActionBar(toolbar);
-
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -79,13 +76,10 @@ public class MainActivity extends AppCompatActivity {
                 .setOpenableLayout(drawer)
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-
         // - Navigation View
         NavigationUI.setupWithNavController(navigationView, navController);
-
         // - Bottom Navigation View
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
         // - visibility
         // default visibility
         bottomNavigationView.setVisibility(View.GONE);
@@ -96,18 +90,14 @@ public class MainActivity extends AppCompatActivity {
             switch (navDestination.getId()) {
                 case R.id.nav_search:
                 case R.id.nav_discuss:
-
                 case R.id.nav_favorite:
                 case R.id.nav_feed:
-
                 case R.id.nav_profile:
-
                     bottomNavigationView.setVisibility(View.VISIBLE);
                     break;
                 default:
                     bottomNavigationView.setVisibility(View.GONE);
             }
-
             // toolbar
             switch (navDestination.getId()) {
                 case R.id.navg_login_fragment:
@@ -130,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
 //                    toolbar.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.bg_common_toolbar, getTheme()));
             }
         });
-
         // manage navigation view
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -147,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
         grantPermissions();
 
     }
@@ -157,8 +145,6 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-
-
     // private final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
 
     public void grantPermissions() {
@@ -167,10 +153,10 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.INTERNET
         };
         for (String permission : permissions) {
-            if ( ContextCompat.checkSelfPermission(
-                    this, permission) != PackageManager.PERMISSION_GRANTED ) {
+            if (ContextCompat.checkSelfPermission(
+                    this, permission) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(
-                        new String[] {permission},
+                        new String[]{permission},
                         1234);
             }
         }
@@ -214,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
             if (v instanceof EditText) {
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
-                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
                     v.clearFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
@@ -222,6 +208,23 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.dispatchTouchEvent(event);
+    }
+
+    public void setUpNavViewHeader() {
+        if (User.getInstance() != null) {
+            Log.d(TAG, "setUpNavViewHeader: 11111");
+            NavigationViewHeaderBinding headerBinding =
+                    NavigationViewHeaderBinding.bind(navigationView.getHeaderView(0));
+            Log.d(TAG, "setUpNavViewHeader: avatar: " + User.getInstance().getAvatarUrl());
+            Glide.with(headerBinding.getRoot().getContext())
+                    .asBitmap()
+                    .dontAnimate()
+                    .load(User.getInstance().getAvatarUrl())
+                    .into(headerBinding.nvhUserAvatar);
+            headerBinding.nvhUserId.setText(User.getInstance().getUserId());
+            headerBinding.nvhUserName.setText(User.getInstance().getUserName());
+
+        }
     }
 
 }

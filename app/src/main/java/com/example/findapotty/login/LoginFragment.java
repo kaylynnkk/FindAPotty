@@ -51,6 +51,9 @@ public class LoginFragment extends Fragment {
         binding.flSignupButton.setOnClickListener(view -> {
             actionSignUpPage(view);
         });
+        binding.flLoginButton2.setOnClickListener(view -> {
+            quickLogin();
+        });
         return binding.getRoot();
     }
 
@@ -158,4 +161,8 @@ public class LoginFragment extends Fragment {
         input.requestFocus();
     }
 
+    private void quickLogin() {
+        NavController controller = Navigation.findNavController(binding.getRoot());
+        controller.navigate(R.id.action_loginFragment2_to_nav_search);
+    }
 }

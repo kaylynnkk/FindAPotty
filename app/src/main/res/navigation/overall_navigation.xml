@@ -13,8 +13,8 @@
         <action
             android:id="@+id/action_loginFragment2_to_nav_search"
             app:destination="@id/nav_search"
-            app:popUpTo="@+id/navg_login_fragment"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@+id/appStartFragment"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_navg_login_fragment_to_nav_signup_fragment"
             app:destination="@id/nav_signup_fragment" />
@@ -204,9 +204,7 @@
         android:label="AppStartFragment" >
         <action
             android:id="@+id/action_appStartFragment_to_navg_login_fragment"
-            app:destination="@id/navg_login_fragment"
-            app:popUpTo="@+id/appStartFragment"
-            app:popUpToInclusive="false" />
+            app:destination="@id/navg_login_fragment"/>
         <action
             android:id="@+id/action_appStartFragment_to_nav_search"
             app:destination="@id/nav_search"

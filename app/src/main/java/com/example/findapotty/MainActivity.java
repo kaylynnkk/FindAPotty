@@ -27,7 +27,9 @@ import com.bumptech.glide.Glide;
 import com.example.findapotty.databinding.ActivityMainBinding;
 import com.example.findapotty.databinding.NavigationViewHeaderBinding;
 import com.example.findapotty.user.AccountViewModel;
+import com.example.findapotty.user.FavoriteRestroomsManager;
 import com.example.findapotty.user.User;
+import com.example.findapotty.user.VisitedRestroomsManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -126,11 +128,16 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 //                navController.navigateUp();
                 navController.navigate(item.getItemId());
+                // log out
                 if (item.getItemId() == R.id.appStartFragment) {
                     Log.d(TAG, "onNavigationItemSelected: clear cred");
+                    // clear credential
                     AccountViewModel accountViewModel = new AccountViewModel(binding.getRoot().getContext());
                     accountViewModel.setUseState(false);
                     accountViewModel.clearCredential();
+                    // clear restroom info
+                    FavoriteRestroomsManager.getInstance().clear();
+                    VisitedRestroomsManager.getInstance().clear();
                 }
                 drawer.close();
                 return true;

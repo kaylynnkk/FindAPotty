@@ -81,6 +81,7 @@ public class LoginFragment extends Fragment {
                         Log.d(TAG, "signInWithEmail:success");
                         DatabaseReference mdb = FirebaseDatabase.getInstance().getReference();
                         String userId = mAuth.getCurrentUser().getUid();
+                        Log.d(TAG, "checkCredentials: uid: " + userId);
                         User user = User.getInstance();
                         // retrieve user info
                         mdb.child("users").child(userId).addValueEventListener(new ValueEventListener() {
@@ -92,6 +93,12 @@ public class LoginFragment extends Fragment {
                                 currentUser.setUserId(retrievedUser.getUserId());
                                 // user name
                                 currentUser.setUserName(retrievedUser.getUserName());
+                                // user favorite restrooms
+                                FavoriteRestroomsManager.getInstance()
+                                        .setRestrooms(retrievedUser.getFavoriteRestrooms());
+                                // visited restrooms
+                                VisitedRestroomsManager.getInstance()
+                                        .setRestrooms(retrievedUser.getVisitedRestrooms());
                                 // user avatar
                                 currentUser.setAvatarPath(retrievedUser.getAvatarPath());
                                 StorageReference storageRef = FirebaseStorage.getInstance().getReference();
@@ -99,13 +106,12 @@ public class LoginFragment extends Fragment {
                                 ref.getDownloadUrl().addOnSuccessListener(uri -> {
                                     currentUser.setAvatarUrl(uri);
                                     ((MainActivity) requireActivity()).setUpNavViewHeader();
+                                    // save credential
+                                    accountViewModel.saveCredential(username, password);
+                                    accountViewModel.setLoginState(true);
+                                    NavController controller = Navigation.findNavController(binding.getRoot());
+                                    controller.navigate(R.id.action_loginFragment2_to_nav_search);
                                 });
-                                // user favorite restrooms
-                                FavoriteRestroomsManager.getInstance()
-                                        .setRestrooms(retrievedUser.getFavoriteRestrooms());
-                                // visited retrooms
-                                VisitedRestroomsManager.getInstance()
-                                        .setRestrooms(retrievedUser.getVisitedRestrooms());
                                 Toast.makeText(binding.getRoot().getContext(), "Welcome " + currentUser.getUserName(),
                                         Toast.LENGTH_SHORT).show();
                                 mdb.child("users").child(userId).removeEventListener(this);
@@ -115,12 +121,7 @@ public class LoginFragment extends Fragment {
                             public void onCancelled(@NonNull DatabaseError error) {
                             }
                         });
-                        // save credential
-                        accountViewModel.saveCredential(username, password);
-                        accountViewModel.setLoginState(true);
-                        // end retrieve user info
-                        NavController controller = Navigation.findNavController(binding.getRoot());
-                        controller.navigate(R.id.action_loginFragment2_to_nav_search);
+
 
                     } else {
                         // If sign in fails, display a message to the user.

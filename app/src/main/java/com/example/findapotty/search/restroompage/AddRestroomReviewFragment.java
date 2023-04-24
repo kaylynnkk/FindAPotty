@@ -77,13 +77,10 @@ public class AddRestroomReviewFragment extends Fragment {
             // Pop up to alert user that review has been submitted
             Toast.makeText(getContext(), "Review Submitted Successfully", Toast.LENGTH_SHORT).show();
             // leave write review activity and start display review activity
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            ft.replace(R.id.add_review, new RestroomPageBottomSheet())
-                    .addToBackStack(null)
-                    .commit();
-            NavController controller = NavHostFragment.findNavController(AddRestroomReviewFragment.this);
+            /*NavController controller = NavHostFragment.findNavController(AddRestroomReviewFragment.this);
             controller.navigate(R.id.action_addRestroomReviewFragment_to_navg_rr_pg_fragment);
+
+             */
         });
 
         return binding.getRoot();

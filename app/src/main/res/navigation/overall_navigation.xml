@@ -74,8 +74,6 @@
             android:id="@+id/action_nav_discuss_to_addDiscussionPostFragment"
             app:destination="@id/addDiscussionPostFragment" />
         <action
-
-
             android:id="@+id/action_nav_discuss_to_discussionBoardSinglePost"
             app:destination="@id/discussionBoardSinglePost" />
     </fragment>

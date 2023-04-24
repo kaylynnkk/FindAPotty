@@ -7,29 +7,40 @@ public class RestroomReview {
 
     private String avatarUrl;
     private String username;
+    private String userid;
     private ImageView avatar;
 
     public Float rating;
     public String comment;
     public String timestamp;
 
-    public RestroomReview(String restroomId, String avatarUrl, String username,
+    public RestroomReview(String restroomId, String avatarUrl, String username,String userid,
                           Float rating, String comment, String timestamp) {
         this.restroomId = restroomId;
         this.avatarUrl = avatarUrl;
         this.username = username;
+        this.userid = userid;
         this.rating = rating;
         this.comment = comment;
         this.timestamp = timestamp;
     }
-    public RestroomReview(String restroomId, ImageView avatar, String username,
+    public RestroomReview(String restroomId, ImageView avatar, String username, String userid,
                           Float rating, String comment, String timestamp) {
         this.restroomId = restroomId;
         this.username = username;
+        this.userid= userid;
         this.avatar = avatar;
         this.rating = rating;
         this.comment = comment;
         this.timestamp = timestamp;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
     public String getRestroomId() {

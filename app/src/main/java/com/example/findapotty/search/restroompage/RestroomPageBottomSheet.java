@@ -12,16 +12,20 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.findapotty.MainActivity;
 import com.example.findapotty.R;
 import com.example.findapotty.databinding.BottomSheetRestroomPageBinding;
+import com.example.findapotty.diary.ResultsFragment;
 import com.example.findapotty.model.Restroom;
 import com.example.findapotty.search.NearbyRestroom;
+import com.example.findapotty.tunes.TunesPlayerFragment;
 import com.example.findapotty.user.FavoriteRestroom;
 import com.example.findapotty.user.FavoriteRestroomsManager;
 import com.example.findapotty.user.User;
@@ -75,16 +79,27 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         dialog.setContentView(binding.getRoot());
 
         recyclerView = binding.rrPgReviewSection;
-        dbr = FirebaseDatabase.getInstance(
+       /* dbr = FirebaseDatabase.getInstance(
                         "https://reviewpractice-36ce6-default-rtdb.firebaseio.com/")
-                .getReference().child("Potty/Ratings");
-        // use firebas eui to populate recycler straigther form databse
-        fbo = new FirebaseRecyclerOptions.Builder<RestroomReview>()
-                .setQuery(dbr, RestroomReview.class)
-                .build();
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adaptor = new RestroomReviewRecyclerViewAdaptor(fbo);
-        recyclerView.setAdapter(adaptor);
+                .getReference().child("Potty/Reviews")
+                .orderByChild("restroomId")
+                .equalTo(restroom.getPlaceID());
+
+        */
+        dbr = FirebaseDatabase.getInstance()
+                .getReference("Reviews");
+        if(dbr != null) {
+            // use firebas eui to populate recycler straigther form databse
+
+            fbo = new FirebaseRecyclerOptions.Builder<RestroomReview>()
+                    .setQuery(dbr, RestroomReview.class)
+                    .build();
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            adaptor = new RestroomReviewRecyclerViewAdaptor(fbo);
+            recyclerView.setAdapter(adaptor);
+        }
+
+
 
         assert getArguments() != null;
         restroom = RestroomPageBottomSheetArgs.fromBundle(getArguments()).getRestroom();
@@ -102,14 +117,6 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         });
         return dialog;
     }
-/*
-    private void initReviews() {
-        restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "Trondheim1"));
-        restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "Trondheim2"));
-        restroomReviews.add(new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "Trondheim3"));
-    }
-
- */
 
     private void initRestroomPage() {
 //        if (favoriteRestroom!= null) {
@@ -157,9 +164,12 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 //                DatabaseReference mdb = FirebaseDatabase.getInstance().getReference();
 //                mdb.child("restroom_pages").child(mdb.push().getKey()).setValue(restroomReviews.get(0));
                 NavController controller = NavHostFragment.findNavController(RestroomPageBottomSheet.this);
-                controller.navigate(R.id.action_navg_rr_pg_fragment_to_addRestroomReviewFragment);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("restroom_data", restroom);
+                controller.navigate(R.id.action_navg_rr_pg_fragment_to_addRestroomReviewFragment, bundle);
 //                adaptor.notifyItemInserted(0);
 //                recyclerView.smoothScrollToPosition(0);
+
             }
         });
     }

@@ -54,7 +54,7 @@
     <fragment
         android:id="@+id/addRestroomReviewFragment"
         android:name="com.example.findapotty.search.restroompage.AddRestroomReviewFragment"
-        android:label="fragment_add_restroom_review"
+        android:label="Add Review"
         tools:layout="@layout/fragment_add_restroom_review">
         <action
             android:id="@+id/action_addRestroomReviewFragment_to_navg_rr_pg_fragment"
@@ -74,6 +74,8 @@
             android:id="@+id/action_nav_discuss_to_addDiscussionPostFragment"
             app:destination="@id/addDiscussionPostFragment" />
         <action
+
+
             android:id="@+id/action_nav_discuss_to_discussionBoardSinglePost"
             app:destination="@id/discussionBoardSinglePost" />
     </fragment>

@@ -85,19 +85,11 @@ public class AddRestroomReviewFragment extends Fragment {
             NavController controller = NavHostFragment.findNavController(AddRestroomReviewFragment.this);
             controller.navigate(R.id.action_addRestroomReviewFragment_to_navg_rr_pg_fragment);
         });
-        binding.back.setOnClickListener(view -> {
-            onBackPressed();
-        });
 
         return binding.getRoot();
     }
 
-    private void onBackPressed() {
-        // leave write review activity and start display review activity
-        NavController controller = NavHostFragment.findNavController(AddRestroomReviewFragment.this);
-        controller.navigate(R.id.action_addRestroomReviewFragment_to_navg_rr_pg_fragment);
 
-    }
 
     /*private void loadPhotos() {
         Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));

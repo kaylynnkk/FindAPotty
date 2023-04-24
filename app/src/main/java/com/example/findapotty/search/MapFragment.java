@@ -376,6 +376,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 nearbyRestroom.setOpenNow(placeDetails.openingHours != null ?
                                         placeDetails.openingHours.openNow : false);
                                 nearbyRestroom.setRating(placeDetails.rating);
+                                Log.d(TAG, String.valueOf(placeDetails.rating));
                                 // 3. fetch photos
                                 if (placeDetails.photos != null) {
                                     ImageResult imageResult = new PhotoRequest(geoApiContext)
@@ -449,6 +450,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
         // sort restrooms
         NearbyRestroomsManager.getInstance().sortByDistance();
+        //NearbyRestroomsManager.getInstance().sortByRating();
         adaptor.notifyDataSetChanged();
         recyclerView.smoothScrollToPosition(0);
     }

@@ -2,6 +2,8 @@ package com.example.findapotty.search;
 
 import com.example.findapotty.model.RestroomsManager;
 
+import java.util.Collections;
+
 public class NearbyRestroomsManager extends RestroomsManager<NearbyRestroom> {
 
     private static NearbyRestroomsManager instance;
@@ -39,5 +41,15 @@ public class NearbyRestroomsManager extends RestroomsManager<NearbyRestroom> {
                 (nearbyRestroom, other) ->
                         Long.compareUnsigned(nearbyRestroom.getCurrentDistance(), other.getCurrentDistance())
         );
+    }
+
+    //added this method
+    public void sortByRating(){
+        //added reverse to sort the list based on the largest reviews to smallest
+        getRestroomsList().sort(
+                (nearByRestroom, other) ->
+                        Float.compare(nearByRestroom.getRating(), other.getRating())
+        );
+        Collections.reverse(getRestroomsList());
     }
 }

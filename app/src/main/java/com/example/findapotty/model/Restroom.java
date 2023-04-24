@@ -27,6 +27,7 @@ public class Restroom implements Parcelable {
         this.photoPath = photoPath;
         this.name = name;
         this.address = address;
+        this.rating = rating;
     }
 
     public Restroom(Restroom that) {

@@ -78,16 +78,24 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 //        binding.setLifecycleOwner(this);
         dialog.setContentView(binding.getRoot());
 
+        assert getArguments() != null;
+        restroom = RestroomPageBottomSheetArgs.fromBundle(getArguments()).getRestroom();
+        nearbyRestroom = RestroomPageBottomSheetArgs.fromBundle(getArguments()).getNearByRestroom();
+        favoriteRestroom = RestroomPageBottomSheetArgs.fromBundle(getArguments()).getFavoriteRestroom();
+        mdb = FirebaseDatabase.getInstance().getReference();
+     //   refFavoriteRestrooms = mdb.child("users")
+       //         .child(User.getInstance().getUserId()).child("favoriteRestrooms");
+        initRestroomPage();
+       // initReviews();
+        addReviewListener();
+        editPageListener();
+        binding.bsrpBtnFavorite.setOnClickListener(view -> {
+            setFavoriteState();
+        });
         recyclerView = binding.rrPgReviewSection;
-       /* dbr = FirebaseDatabase.getInstance(
-                        "https://reviewpractice-36ce6-default-rtdb.firebaseio.com/")
-                .getReference().child("Potty/Reviews")
-                .orderByChild("restroomId")
-                .equalTo(restroom.getPlaceID());
-
-        */
-        dbr = FirebaseDatabase.getInstance()
-                .getReference("Reviews");
+        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                .getReference("Reviews")
+                .orderByChild("restroomId").equalTo(restroom.getPlaceID());
         if(dbr != null) {
             // use firebas eui to populate recycler straigther form databse
 
@@ -96,25 +104,9 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                     .build();
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             adaptor = new RestroomReviewRecyclerViewAdaptor(fbo);
+            adaptor.startListening();
             recyclerView.setAdapter(adaptor);
         }
-
-
-
-        assert getArguments() != null;
-        restroom = RestroomPageBottomSheetArgs.fromBundle(getArguments()).getRestroom();
-        nearbyRestroom = RestroomPageBottomSheetArgs.fromBundle(getArguments()).getNearByRestroom();
-        favoriteRestroom = RestroomPageBottomSheetArgs.fromBundle(getArguments()).getFavoriteRestroom();
-        mdb = FirebaseDatabase.getInstance().getReference();
-        refFavoriteRestrooms = mdb.child("users")
-                .child(User.getInstance().getUserId()).child("favoriteRestrooms");
-        initRestroomPage();
-       // initReviews();
-        addReviewListener();
-        editPageListener();
-        binding.bsrpBtnFavorite.setOnClickListener(view -> {
-            setFavoriteState();
-        });
         return dialog;
     }
 
@@ -215,10 +207,6 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         refFavoriteRestrooms.setValue(FavoriteRestroomsManager.getInstance().getRestrooms());
     }
     //called to continue data being retrievedfrom friebase
-    @Override public void onStart() {
-        super.onStart();
-        adaptor.startListening();
-    }
 
     //called to stop data  retrieval from friebase
     @Override public void onStop() {

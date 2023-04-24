@@ -58,13 +58,15 @@ public class AddRestroomReviewFragment extends Fragment {
         ratingRB = binding.rating;
         reviewET = binding.comment;
         binding.submit.setOnClickListener(view -> {
+            String username = "JoeKing";
+            String userid = "12345";
             Restroom rr = getArguments().getParcelable("restroom_data");
             String restroomId = rr.getPlaceID();
             String reviewId = dbr.push().getKey();
             String avatarUrl = "https://firebasestorage.googleapis.com/v0/b/findapotty.appspot.com/o/" +
                     "avatars%2Fdefault_avatar.jpg?alt=media&token=bfa281bd-bfc5-4f47-b62a-258f6698b6d6";
-            String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-            String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+           // String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+            //String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             // Create review object
             RestroomReview rev = new RestroomReview(restroomId, avatarUrl, username, userid,
                     ratingRB.getRating(),
@@ -81,7 +83,7 @@ public class AddRestroomReviewFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
             NavController controller = NavHostFragment.findNavController(AddRestroomReviewFragment.this);
-            controller.navigate(R.id.action_navg_rr_pg_fragment_to_addRestroomReviewFragment);
+            controller.navigate(R.id.action_addRestroomReviewFragment_to_navg_rr_pg_fragment);
         });
         binding.back.setOnClickListener(view -> {
             onBackPressed();
@@ -90,40 +92,10 @@ public class AddRestroomReviewFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void onSubmit(View view) {
-        Bundle bundle = getArguments();
-        Restroom rr = (Restroom) bundle.getSerializable("restroom_data");
-        String restroomId = rr.getPlaceID();
-        String reviewId = dbr.push().getKey();
-        String avatarUrl = "https://firebasestorage.googleapis.com/v0/b/findapotty.appspot.com/o/" +
-                "avatars%2Fdefault_avatar.jpg?alt=media&token=bfa281bd-bfc5-4f47-b62a-258f6698b6d6";
-        String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        // Create review object
-        RestroomReview rev = new RestroomReview(restroomId, avatarUrl, username, userid,
-                ratingRB.getRating(),
-                reviewET.getText().toString().trim(),
-                String.valueOf(System.currentTimeMillis()));
-        // go to userId branch of databse and insert review object
-        dbr.child(reviewId).setValue(rev);
-        // Pop up to alert user that review has been submitted
-        Toast.makeText(getContext(), "Review Submitted Successfully", Toast.LENGTH_SHORT).show();
-        // leave write review activity and start display review activity
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft.replace(R.id.add_review, new RestroomPageBottomSheet())
-                .addToBackStack(null)
-                .commit();
-
-    }
-
     private void onBackPressed() {
         // leave write review activity and start display review activity
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft.replace(R.id.add_review, new RestroomPageBottomSheet())
-                .addToBackStack(null)
-                .commit();
+        NavController controller = NavHostFragment.findNavController(AddRestroomReviewFragment.this);
+        controller.navigate(R.id.action_addRestroomReviewFragment_to_navg_rr_pg_fragment);
 
     }
 

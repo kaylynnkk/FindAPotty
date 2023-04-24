@@ -14,7 +14,10 @@ public class RestroomReview {
     public String comment;
     public String timestamp;
 
-    public RestroomReview(String restroomId, String avatarUrl, String username,String userid,
+    public RestroomReview() {
+    }
+
+    public RestroomReview(String restroomId, String avatarUrl, String username, String userid,
                           Float rating, String comment, String timestamp) {
         this.restroomId = restroomId;
         this.avatarUrl = avatarUrl;

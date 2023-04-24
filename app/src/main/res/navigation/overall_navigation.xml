@@ -52,6 +52,15 @@
             app:nullable="true" />
     </dialog>
     <fragment
+        android:id="@+id/addRestroomReviewFragment"
+        android:name="com.example.findapotty.search.restroompage.AddRestroomReviewFragment"
+        android:label="fragment_add_restroom_review"
+        tools:layout="@layout/fragment_add_restroom_review">
+        <action
+            android:id="@+id/action_addRestroomReviewFragment_to_navg_rr_pg_fragment"
+            app:destination="@id/navg_rr_pg_fragment"/>
+    </fragment>
+    <fragment
         android:id="@+id/nav_feed"
         android:name="com.example.findapotty.feed.FeedFragment"
         android:label="News Feed"
@@ -83,15 +92,6 @@
         <action
             android:id="@+id/action_nav_signup_fragment_to_navg_login_fragment"
             app:destination="@id/navg_login_fragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addRestroomReviewFragment"
-        android:name="com.example.findapotty.search.restroompage.AddRestroomReviewFragment"
-        android:label="Add Review"
-        tools:layout="@layout/fragment_add_restroom_review">
-        <action
-            android:id="@+id/action_addRestroomReviewFragment_to_navg_rr_pg_fragment"
-            app:destination="@id/navg_rr_pg_edit_fragment"/>
     </fragment>
     <fragment
         android:id="@+id/nav_favorite"

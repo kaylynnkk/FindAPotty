@@ -43,10 +43,12 @@ public class RestroomReviewRecyclerViewAdaptor extends FirebaseRecyclerAdapter<R
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull RestroomReview model) {
-        Glide.with(context)
+      /*  Glide.with(context)
                 .asBitmap()
                 .load(model.getAvatarUrl())
                 .into(holder.avatar);
+
+       */
 
         holder.username.setText(model.getUsername());
         holder.date.setText(model.getTimestamp());

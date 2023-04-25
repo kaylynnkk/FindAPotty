@@ -208,6 +208,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                 public void onNothingSelected(AdapterView<?> adapterView) {
                 }
             });
+            bottomSheetDialog.show();
             // restart recyclerview after applying filter information
             applyfilters.setOnClickListener(new View.OnClickListener() {
                 @Override

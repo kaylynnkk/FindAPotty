@@ -107,11 +107,10 @@
                 style="?android:ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:numStars="5"
                 android:rating="3.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rr_rv_avatar" />
+                app:layout_constraintStart_toStartOf="@+id/rr_rv_username_start"
+                app:layout_constraintBottom_toBottomOf="@+id/rr_rv_avatar" />
 
             <TextView
                 android:id="@+id/rating_text"
@@ -131,8 +130,9 @@
                 android:layout_height="wrap_content"
                 android:text="blahblah"
                 android:textSize="20dp"
-                app:layout_constraintStart_toStartOf="@+id/rr_rv_rating"
-                app:layout_constraintTop_toBottomOf="@id/rr_rv_rating" />
+                android:layout_marginTop="5dp"
+                app:layout_constraintStart_toStartOf="@+id/rr_rv_avatar"
+                app:layout_constraintTop_toBottomOf="@id/rr_rv_avatar" />
 
             <ImageView
                 android:id="@+id/rr_rv_helpfulness"

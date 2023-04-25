@@ -35,7 +35,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 public class AddRestroomReviewFragment extends Fragment {
@@ -56,14 +58,19 @@ public class AddRestroomReviewFragment extends Fragment {
         binding = FragmentAddRestroomReviewBinding.inflate(inflater, container, false);
         ratingRB = binding.rating;
         reviewET = binding.comment;
+        // initalize usernames
         String[] nameList = {"dealfamiliar","shufflepant","farrowrichesse",
                 "cistusinstall","chamoisfresh","repentantgrow","varyactivity",
                 "billiardskeelson", "poopaboriginal", "flowerpotportray", "sneakbeaver" };
         binding.submit.setOnClickListener(view -> {
+            //get restroom object so I can add placeid to object
+            // initlaize the rest of adate thats will be use to creat object
             Restroom rr = getArguments().getParcelable("restroom_data");
             String restroomId = rr.getPlaceID();
             dbr =  FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                     .getReference("Reviews").child(restroomId);
+            SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+            Date date = new Date();
             String username = nameList[new Random().nextInt(11)];
             String userid = "12345";
             String reviewId = dbr.push().getKey();
@@ -75,7 +82,7 @@ public class AddRestroomReviewFragment extends Fragment {
             RestroomReview rev = new RestroomReview(restroomId, avatarUrl, username, userid,
                     ratingRB.getRating(),
                     reviewET.getText().toString().trim(),
-                    String.valueOf(System.currentTimeMillis()),0);
+                    formatter.format(date),0);
             // go to userId branch of databse and insert review object
             dbr.child(reviewId).setValue(rev);
             // Pop up to alert user that review has been submitted

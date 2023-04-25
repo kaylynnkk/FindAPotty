@@ -23,7 +23,7 @@ import java.util.ArrayList;
 /**
  * Created by User on 1/1/2018.
  */
-
+ // Adapter to populate recycler view usinf firebase data
 public class RestroomReviewRecyclerViewAdaptor extends FirebaseRecyclerAdapter<RestroomReview,
         RestroomReviewRecyclerViewAdaptor.ViewHolder> {
 

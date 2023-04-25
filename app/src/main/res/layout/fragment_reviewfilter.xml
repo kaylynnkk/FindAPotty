@@ -15,22 +15,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:gravity="center">
-            <Button
-                android:id="@+id/apply_filters"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:text="Apply"
+            android:gravity="right">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="center"
+                android:text="Sort &amp; Filter"
+                android:textSize="25dp"
                 android:textStyle="bold"
-                android:background="@color/white" />
+                android:layout_margin="10dp"/>
+            <TextView
+                android:id="@+id/apply_filters"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="Apply"
+                android:textSize="20dp"
+                android:layout_margin="10dp"/>
         </LinearLayout>
         <View
-            android:layout_width="320dp"
-            android:layout_height="2dp"
-            android:background="#E91E63"
-            android:layout_marginTop="270dp"
-            android:layout_marginLeft="20dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="5dp"
+            android:background="@color/gray"
+            android:layout_marginTop="10dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

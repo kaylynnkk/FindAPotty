@@ -164,9 +164,10 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                 String[] details = showBottonSheet();
 
                 dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                        .getReference("Reviews")
-                        .child(restroom.getPlaceID())
+                        .getReference("Reviews/"+restroom.getPlaceID())
+                        .orderByChild("rating")
                         .equalTo(details[0]);
+
                 if(dbr != null) {
                     // use firebas eui to populate recycler straigther form databse
                     adaptor.startListening();
@@ -184,7 +185,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
     }
 
     public String[] showBottonSheet(){
-        String[] options = {};
+        String[] options = {"","",""};
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
         bottomSheetDialog.setContentView(R.layout.fragment_reviewfilter);
 

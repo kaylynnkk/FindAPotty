@@ -68,14 +68,7 @@ public class RestroomReviewRecyclerViewAdaptor extends FirebaseRecyclerAdapter<R
 //            }
 //        });
     }
-/*
-    @Override
-    public int getItemCount() {
-        return restroomReviews.size();
-    }
 
-
- */
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView avatar;

@@ -135,7 +135,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             // set address
             binding.rrPgRraddress.setText(restroom.getAddress());
             // set address
-            binding.rrPgReviewCount.setText("4 Reviewa");
+            binding.rrPgReviewCount.setText("4 Reviews");
             // set photos
             if (restroom.getPhotoBitmap() != null) {
                 binding.rrPgRrPhotos.setImageBitmap(restroom.getPhotoBitmap());

@@ -53,6 +53,7 @@ public class RestroomReviewRecyclerViewAdaptor extends FirebaseRecyclerAdapter<R
         holder.username.setText(model.getUsername());
         holder.date.setText(model.getTimestamp());
         holder.rating.setRating(model.getRating());
+        holder.ratingNum.setText(model.getRating().toString());
         holder.comment.setText(model.getComment());
         //        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -72,7 +73,7 @@ public class RestroomReviewRecyclerViewAdaptor extends FirebaseRecyclerAdapter<R
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView avatar;
-        TextView username, date, comment;
+        TextView username, date, comment, ratingNum;
         RelativeLayout parentLayout;
         RatingBar rating;
 
@@ -83,6 +84,7 @@ public class RestroomReviewRecyclerViewAdaptor extends FirebaseRecyclerAdapter<R
             username = itemView.findViewById(R.id.rr_rv_username);
             parentLayout = itemView.findViewById(R.id.restroom_review_item);
             rating = itemView.findViewById(R.id.rr_rv_rating);
+            ratingNum = itemView.findViewById(R.id.rating_text);
             date = itemView.findViewById(R.id.rr_rv_timestamp);
             comment = itemView.findViewById(R.id.rr_rv_review);
 

@@ -9,6 +9,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 
+import com.example.findapotty.model.Restroom;
+
 import java.util.ArrayList;
 
 public class RestroomPageViewModel extends AndroidViewModel {

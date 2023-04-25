@@ -164,72 +164,73 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showBottonSheet();
-
+                Toast.makeText(getContext(), "Sort Button Selected", Toast.LENGTH_SHORT).show();
+                sortBottomSheet();
             }
+
         });
     }
 
-    public void showBottonSheet(){
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
-        bottomSheetDialog.setContentView(R.layout.fragment_reviewfilter);
-        // get view of spinners and textview button
-        SmartMaterialSpinner<String> filterRating = bottomSheetDialog.findViewById(R.id.rating_filter_options);
-        SmartMaterialSpinner<String> sorterOption = bottomSheetDialog.findViewById(R.id.sorter_options);
-        TextView applyfilters = bottomSheetDialog.findViewById(R.id.apply_filters);
-        //create dropdown men when finite options and save user input into variable when selected
-        ArrayAdapter ad1 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, ratingsList);
-        ad1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);filterRating.setAdapter(ad1);
-        filterRating.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                // get rating number to be filtered
-                ratingOptionPicked = 5 - position;
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-        ArrayAdapter ad2 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, sorterOptionsList);
-        ad1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);sorterOption.setAdapter(ad2);
-        sorterOption.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                sorterOptionPicked = sorterOptionsList[position];
-                if(sorterOptionPicked == "Recommended"){
-                    category = "helpfulness";
+    public void sortBottomSheet(){
+            final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
+            bottomSheetDialog.setContentView(R.layout.fragment_reviewfilter);
+            // get view of spinners and textview button
+            SmartMaterialSpinner<String> filterRating = bottomSheetDialog.findViewById(R.id.rating_filter_options);
+            SmartMaterialSpinner<String> sorterOption = bottomSheetDialog.findViewById(R.id.sorter_options);
+            TextView applyfilters = bottomSheetDialog.findViewById(R.id.apply_filters);
+            //create dropdown men when finite options and save user input into variable when selected
+            ArrayAdapter ad1 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, ratingsList);
+            ad1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);filterRating.setAdapter(ad1);
+            filterRating.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                    // get rating number to be filtered
+                    ratingOptionPicked = 5 - position;
                 }
-                else{
-                    category = "timestamp";
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
                 }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-        // restart recyclerview after applying filter information
-        applyfilters.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                        .getReference("Reviews/" + restroom.getPlaceID())
-                        .orderByChild("rating")
-                        .equalTo(ratingOptionPicked);
+            });
+            ArrayAdapter ad2 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, sorterOptionsList);
+            ad1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);sorterOption.setAdapter(ad2);
+            sorterOption.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                    sorterOptionPicked = sorterOptionsList[position];
+                    if(sorterOptionPicked == "Recommended"){
+                        category = "helpfulness";
+                    }
+                    else{
+                        category = "timestamp";
+                    }
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                }
+            });
+            // restart recyclerview after applying filter information
+            applyfilters.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                            .getReference("Reviews/" + restroom.getPlaceID())
+                            .orderByChild("rating")
+                            .equalTo(ratingOptionPicked);
 
-                if (dbr != null) {
-                    // use firebase ui to populate recycler straigther form databse
-                    fbo = new FirebaseRecyclerOptions.Builder<RestroomReview>()
-                            .setQuery(dbr, RestroomReview.class)
-                            .build();
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                    adaptor = new RestroomReviewRecyclerViewAdaptor(fbo);
-                    adaptor.startListening();
-                    recyclerView.setAdapter(adaptor);
-                    adaptor.startListening();
+                    if (dbr != null) {
+                        // use firebase ui to populate recycler straigther form databse
+                        fbo = new FirebaseRecyclerOptions.Builder<RestroomReview>()
+                                .setQuery(dbr, RestroomReview.class)
+                                .build();
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        adaptor = new RestroomReviewRecyclerViewAdaptor(fbo);
+                        adaptor.startListening();
+                        recyclerView.setAdapter(adaptor);
+                        adaptor.startListening();
+                    }
                 }
-            }
-        });
-    }
+            });
+        }
 
     private void addReviewListener() {
         FloatingActionButton btn = rootView.findViewById(R.id.rr_page_add_review);

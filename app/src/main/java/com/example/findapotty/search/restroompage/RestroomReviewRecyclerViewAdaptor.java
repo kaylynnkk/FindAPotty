@@ -53,7 +53,7 @@ public class RestroomReviewRecyclerViewAdaptor extends FirebaseRecyclerAdapter<R
         holder.username.setText(model.getUsername());
         holder.date.setText(model.getTimestamp());
         holder.rating.setRating(model.getRating());
-        holder.ratingNum.setText(model.getRating().toString());
+        holder.ratingNum.setText(""+model.getRating());
         holder.comment.setText(model.getComment());
         //        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override

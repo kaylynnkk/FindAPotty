@@ -2,11 +2,16 @@ package com.example.findapotty.search.restroompage;
 
 
 import android.app.Dialog;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.chivorn.smartmaterialspinner.SmartMaterialSpinner;
 import com.example.findapotty.MainActivity;
 import com.example.findapotty.R;
 import com.example.findapotty.databinding.BottomSheetRestroomPageBinding;
@@ -60,8 +66,14 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
     private NearbyRestroom nearbyRestroom;
     private FavoriteRestroom favoriteRestroom;
 
-    private DatabaseReference mdb;
+    private Query mdb;
     private DatabaseReference refFavoriteRestrooms;
+
+    String[] ratingsList = { "5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star"};
+    String[] sorterOptionsList = { "Recommended", "Most Recent to Oldest", "Oldest to Most Recent"};
+    String ratingOptionPicked;
+    String sorterOptionPicked;
+    String category;
 
     @NonNull
     @Override
@@ -88,24 +100,23 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         initRestroomPage();
        // initReviews();
         addReviewListener();
+        sortReviewListener();
         editPageListener();
         binding.bsrpBtnFavorite.setOnClickListener(view -> {
             setFavoriteState();
         });
         recyclerView = binding.rrPgReviewSection;
         dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                .getReference("Reviews")
-                .orderByChild("restroomId").equalTo(restroom.getPlaceID());
+                .getReference("Reviews").child(restroom.getPlaceID());
         if(dbr != null) {
             // use firebas eui to populate recycler straigther form databse
-
             fbo = new FirebaseRecyclerOptions.Builder<RestroomReview>()
                     .setQuery(dbr, RestroomReview.class)
                     .build();
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             adaptor = new RestroomReviewRecyclerViewAdaptor(fbo);
-            adaptor.startListening();
             recyclerView.setAdapter(adaptor);
+            adaptor.startListening();
         }
         return dialog;
     }
@@ -145,20 +156,88 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 
         }
     }
+    private void sortReviewListener() {
+        Button btn = rootView.findViewById(R.id.rr_pg_sort_button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String[] details = showBottonSheet();
 
+                dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                        .getReference("Reviews")
+                        .child(restroom.getPlaceID())
+                        .equalTo(details[0]);
+                if(dbr != null) {
+                    // use firebas eui to populate recycler straigther form databse
+                    adaptor.startListening();
+                    fbo = new FirebaseRecyclerOptions.Builder<RestroomReview>()
+                            .setQuery(dbr, RestroomReview.class)
+                            .build();
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    adaptor = new RestroomReviewRecyclerViewAdaptor(fbo);
+                    adaptor.startListening();
+                    recyclerView.setAdapter(adaptor);
+
+                }
+            }
+        });
+    }
+
+    public String[] showBottonSheet(){
+        String[] options = {};
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
+        bottomSheetDialog.setContentView(R.layout.fragment_reviewfilter);
+
+        SmartMaterialSpinner<String> filterRating = bottomSheetDialog.findViewById(R.id.rating_filter_options);
+        SmartMaterialSpinner<String> sorterOption = bottomSheetDialog.findViewById(R.id.sorter_options);
+
+
+        ArrayAdapter ad1 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, ratingsList);
+        ad1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);filterRating.setAdapter(ad1);
+        filterRating.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                ratingOptionPicked = ratingsList[position];
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+        ArrayAdapter ad2 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, sorterOptionsList);
+        ad1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);sorterOption.setAdapter(ad2);
+        sorterOption.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                sorterOptionPicked = sorterOptionsList[position];
+                if(sorterOptionPicked == "Recommended"){
+                    category = "helpfulness";
+                }
+                else{
+                    category = "timestamp";
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+        bottomSheetDialog.show();
+        options[0] = ratingOptionPicked;
+        options[1] = sorterOptionPicked;
+        options[2] = category;
+        return options;
+        }
     private void addReviewListener() {
         FloatingActionButton btn = rootView.findViewById(R.id.rr_page_add_review);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: add review");
-//                restroomReviews.add(0, new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "1243r4tgg g5"));
-//                DatabaseReference mdb = FirebaseDatabase.getInstance().getReference();
-//                mdb.child("restroom_pages").child(mdb.push().getKey()).setValue(restroomReviews.get(0));
                 NavController controller = NavHostFragment.findNavController(RestroomPageBottomSheet.this);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("restroom_data", restroom);
                 controller.navigate(R.id.action_navg_rr_pg_fragment_to_addRestroomReviewFragment, bundle);
+//                restroomReviews.add(0, new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "1243r4tgg g5"));
+//                DatabaseReference mdb = FirebaseDatabase.getInstance().getReference();
+//                mdb.child("restroom_pages").child(mdb.push().getKey()).setValue(restroomReviews.get(0));
 //                adaptor.notifyItemInserted(0);
 //                recyclerView.smoothScrollToPosition(0);
 
@@ -207,6 +286,10 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         refFavoriteRestrooms.setValue(FavoriteRestroomsManager.getInstance().getRestrooms());
     }
     //called to continue data being retrievedfrom friebase
+    @Override public void onStart() {
+        super.onStart();
+        adaptor.startListening();
+    }
 
     //called to stop data  retrieval from friebase
     @Override public void onStop() {

@@ -36,6 +36,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class AddRestroomReviewFragment extends Fragment {
 
@@ -53,15 +54,18 @@ public class AddRestroomReviewFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentAddRestroomReviewBinding.inflate(inflater, container, false);
-        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                .getReference("Reviews");
         ratingRB = binding.rating;
         reviewET = binding.comment;
+        String[] nameList = {"dealfamiliar","shufflepant","farrowrichesse",
+                "cistusinstall","chamoisfresh","repentantgrow","varyactivity",
+                "billiardskeelson", "poopaboriginal", "flowerpotportray", "sneakbeaver" };
         binding.submit.setOnClickListener(view -> {
-            String username = "JoeKing";
-            String userid = "12345";
             Restroom rr = getArguments().getParcelable("restroom_data");
             String restroomId = rr.getPlaceID();
+            dbr =  FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                    .getReference("Reviews").child(restroomId);
+            String username = nameList[new Random().nextInt(11)];
+            String userid = "12345";
             String reviewId = dbr.push().getKey();
             String avatarUrl = "https://firebasestorage.googleapis.com/v0/b/findapotty.appspot.com/o/" +
                     "avatars%2Fdefault_avatar.jpg?alt=media&token=bfa281bd-bfc5-4f47-b62a-258f6698b6d6";
@@ -71,7 +75,7 @@ public class AddRestroomReviewFragment extends Fragment {
             RestroomReview rev = new RestroomReview(restroomId, avatarUrl, username, userid,
                     ratingRB.getRating(),
                     reviewET.getText().toString().trim(),
-                    String.valueOf(System.currentTimeMillis()));
+                    String.valueOf(System.currentTimeMillis()),0);
             // go to userId branch of databse and insert review object
             dbr.child(reviewId).setValue(rev);
             // Pop up to alert user that review has been submitted
@@ -79,31 +83,9 @@ public class AddRestroomReviewFragment extends Fragment {
             // leave write review activity and start display review activity
             /*NavController controller = NavHostFragment.findNavController(AddRestroomReviewFragment.this);
             controller.navigate(R.id.action_addRestroomReviewFragment_to_navg_rr_pg_fragment);
-
              */
         });
 
         return binding.getRoot();
     }
-
-
-
-    /*private void loadPhotos() {
-        Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
-        StorageReference riversRef = storageRef.child("images/" + file.getLastPathSegment());
-        uploadTask = riversRef.putFile(file);
-        // Register observers to listen for when the download is done or if it fails
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                // ...
-            }
-        });
-    }*/
 }

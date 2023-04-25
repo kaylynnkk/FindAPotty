@@ -13,12 +13,13 @@ public class RestroomReview {
     public Float rating;
     public String comment;
     public String timestamp;
+    public Integer helpfulness;
 
     public RestroomReview() {
     }
 
     public RestroomReview(String restroomId, String avatarUrl, String username, String userid,
-                          Float rating, String comment, String timestamp) {
+                          Float rating, String comment, String timestamp,Integer helpfulness) {
         this.restroomId = restroomId;
         this.avatarUrl = avatarUrl;
         this.username = username;
@@ -26,9 +27,10 @@ public class RestroomReview {
         this.rating = rating;
         this.comment = comment;
         this.timestamp = timestamp;
+        this.helpfulness = helpfulness;
     }
     public RestroomReview(String restroomId, ImageView avatar, String username, String userid,
-                          Float rating, String comment, String timestamp) {
+                          Float rating, String comment, String timestamp,Integer helpfulness) {
         this.restroomId = restroomId;
         this.username = username;
         this.userid= userid;
@@ -36,6 +38,15 @@ public class RestroomReview {
         this.rating = rating;
         this.comment = comment;
         this.timestamp = timestamp;
+        this.helpfulness = helpfulness;
+    }
+
+    public Integer getHelpfulness() {
+        return helpfulness;
+    }
+
+    public void setHelpfulness(Integer helpfulness) {
+        this.helpfulness = helpfulness;
     }
 
     public String getUserid() {

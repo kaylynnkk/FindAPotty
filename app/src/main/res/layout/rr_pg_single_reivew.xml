@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="15dp"
-    android:id="@+id/restroom_review_item">
+    android:id="@+id/restroom_review_item"
+    android:background="@drawable/box">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -97,9 +98,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:numStars="5"
-            android:rating="3.4"
+            android:rating="3.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rr_rv_avatar" />
+
+        <TextView
+            android:id="@+id/rating_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="3.5"
+            android:textSize="15dp"
+            android:layout_marginLeft="5dp"
+            app:layout_constraintLeft_toRightOf="@id/rr_rv_rating"
+            app:layout_constraintStart_toEndOf="@id/rr_rv_rating"
+            app:layout_constraintBottom_toBottomOf="@id/rr_rv_rating"
+            app:tint="@color/gray" />
 
         <TextView
             android:id="@+id/rr_rv_review"
@@ -107,9 +120,30 @@
             android:layout_height="wrap_content"
             android:text="blahblah"
             android:textSize="20dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@+id/rr_rv_rating"
             app:layout_constraintTop_toBottomOf="@id/rr_rv_rating" />
+
+        <ImageView
+            android:id="@+id/rr_rv_helpfulness"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/baseline_thumb_up_off_alt_24"
+            app:layout_constraintBottom_toBottomOf="@+id/helpful_text"
+            app:layout_constraintRight_toLeftOf="@+id/helpful_text"
+            app:tint="@color/gray" />
+
+        <TextView
+            android:id="@+id/helpful_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Helpfulness (0)"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rr_rv_review"
+            app:tint="@color/gray" />
         <!--
         <ImageView
             android:id="@+id/rr_rv_photos"

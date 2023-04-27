@@ -14,7 +14,11 @@ import androidx.core.content.ContextCompat;
 import com.example.findapotty.R;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.ui.IconGenerator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Utils {
 
@@ -64,9 +68,22 @@ public class Utils {
         return new com.google.android.gms.maps.model.LatLng(latLng.lat, latLng.lng);
     }
 
-    //
+    static List<com.google.android.gms.maps.model.LatLng> convertLatLngTypeV1_2L(List<com.google.maps.model.LatLng> latlngs) {
+        List<com.google.android.gms.maps.model.LatLng> newList = new ArrayList<>();
+        for (com.google.maps.model.LatLng latlng : latlngs) {
+            newList.add(new LatLng(latlng.lat, latlng.lng));
+        }
+        return newList;
+    }
+
+    // com.google.maps.model.LatLng => com.example.findapotty.model.LatLng
     static com.example.findapotty.model.LatLng convertLatLngTypeV2_1(com.google.maps.model.LatLng latLng) {
         return new com.example.findapotty.model.LatLng(latLng.lat, latLng.lng);
+    }
+
+    // com.example.findapotty.model.LatLng => com.google.maps.model.LatLng
+    static com.google.maps.model.LatLng convertLatLngTypeV2_2(com.example.findapotty.model.LatLng latLng) {
+        return new com.google.maps.model.LatLng(latLng.getLatitude(), latLng.getLongitude());
     }
 
     // com.example.findapotty.model.LatLng ==> com.google.android.gms.maps.model.LatLng

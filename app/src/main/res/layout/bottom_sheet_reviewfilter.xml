@@ -17,6 +17,14 @@
             android:orientation="horizontal"
             android:gravity="right">
             <TextView
+                android:id="@+id/reset_filters"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="Reset"
+                android:textSize="20dp"
+                android:layout_margin="10dp"/>
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"

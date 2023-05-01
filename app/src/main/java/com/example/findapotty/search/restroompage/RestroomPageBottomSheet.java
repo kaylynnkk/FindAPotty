@@ -2,7 +2,6 @@ package com.example.findapotty.search.restroompage;
 
 
 import android.app.Dialog;
-import android.graphics.Path;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,14 +10,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,16 +23,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner;
-import com.example.findapotty.MainActivity;
 import com.example.findapotty.R;
 import com.example.findapotty.databinding.BottomSheetRestroomPageBinding;
-import com.example.findapotty.diary.ResultsFragment;
 import com.example.findapotty.model.Restroom;
 import com.example.findapotty.search.NearbyRestroom;
-import com.example.findapotty.tunes.TunesPlayerFragment;
 import com.example.findapotty.user.FavoriteRestroom;
 import com.example.findapotty.user.FavoriteRestroomsManager;
-import com.example.findapotty.user.User;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -45,8 +38,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.util.ArrayList;
 
 public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 
@@ -72,8 +63,8 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 
     String[] ratingsList = { "5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star"};
     String[] sorterOptionsList = { "Recommended", "Most Recent to Oldest", "Oldest to Most Recent"};
-    Integer ratingOptionPicked;
-    String sorterOptionPicked;
+    Integer ratingOptionPicked = -1;
+    String sorterOptionPicked = "";
     String category;
 
     @NonNull
@@ -165,19 +156,20 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(), "Sort Button Selected", Toast.LENGTH_SHORT).show();
-                sortBottomSheet();
+                sortFilterBottomSheet();
             }
 
         });
     }
 
-    public void sortBottomSheet(){
+    public void sortFilterBottomSheet(){
             final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
-            bottomSheetDialog.setContentView(R.layout.fragment_reviewfilter);
+            bottomSheetDialog.setContentView(R.layout.bottom_sheet_reviewfilter);
             // get view of spinners and textview button
             SmartMaterialSpinner<String> filterRating = bottomSheetDialog.findViewById(R.id.rating_filter_options);
             SmartMaterialSpinner<String> sorterOption = bottomSheetDialog.findViewById(R.id.sorter_options);
             TextView applyfilters = bottomSheetDialog.findViewById(R.id.apply_filters);
+            TextView resetfilters = bottomSheetDialog.findViewById(R.id.reset_filters);
             //create dropdown men when finite options and save user input into variable when selected
             ArrayAdapter ad1 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, ratingsList);
             ad1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);filterRating.setAdapter(ad1);
@@ -209,15 +201,50 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                 }
             });
             bottomSheetDialog.show();
+            resetfilters.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                            .getReference("Reviews").child(restroom.getPlaceID());
+                    if (dbr != null) {
+                        // use firebase ui to populate recycler straigther form databse
+                        fbo = new FirebaseRecyclerOptions.Builder<RestroomReview>()
+                                .setQuery(dbr, RestroomReview.class)
+                                .build();
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        adaptor = new RestroomReviewRecyclerViewAdaptor(fbo);
+                        adaptor.startListening();
+                        recyclerView.setAdapter(adaptor);
+                        adaptor.startListening();
+                    }
+                }
+            });
             // restart recyclerview after applying filter information
             applyfilters.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                            .getReference("Reviews/" + restroom.getPlaceID())
-                            .orderByChild("rating")
-                            .equalTo(ratingOptionPicked);
-
+                    if(ratingOptionPicked == -1 & sorterOptionPicked == ""){
+                        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                                .getReference("Reviews/" + restroom.getPlaceID());
+                    }
+                    else if(ratingOptionPicked == -1 & sorterOptionPicked != ""){
+                        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                                .getReference("Reviews/" + restroom.getPlaceID())
+                                .orderByChild(category);
+                    }
+                    else if(ratingOptionPicked != -1 & sorterOptionPicked != ""){
+                        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                                .getReference("Reviews/" + restroom.getPlaceID())
+                                .equalTo(ratingOptionPicked);
+                    }
+                    else{
+                        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                                .getReference("Reviews/" + restroom.getPlaceID())
+                                .orderByChild(category)
+                                .equalTo(ratingOptionPicked);
+                    }
+                    Log.i("rating", ""+ratingOptionPicked);
+                    Log.i("sorter", ""+ratingOptionPicked);
                     if (dbr != null) {
                         // use firebase ui to populate recycler straigther form databse
                         fbo = new FirebaseRecyclerOptions.Builder<RestroomReview>()

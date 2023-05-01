@@ -143,6 +143,7 @@
                 android:src="@drawable/baseline_thumb_up_off_alt_24"
                 app:layout_constraintBottom_toBottomOf="@+id/helpful_text"
                 app:layout_constraintRight_toLeftOf="@+id/helpful_text"
+                app:layout_constraintTop_toBottomOf="@+id/rr_rv_review"
                 app:tint="@color/gray" />
 
             <TextView

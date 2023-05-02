@@ -37,6 +37,7 @@ public class RestroomReviewRecyclerViewAdaptor extends FirebaseRecyclerAdapter<R
     private static final String TAG = "RecyclerViewAdapter";
     Context context;
     boolean previouslyClicked = false;
+    Integer currHelpVal;
 
     public RestroomReviewRecyclerViewAdaptor(@NonNull FirebaseRecyclerOptions<RestroomReview> options) {
         super(options);
@@ -77,21 +78,28 @@ public class RestroomReviewRecyclerViewAdaptor extends FirebaseRecyclerAdapter<R
 //                mContext.startActivity(intent);
 //            }
 //        });
+        DatabaseReference dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                .getReference("Reminders/"+ model.getRestroomId());
+        final String myKey = getRef(position).getKey();
         holder.helpfulnessBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(previouslyClicked){
                     holder.helpfulnessBT.setImageResource(R.drawable.baseline_thumb_up_off_alt_24);
-                    model.setHelpfulness(model.getHelpfulness()-1);
-                    holder.helpfulnessTV.setText("Helpfulness ("+model.getHelpfulness()+")");
+                    currHelpVal = model.getHelpfulness()-1;
+                    model.setHelpfulness(currHelpVal);
+                    holder.helpfulnessTV.setText("Helpfulness ("+currHelpVal+")");
+                    dbr.child(myKey).child("helpfulness").setValue(currHelpVal);
                     previouslyClicked = false;
 
 
                 }
                 else{
                     holder.helpfulnessBT.setImageResource(R.drawable.baseline_thumb_up_alt_24);
-                    model.setHelpfulness(model.getHelpfulness()+1);
-                    holder.helpfulnessTV.setText("Helpfulness ("+model.getHelpfulness()+")");
+                    currHelpVal = model.getHelpfulness()+1;
+                    model.setHelpfulness(currHelpVal);
+                    holder.helpfulnessTV.setText("Helpfulness ("+currHelpVal+")");
+                    dbr.child(myKey).child("helpfulness").setValue(currHelpVal);
                     previouslyClicked = true;
 
 

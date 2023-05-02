@@ -23,7 +23,8 @@
                 android:gravity="left"
                 android:text="Reset"
                 android:textSize="20dp"
-                android:layout_margin="10dp"/>
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,7 +40,8 @@
                 android:gravity="right"
                 android:text="Apply"
                 android:textSize="20dp"
-                android:layout_margin="10dp"/>
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"/>
         </LinearLayout>
         <View
             android:layout_width="wrap_content"

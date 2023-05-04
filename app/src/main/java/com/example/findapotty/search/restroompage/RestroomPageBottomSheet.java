@@ -55,7 +55,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
     private View rootView;
     private RecyclerView recyclerView;
     private RestroomReviewRecyclerViewAdaptor adaptor;
-    Query dbr;
+    Query dbr, fbd;
     FirebaseRecyclerOptions<RestroomReview> fbo;
 
     private boolean isFavorite = false;
@@ -69,7 +69,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 
     String[] ratingsList = { "5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star"};
     String[] sorterOptionsList = { "Recommended", "Most Recent to Oldest", "Oldest to Most Recent"};
-    Integer ratingOptionPicked = -1;
+    Float ratingOptionPicked;
     String sorterOptionPicked = "";
     String category;
 
@@ -96,8 +96,8 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         mdb = FirebaseDatabase.getInstance().getReference();
      //   refFavoriteRestrooms = mdb.child("users")
        //         .child(User.getInstance().getUserId()).child("favoriteRestrooms");
-        populateReviewSection();
         initRestroomPage();
+        populateReviewSection();
         addReviewListener();
         sortReviewListener();
         editPageListener();
@@ -134,8 +134,6 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             binding.rrPgRrname.setText(restroom.getName());
             // set address
             binding.rrPgRraddress.setText(restroom.getAddress());
-            // set address
-            binding.rrPgReviewCount.setText(restroomReviews.size()+" Reviews");
             // set photos
             if (restroom.getPhotoBitmap() != null) {
                 binding.rrPgRrPhotos.setImageBitmap(restroom.getPhotoBitmap());
@@ -164,7 +162,6 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Sort Button Selected", Toast.LENGTH_SHORT).show();
                 sortFilterBottomSheet();
             }
 
@@ -186,7 +183,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                     // get rating number to be filtered
-                    ratingOptionPicked = 5 - position;
+                    ratingOptionPicked = Float.valueOf(5 - position);
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
@@ -213,14 +210,14 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             resetfilters.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                    fbd = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                             .getReference("Reviews")
                             .child(restroom.getPlaceID())
                             .orderByChild("helpfulness");
-                    if (dbr != null) {
+                    if (fbd != null) {
                         // use firebase ui to populate recycler straigther form databse
                         fbo = new FirebaseRecyclerOptions.Builder<RestroomReview>()
-                                .setQuery(dbr, RestroomReview.class)
+                                .setQuery(fbd, RestroomReview.class)
                                 .build();
                         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                         adaptor = new RestroomReviewRecyclerViewAdaptor(fbo);
@@ -234,34 +231,31 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             applyfilters.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.i("ratingVal", ""+ratingOptionPicked);
-                    Log.i("sorterVal", ""+sorterOptionPicked);
+                    Toast.makeText(getContext(), "rating is "+ratingOptionPicked, Toast.LENGTH_SHORT);
+                    Toast.makeText(getContext(), "sorter is "+ sorterOptionPicked, Toast.LENGTH_SHORT);
                     if(ratingOptionPicked == -1 & sorterOptionPicked == ""){
-                        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                                .getReference("Reviews/" + restroom.getPlaceID()).orderByChild("helpfulness");
                     }
                     else if(ratingOptionPicked == -1 & sorterOptionPicked != ""){
-                        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                        fbd = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                                 .getReference("Reviews/" + restroom.getPlaceID())
                                 .orderByChild(category);
                     }
-                    else if(ratingOptionPicked != -1 & sorterOptionPicked != ""){
-                        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                    else if(ratingOptionPicked != -1 & sorterOptionPicked == ""){
+                        fbd = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                                 .getReference("Reviews/" + restroom.getPlaceID())
+                                .orderByChild("rating")
                                 .equalTo(ratingOptionPicked);
                     }
-                    else{
-                        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                    else if(ratingOptionPicked != -1 & sorterOptionPicked != ""){
+                        fbd = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                                 .getReference("Reviews/" + restroom.getPlaceID())
                                 .orderByChild(category)
                                 .equalTo(ratingOptionPicked);
                     }
-                    Log.i("rating", ""+ratingOptionPicked);
-                    Log.i("sorter", ""+ratingOptionPicked);
-                    if (dbr != null) {
+                    if (fbd != null) {
                         // use firebase ui to populate recycler straigther form databse
                         fbo = new FirebaseRecyclerOptions.Builder<RestroomReview>()
-                                .setQuery(dbr, RestroomReview.class)
+                                .setQuery(fbd, RestroomReview.class)
                                 .build();
                         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                         adaptor = new RestroomReviewRecyclerViewAdaptor(fbo);
@@ -345,23 +339,28 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         adaptor.stopListening();
     }
     private void populateReviewSection() {
-
         dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                 .getReference("Reviews")
                 .child(restroom.getPlaceID())
                 .orderByChild("helpfulness");
         dbr.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(final com.google.firebase.database.DataSnapshot dataSnapshot) {
+            public void onDataChange(final DataSnapshot dataSnapshot) {
                 restroomReviews.clear();
+                float totalRating =0;
 
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
                     RestroomReview rrObj = postSnapshot.getValue(RestroomReview.class);
-                   restroomReviews.add(rrObj);
+                    restroomReviews.add(rrObj);
 
                 }
-                Log.i("ReviewList", ""+restroomReviews);
+                for(RestroomReview rr: restroomReviews){
+                    totalRating += rr.getRating();
+                }
+                binding.rrPgAvgRating.setRating(totalRating/restroomReviews.size());
+                binding.rrPgReviewCount.setText(restroomReviews.size() + " Reviews");
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

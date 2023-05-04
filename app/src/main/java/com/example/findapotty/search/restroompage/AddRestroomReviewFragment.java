@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,8 +30,12 @@ import com.example.findapotty.tunes.Song;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -44,12 +49,15 @@ public class AddRestroomReviewFragment extends Fragment {
 
     private static final String TAG = "AddRestroomReviewFragment";
     private FragmentAddRestroomReviewBinding binding;
+    Query dbr;
 
-    private DatabaseReference dbr;
+    private DatabaseReference fba;
     private Button backBT, submitBT, imgBT;
-    private ImageView imgIV;
+    private ImageView rrPhoto;
     private RatingBar ratingRB;
     private EditText reviewET;
+    private TextView rrName;
+
     private String userId, userName, imgURL;
 
     @Nullable
@@ -58,22 +66,29 @@ public class AddRestroomReviewFragment extends Fragment {
         binding = FragmentAddRestroomReviewBinding.inflate(inflater, container, false);
         ratingRB = binding.rating;
         reviewET = binding.comment;
+        rrPhoto = binding.rrPgRrPhotos;
+        rrName = binding.rrName;
+        //get restroom object so I can add placeid to object
+        // initlaize the rest of adate thats will be use to creat object
+        Restroom rr = getArguments().getParcelable("restroom_data");
+        rrName.setText(rr.getName());
+        if (rr.getPhotoBitmap() != null) {
+            rrPhoto.setImageBitmap(rr.getPhotoBitmap());}
+
         // initalize usernames
         String[] nameList = {"dealfamiliar","shufflepant","farrowrichesse",
                 "cistusinstall","chamoisfresh","repentantgrow","varyactivity",
                 "billiardskeelson", "poopaboriginal", "flowerpotportray", "sneakbeaver" };
         binding.submit.setOnClickListener(view -> {
-            //get restroom object so I can add placeid to object
-            // initlaize the rest of adate thats will be use to creat object
-            Restroom rr = getArguments().getParcelable("restroom_data");
+
             String restroomId = rr.getPlaceID();
-            dbr =  FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+            fba =  FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                     .getReference("Reviews").child(restroomId);
             SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
             Date date = new Date();
             String username = nameList[new Random().nextInt(11)];
             String userid = "12345";
-            String reviewId = dbr.push().getKey();
+            String reviewId = fba.push().getKey();
             String avatarUrl = "https://firebasestorage.googleapis.com/v0/b/findapotty.appspot.com/o/" +
                     "avatars%2Fdefault_avatar.jpg?alt=media&token=bfa281bd-bfc5-4f47-b62a-258f6698b6d6";
            // String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
@@ -84,7 +99,7 @@ public class AddRestroomReviewFragment extends Fragment {
                     reviewET.getText().toString().trim(),
                     formatter.format(date),0);
             // go to userId branch of databse and insert review object
-            dbr.child(reviewId).setValue(rev);
+            fba.child(reviewId).setValue(rev);
             // Pop up to alert user that review has been submitted
             Toast.makeText(getContext(), "Review Submitted Successfully", Toast.LENGTH_SHORT).show();
             // leave write review activity and start display review activity
@@ -96,3 +111,21 @@ public class AddRestroomReviewFragment extends Fragment {
         return binding.getRoot();
     }
 }
+/*
+           dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                    .getReference("Reviews")
+                    .child(rr.getPlaceID())
+                    .orderByChild("timestamp").limitToLast(1);
+            dbr.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(final DataSnapshot dataSnapshot) {
+                    dataSnapshot.getChildrenCount();
+
+
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+ */

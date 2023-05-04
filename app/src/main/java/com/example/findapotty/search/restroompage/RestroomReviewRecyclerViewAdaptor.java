@@ -64,7 +64,7 @@ public class RestroomReviewRecyclerViewAdaptor extends FirebaseRecyclerAdapter<R
         holder.rating.setRating(model.getRating());
         holder.ratingNum.setText(""+model.getRating());
         holder.comment.setText(model.getComment());
-        holder.helpfulnessTV.setText("Helpfulness ("+model.getHelpfulness()+")");
+        holder.helpfulnessTV.setText("Helpfulness ("+Math.abs(model.getHelpfulness())+")");
         //        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -86,7 +86,7 @@ public class RestroomReviewRecyclerViewAdaptor extends FirebaseRecyclerAdapter<R
             public void onClick(View v) {
                 if(previouslyClicked){
                     holder.helpfulnessBT.setImageResource(R.drawable.baseline_thumb_up_off_alt_24);
-                    currHelpVal = model.getHelpfulness()-1;
+                    currHelpVal = Math.abs(model.getHelpfulness()+1);
                     model.setHelpfulness(currHelpVal);
                     holder.helpfulnessTV.setText("Helpfulness ("+currHelpVal+")");
                     dbr.child(myKey).child("helpfulness").setValue(currHelpVal);
@@ -96,7 +96,7 @@ public class RestroomReviewRecyclerViewAdaptor extends FirebaseRecyclerAdapter<R
                 }
                 else{
                     holder.helpfulnessBT.setImageResource(R.drawable.baseline_thumb_up_alt_24);
-                    currHelpVal = model.getHelpfulness()+1;
+                    currHelpVal = Math.abs(model.getHelpfulness()-1);
                     model.setHelpfulness(currHelpVal);
                     holder.helpfulnessTV.setText("Helpfulness ("+currHelpVal+")");
                     dbr.child(myKey).child("helpfulness").setValue(currHelpVal);

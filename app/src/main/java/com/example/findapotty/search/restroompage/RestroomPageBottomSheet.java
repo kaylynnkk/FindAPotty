@@ -139,16 +139,14 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                 binding.rrPgRrPhotos.setImageBitmap(restroom.getPhotoBitmap());
             } else {
                 StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-                if (restroom.getPhotoPath() != null) {
-                    StorageReference ref = storageRef.child(restroom.getPhotoPath());
-                    ref.getDownloadUrl().addOnSuccessListener(uri -> {
-                        Glide.with(binding.getRoot().getContext())
-                                .asBitmap()
-                                .dontAnimate()
-                                .load(uri)
-                                .into(binding.rrPgRrPhotos);
-                    });
-                }
+                StorageReference ref = storageRef.child(restroom.getPhotoPath());
+                ref.getDownloadUrl().addOnSuccessListener(uri -> {
+                    Glide.with(binding.getRoot().getContext())
+                            .asBitmap()
+                            .dontAnimate()
+                            .load(uri)
+                            .into(binding.rrPgRrPhotos);
+                });
             }
             // set favorite state
             if (FavoriteRestroomsManager.getInstance().getRestrooms().containsKey(restroom.getPlaceID())) {

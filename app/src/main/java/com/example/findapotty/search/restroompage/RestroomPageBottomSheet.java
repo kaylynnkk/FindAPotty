@@ -69,7 +69,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 
     String[] ratingsList = { "5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star"};
     String[] sorterOptionsList = { "Recommended", "Most Recent to Oldest", "Oldest to Most Recent"};
-    Float ratingOptionPicked;
+    Float ratingOptionPicked = Float.valueOf(100);;
     String sorterOptionPicked = "";
     String category;
 
@@ -187,6 +187,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
+                    ratingOptionPicked = Float.valueOf(100);
                 }
             });
             ArrayAdapter ad2 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, sorterOptionsList);
@@ -204,6 +205,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
+                    sorterOptionPicked = "";
                 }
             });
             bottomSheetDialog.show();
@@ -231,29 +233,23 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             applyfilters.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(ratingOptionPicked == -1 & sorterOptionPicked != ""){
+                    if(ratingOptionPicked == Float.valueOf(100) && sorterOptionPicked != ""){
                         fbd = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                                 .getReference("Reviews/" + restroom.getPlaceID())
                                 .orderByChild(category);
                     }
-                    else if(ratingOptionPicked != -1 & sorterOptionPicked == ""){
+                    else if(ratingOptionPicked != Float.valueOf(100) && sorterOptionPicked == ""){
                         fbd = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                                .getReference("Reviews/" + restroom.getPlaceID())
+                                .getReference("Reviews")
+                                .child(restroom.getPlaceID())
                                 .orderByChild("rating")
-                                .equalTo(ratingOptionPicked);
-                    }
-
-                    else if(ratingOptionPicked != -1 & sorterOptionPicked != ""){
-                        fbd = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                                .getReference("Reviews/" + restroom.getPlaceID())
-                                .orderByChild(category)
                                 .equalTo(ratingOptionPicked);
                     }
                     else{
                         fbd = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                                 .getReference("Reviews")
                                 .child(restroom.getPlaceID())
-                                .orderByChild("helpfulness");
+                                .orderByChild(category);
                     }
                     if (fbd != null) {
                         // use firebase ui to populate recycler straigther form databse

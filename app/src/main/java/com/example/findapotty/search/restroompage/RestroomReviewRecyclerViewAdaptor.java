@@ -89,7 +89,7 @@ public class RestroomReviewRecyclerViewAdaptor extends FirebaseRecyclerAdapter<R
                     currHelpVal = Math.abs(model.getHelpfulness()+1);
                     model.setHelpfulness(currHelpVal);
                     holder.helpfulnessTV.setText("Helpfulness ("+currHelpVal+")");
-                    dbr.child(myKey).child("helpfulness").setValue(currHelpVal);
+                    dbr.child(myKey).child("helpfulness").setValue(model.getHelpfulness()+1);
                     previouslyClicked = false;
 
 
@@ -99,7 +99,7 @@ public class RestroomReviewRecyclerViewAdaptor extends FirebaseRecyclerAdapter<R
                     currHelpVal = Math.abs(model.getHelpfulness()-1);
                     model.setHelpfulness(currHelpVal);
                     holder.helpfulnessTV.setText("Helpfulness ("+currHelpVal+")");
-                    dbr.child(myKey).child("helpfulness").setValue(currHelpVal);
+                    dbr.child(myKey).child("helpfulness").setValue(model.getHelpfulness()-1);
                     previouslyClicked = true;
 
 

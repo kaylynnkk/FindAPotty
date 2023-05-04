@@ -41,6 +41,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -50,6 +52,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.maps.DirectionsApiRequest;
 import com.google.maps.DistanceMatrixApiRequest;
 import com.google.maps.GeoApiContext;
 import com.google.maps.ImageResult;
@@ -57,6 +60,7 @@ import com.google.maps.PhotoRequest;
 import com.google.maps.PlaceDetailsRequest;
 import com.google.maps.PlacesApi;
 import com.google.maps.errors.ApiException;
+import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.DistanceMatrixElementStatus;
 import com.google.maps.model.PlaceDetails;
@@ -86,6 +90,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private LinearLayoutManager layoutManager;
     private NearbyRestroomsRecyclerViewAdaptor adaptor;
     private int prevSnapPosition = 0;
+    private Polyline polyline;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -196,6 +201,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         adaptor = new NearbyRestroomsRecyclerViewAdaptor(getContext());
         recyclerView.setAdapter(adaptor);
         LinearSnapHelper linearSnapHelper = new SnapHelperOneByOne();
+        // fixed "An instance of OnFlingListener already set"
+        recyclerView.setOnFlingListener(null);
         linearSnapHelper.attachToRecyclerView(recyclerView);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -324,11 +331,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
      * 3. fetch photos
      * 4. fetch distance
      */
+    private final GeoApiContext geoApiContext = new GeoApiContext.Builder()
+            .apiKey(BuildConfig.MAPS_API_KEY)
+            .build();
+
     private void getNearbyRestrooms() {
         if (currentLocation != null) {
-            GeoApiContext geoApiContext = new GeoApiContext.Builder()
-                    .apiKey(BuildConfig.MAPS_API_KEY)
-                    .build();
             try {
                 // 1. fetch nearby places
                 PlacesSearchResponse placesSearchResponse = PlacesApi.nearbySearchQuery(
@@ -492,6 +500,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             // set icon for selected marker
             NearbyRestroom nearbyRestroom = NearbyRestroomsManager.getInstance().getRestroomByIndex(position);
             Marker marker = MapMarkersManager.getInstance().getMarkerById(nearbyRestroom.getMarkerId());
+            addPolylineToMap(
+                    new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
+                    nearbyRestroom.getLatLng()
+            );
             if (marker != null) {
                 marker.setIcon(Utils.getMarkerIconWithLabelLarge(
                                 getContext(),
@@ -521,6 +533,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         int index = NearbyRestroomsManager.getInstance().getRestroomIndexByMarkerId(marker.getId());
         if (index != -1) {
             recyclerView.smoothScrollToPosition(index);
+        }
+    }
+
+    private void addPolylineToMap(LatLng origin, com.example.findapotty.model.LatLng dest) {
+        if (polyline != null) {
+            polyline.remove();
+        }
+        try {
+            DirectionsResult directionsResult = new DirectionsApiRequest(geoApiContext)
+                    .origin(Utils.convertLatLngType1_1(origin))
+                    .destination(Utils.convertLatLngTypeV2_2(dest))
+                    .await();
+            polyline = googleMap.addPolyline(
+                    new PolylineOptions().addAll(
+                            Utils.convertLatLngTypeV1_2L(directionsResult.routes[0].overviewPolyline.decodePath()))
+            );
+        } catch (ApiException | InterruptedException | IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

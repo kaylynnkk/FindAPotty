@@ -1,23 +1,19 @@
-package com.example.findapotty.login;
+package com.example.findapotty;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.example.findapotty.MainActivity;
-import com.example.findapotty.R;
-import com.example.findapotty.databinding.FragmentLoginBinding;
+import com.example.findapotty.databinding.FragmentAppStartBinding;
 import com.example.findapotty.user.AccountViewModel;
 import com.example.findapotty.user.FavoriteRestroomsManager;
 import com.example.findapotty.user.User;
@@ -31,57 +27,53 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-public class LoginFragment extends Fragment {
+public class AppStartFragment extends Fragment {
 
-    private static final String TAG = "LoginFragment";
-    private FirebaseAuth mAuth;
-    private FragmentLoginBinding binding;
+    private static final String TAG = "AppStartFragment";
+    private FragmentAppStartBinding binding;
     private AccountViewModel accountViewModel;
+    private NavController navController;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false);
-        mAuth = FirebaseAuth.getInstance();
+        binding = FragmentAppStartBinding.inflate(inflater, container, false);
         accountViewModel = new AccountViewModel(binding.getRoot().getContext());
-        binding.flLoginButton.setOnClickListener(view -> {
-            login();
-        });
-        binding.flSignupButton.setOnClickListener(view -> {
-            actionSignUpPage(view);
-        });
         return binding.getRoot();
     }
 
-    private void actionSignUpPage(View view) {
-        NavController controller = Navigation.findNavController(view);
-        controller.navigate(R.id.action_navg_login_fragment_to_nav_signup_fragment);
+    @Override
+    public void onStart() {
+        super.onStart();
+        navController = Navigation.findNavController(binding.getRoot());
+        directLogin();
     }
 
-    private void login() {
-        Log.d(TAG, "login: manually login");
-        String username = binding.loginInputUsername.getText().toString();
-        String password = binding.loginInputPassword.getText().toString();
-        if (username.isEmpty() || !(username.length() > 7)) {
-            showError(binding.loginInputUsername, "Your username is not valid!");
-
-        } else if (password.isEmpty() || password.length() < 1) {
-            showError(binding.loginInputPassword, "Password must be at least 7 characters!");
+    private void directLogin() {
+        if (!accountViewModel.getUseState()) {
+            accountViewModel.setUseState(true);
+            if (accountViewModel.getLoginState()) {
+                Log.d(TAG, "login: direct login");
+                String[] credential = accountViewModel.getCredential();
+                checkCredentials(credential[0], credential[1]);
+            } else {
+                Log.d(TAG, "login: manual login");
+                navController.navigate(R.id.action_appStartFragment_to_navg_login_fragment);
+            }
 
         } else {
-            checkCredentials(username, password);
+            requireActivity().finish();
         }
     }
 
     private void checkCredentials(String username, String password) {
-        mAuth.signInWithEmailAndPassword(username, password)
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success");
                         DatabaseReference mdb = FirebaseDatabase.getInstance().getReference();
-                        String userId = mAuth.getCurrentUser().getUid();
-                        Log.d(TAG, "checkCredentials: uid: " + userId);
+                        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                         User user = User.getInstance();
                         // retrieve user info
                         mdb.child("users").child(userId).addValueEventListener(new ValueEventListener() {
@@ -93,24 +85,20 @@ public class LoginFragment extends Fragment {
                                 currentUser.setUserId(retrievedUser.getUserId());
                                 // user name
                                 currentUser.setUserName(retrievedUser.getUserName());
+                                // user avatar
+                                currentUser.setAvatarPath(retrievedUser.getAvatarPath());
+                                StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                                StorageReference ref = storageRef.child(currentUser.getAvatarPath());
                                 // user favorite restrooms
                                 FavoriteRestroomsManager.getInstance()
                                         .setRestrooms(retrievedUser.getFavoriteRestrooms());
                                 // visited restrooms
                                 VisitedRestroomsManager.getInstance()
                                         .setRestrooms(retrievedUser.getVisitedRestrooms());
-                                // user avatar
-                                currentUser.setAvatarPath(retrievedUser.getAvatarPath());
-                                StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-                                StorageReference ref = storageRef.child(currentUser.getAvatarPath());
                                 ref.getDownloadUrl().addOnSuccessListener(uri -> {
                                     currentUser.setAvatarUrl(uri);
                                     ((MainActivity) requireActivity()).setUpNavViewHeader();
-                                    // save credential
-                                    accountViewModel.saveCredential(username, password);
-                                    accountViewModel.setLoginState(true);
-                                    NavController controller = Navigation.findNavController(binding.getRoot());
-                                    controller.navigate(R.id.action_loginFragment2_to_nav_search);
+                                    navController.navigate(R.id.action_appStartFragment_to_nav_search);
                                 });
                                 Toast.makeText(binding.getRoot().getContext(), "Welcome " + currentUser.getUserName(),
                                         Toast.LENGTH_SHORT).show();
@@ -122,7 +110,6 @@ public class LoginFragment extends Fragment {
                             }
                         });
 
-
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -131,11 +118,6 @@ public class LoginFragment extends Fragment {
                     }
                 });
 
-    }
-
-    private void showError(EditText input, String s) {
-        input.setError(s);
-        input.requestFocus();
     }
 
 }

@@ -3,12 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group
-        android:checkableBehavior="single">
+    <group android:checkableBehavior="single">
         <item
-            android:title="Home"
             android:id="@+id/nav_search"
-            android:icon="@drawable/nav_home_24" />
+            android:icon="@drawable/nav_home_24"
+            android:title="Home" />
         <item
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_nav_history"
@@ -18,26 +17,39 @@
 
     <item android:title="Services">
         <menu>
-            <item
-                android:id="@+id/nav_diary"
-                android:icon="@drawable/bottomsheet_drag"
-                android:title="Diary" />
-            <item
-                android:id="@+id/nav_trends"
-                android:icon="@drawable/bottomsheet_drag"
-                android:title="Trends" />
-            <item
-                android:id="@+id/nav_trainer"
-                android:icon="@drawable/bottomsheet_drag"
-                android:title="Trainer" />
-            <item
-                android:id="@+id/nav_reminder"
-                android:icon="@drawable/bottomsheet_drag"
-                android:title="Reminder" />
-            <item
-                android:id="@+id/nav_tunes"
-                android:icon="@drawable/bottomsheet_drag"
-                android:title="Tunes" />
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_diary"
+                    android:icon="@drawable/bottomsheet_drag"
+                    android:title="Diary" />
+                <item
+                    android:id="@+id/nav_trends"
+                    android:icon="@drawable/bottomsheet_drag"
+                    android:title="Trends" />
+                <item
+                    android:id="@+id/nav_trainer"
+                    android:icon="@drawable/bottomsheet_drag"
+                    android:title="Trainer" />
+                <item
+                    android:id="@+id/nav_reminder"
+                    android:icon="@drawable/bottomsheet_drag"
+                    android:title="Reminder" />
+                <item
+                    android:id="@+id/nav_tunes"
+                    android:icon="@drawable/bottomsheet_drag"
+                    android:title="Tunes" />
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="Account">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/appStartFragment"
+                    android:icon="@drawable/ic_logout_24"
+                    android:title="Log out" />
+            </group>
         </menu>
     </item>
 </menu>

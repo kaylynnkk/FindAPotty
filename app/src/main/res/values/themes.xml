@@ -17,6 +17,11 @@
     <style name="Theme.FindAPotty.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <!-- https://www.youtube.com/watch?v=a1CQPKuGM_A -->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <!-- https://stackoverflow.com/a/52092975 -->
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
     </style>
 
 

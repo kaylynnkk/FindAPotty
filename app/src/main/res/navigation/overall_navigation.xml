@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/overall_navigation"
-    app:startDestination="@id/navg_login_fragment"
+    app:startDestination="@id/appStartFragment"
     tools:ignore="ExtraText">
     <fragment
         android:id="@+id/navg_login_fragment"
@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment2_to_nav_search"
-            app:destination="@id/nav_search" />
+            app:destination="@id/nav_search"
+            app:popUpTo="@+id/appStartFragment"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_navg_login_fragment_to_nav_signup_fragment"
             app:destination="@id/nav_signup_fragment" />
@@ -201,5 +203,18 @@
         android:name="com.example.findapotty.profile.UploadProfilePic"
         android:label="fragment_upload_profile_pic"
         tools:layout="@layout/fragment_upload_profile_pic" />
+    <fragment
+        android:id="@+id/appStartFragment"
+        android:name="com.example.findapotty.AppStartFragment"
+        android:label="AppStartFragment" >
+        <action
+            android:id="@+id/action_appStartFragment_to_navg_login_fragment"
+            app:destination="@id/navg_login_fragment"/>
+        <action
+            android:id="@+id/action_appStartFragment_to_nav_search"
+            app:destination="@id/nav_search"
+            app:popUpTo="@+id/appStartFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
 
 </navigation>

@@ -6,7 +6,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".trainer.TrainerFragment"
-    android:paddingTop="?attr/actionBarSize">
+    android:paddingTop="@dimen/action_bar_size">
 
 <!--        <SearchView-->
 <!--            android:id="@+id/search_view"-->

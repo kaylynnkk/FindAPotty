@@ -43,12 +43,16 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 
     private static final String TAG = "RestroomPageBottomSheet";
-    private ArrayList<RestroomReview> restroomReviews = new ArrayList<>();
+    ArrayList<RestroomReview> restroomReviews = new ArrayList<>();
+    ArrayList<RestroomReview> spareReviewList = new ArrayList<>();
     private ImageView rr_photo;
 
     private BottomSheetRestroomPageBinding binding;
@@ -71,7 +75,6 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
     String[] sorterOptionsList = { "Recommended", "Most Recent to Oldest", "Oldest to Most Recent"};
     Integer ratingOptionPicked = -1;
     String sorterOptionPicked = "";
-    String category;
 
 
     @NonNull
@@ -96,7 +99,11 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         mdb = FirebaseDatabase.getInstance().getReference();
      //   refFavoriteRestrooms = mdb.child("users")
        //         .child(User.getInstance().getUserId()).child("favoriteRestrooms");
-        populateReviewSection();
+        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                .getReference("Reviews")
+                .child(restroom.getPlaceID())
+                .orderByChild("helpfulness");
+        populateReviewSection(dbr);
         initRestroomPage();
         addReviewListener();
         sortReviewListener();
@@ -105,20 +112,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             setFavoriteState();
         });
         recyclerView = binding.rrPgReviewSection;
-        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                .getReference("Reviews")
-                .child(restroom.getPlaceID())
-                .orderByChild("helpfulness");
-        if(dbr != null) {
-            // use firebas eui to populate recycler straigther form databse
-            fbo = new FirebaseRecyclerOptions.Builder<RestroomReview>()
-                    .setQuery(dbr, RestroomReview.class)
-                    .build();
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            adaptor = new RestroomReviewRecyclerViewAdaptor(fbo);
-            recyclerView.setAdapter(adaptor);
-            adaptor.startListening();
-        }
+
         return dialog;
     }
 
@@ -134,8 +128,8 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             binding.rrPgRrname.setText(restroom.getName());
             // set address
             binding.rrPgRraddress.setText(restroom.getAddress());
-            // set address
-            binding.rrPgReviewCount.setText(restroomReviews.size()+" Reviews");
+
+            binding.rrPgReviewCount.setText(restroomReviews.size()+" num Reviews");
             // set photos
             if (restroom.getPhotoBitmap() != null) {
                 binding.rrPgRrPhotos.setImageBitmap(restroom.getPhotoBitmap());
@@ -159,13 +153,14 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 
         }
     }
+
     private void sortReviewListener() {
         Button btn = rootView.findViewById(R.id.rr_pg_sort_button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(), "Sort Button Selected", Toast.LENGTH_SHORT).show();
-                sortFilterBottomSheet();
+                populateReviewSection(dbr);
             }
 
         });
@@ -190,6 +185,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
+                    ratingOptionPicked = -1;
                 }
             });
             ArrayAdapter ad2 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, sorterOptionsList);
@@ -198,80 +194,79 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                     sorterOptionPicked = sorterOptionsList[position];
-                    if(sorterOptionPicked == "Recommended"){
-                        category = "helpfulness";
-                    }
-                    else{
-                        category = "timestamp";
-                    }
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
+                    sorterOptionPicked = "";
                 }
             });
             bottomSheetDialog.show();
             resetfilters.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                            .getReference("Reviews")
-                            .child(restroom.getPlaceID())
-                            .orderByChild("helpfulness");
-                    if (dbr != null) {
-                        // use firebase ui to populate recycler straigther form databse
-                        fbo = new FirebaseRecyclerOptions.Builder<RestroomReview>()
-                                .setQuery(dbr, RestroomReview.class)
-                                .build();
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                        adaptor = new RestroomReviewRecyclerViewAdaptor(fbo);
-                        adaptor.startListening();
-                        recyclerView.setAdapter(adaptor);
-                        adaptor.startListening();
-                    }
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    adaptor = new RestroomReviewRecyclerViewAdaptor(getContext(), restroomReviews);
+                    recyclerView.setAdapter(adaptor);
                 }
             });
             // restart recyclerview after applying filter information
             applyfilters.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.i("ratingVal", ""+ratingOptionPicked);
-                    Log.i("sorterVal", ""+sorterOptionPicked);
                     if(ratingOptionPicked == -1 & sorterOptionPicked == ""){
-                        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                                .getReference("Reviews/" + restroom.getPlaceID()).orderByChild("helpfulness");
                     }
                     else if(ratingOptionPicked == -1 & sorterOptionPicked != ""){
-                        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                                .getReference("Reviews/" + restroom.getPlaceID())
-                                .orderByChild(category);
+                        if (sorterOptionPicked == "Recommended"){
+                            spareReviewList.sort(Comparator.comparing(RestroomReview::getHelpfulness));
+                        }
+                        else if (sorterOptionPicked == "Most Recent to Oldest"){
+                            spareReviewList.sort(Comparator.comparing(RestroomReview::getTimestamp));
+                        }
+                        else if (sorterOptionPicked == "Oldest to Most Recent"){
+                            spareReviewList.sort(Comparator.comparing(RestroomReview::getTimestamp));
+                            Collections.sort(spareReviewList,
+                                    Comparator.comparing(RestroomReview::getTimestamp).reversed());
+                        }
                     }
+                    else if(ratingOptionPicked != -1 & sorterOptionPicked == "") {
+                        for (RestroomReview rr : spareReviewList) {
+                            if (!rr.getRating().equals(ratingOptionPicked)) {
+                                spareReviewList.remove(rr);
+                            }
+                        }
+                    }
+
                     else if(ratingOptionPicked != -1 & sorterOptionPicked != ""){
-                        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                                .getReference("Reviews/" + restroom.getPlaceID())
-                                .equalTo(ratingOptionPicked);
+                        for(RestroomReview rr: restroomReviews){
+                            if (!rr.getRating().equals(ratingOptionPicked)) {
+                                spareReviewList.remove(rr);
+                            }
+                        }
+                        if (sorterOptionPicked == "Recommended"){
+                            spareReviewList.sort(Comparator.comparing(RestroomReview::getHelpfulness));
+                        }
+                        else if (sorterOptionPicked == "Most Recent to Oldest"){
+                            spareReviewList.sort(Comparator.comparing(RestroomReview::getTimestamp));
+                        }
+                        else if (sorterOptionPicked == "Oldest to Most Recent"){
+                            spareReviewList.sort(Comparator.comparing(RestroomReview::getTimestamp));
+                            Collections.sort(spareReviewList,
+                                    Comparator.comparing(RestroomReview::getTimestamp).reversed());
+                        }
+
                     }
-                    else{
-                        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                                .getReference("Reviews/" + restroom.getPlaceID())
-                                .orderByChild(category)
-                                .equalTo(ratingOptionPicked);
-                    }
-                    Log.i("rating", ""+ratingOptionPicked);
-                    Log.i("sorter", ""+ratingOptionPicked);
                     if (dbr != null) {
-                        // use firebase ui to populate recycler straigther form databse
-                        fbo = new FirebaseRecyclerOptions.Builder<RestroomReview>()
-                                .setQuery(dbr, RestroomReview.class)
-                                .build();
                         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                        adaptor = new RestroomReviewRecyclerViewAdaptor(fbo);
-                        adaptor.startListening();
+                        adaptor = new RestroomReviewRecyclerViewAdaptor(getContext(), spareReviewList);
                         recyclerView.setAdapter(adaptor);
-                        adaptor.startListening();
                     }
+                    bottomSheetDialog.hide();
+
+
                 }
             });
         }
+
 
     private void addReviewListener() {
         FloatingActionButton btn = rootView.findViewById(R.id.rr_page_add_review);
@@ -333,35 +328,36 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         }
         refFavoriteRestrooms.setValue(FavoriteRestroomsManager.getInstance().getRestrooms());
     }
-    //called to continue data being retrievedfrom friebase
-    @Override public void onStart() {
-        super.onStart();
-        adaptor.startListening();
-    }
 
-    //called to stop data  retrieval from friebase
-    @Override public void onStop() {
-        super.onStop();
-        adaptor.stopListening();
-    }
-    private void populateReviewSection() {
+    private void populateReviewSection(Query dbr) {
 
-        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                .getReference("Reviews")
-                .child(restroom.getPlaceID())
-                .orderByChild("helpfulness");
+
         dbr.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(final com.google.firebase.database.DataSnapshot dataSnapshot) {
+            public void onDataChange(final DataSnapshot dataSnapshot) {
                 restroomReviews.clear();
+                float totalRating =0;
 
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
                     RestroomReview rrObj = postSnapshot.getValue(RestroomReview.class);
-                   restroomReviews.add(rrObj);
+                    restroomReviews.add(rrObj);
+                    spareReviewList.add(rrObj);
 
                 }
-                Log.i("ReviewList", ""+restroomReviews);
+                Log.i("ReviewList", "" + restroomReviews);
+                for(RestroomReview rr: restroomReviews){
+                    totalRating += rr.getRating();
+                }
+                binding.rrPgAvgRating.setRating(totalRating/restroomReviews.size());
+                binding.rrPgReviewCount.setText(restroomReviews.size() + " Reviews");
+                if (dbr != null) {
+                    // use firebas eui to populate recycler straigther form databse
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    adaptor = new RestroomReviewRecyclerViewAdaptor(getContext(), restroomReviews);
+                    recyclerView.setAdapter(adaptor);
+                }
+                sortFilterBottomSheet();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

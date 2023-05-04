@@ -31,40 +31,38 @@ import java.util.ArrayList;
  * Created by User on 1/1/2018.
  */
  // Adapter to populate recycler view usinf firebase data
-public class RestroomReviewRecyclerViewAdaptor extends FirebaseRecyclerAdapter<RestroomReview,
-        RestroomReviewRecyclerViewAdaptor.ViewHolder> {
+public class RestroomReviewRecyclerViewAdaptor extends RecyclerView.Adapter<RestroomReviewRecyclerViewAdaptor.ViewHolder>{
 
-    private static final String TAG = "RecyclerViewAdapter";
+    ArrayList<RestroomReview> reviewsList = new ArrayList<>();
     Context context;
     boolean previouslyClicked = false;
     Integer currHelpVal;
 
-    public RestroomReviewRecyclerViewAdaptor(@NonNull FirebaseRecyclerOptions<RestroomReview> options) {
-        super(options);
+    public RestroomReviewRecyclerViewAdaptor(Context context, ArrayList<RestroomReview> reviewsList) {
+        this.context = context;
+        this.reviewsList = reviewsList;
     }
-
-    @NonNull
-    @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rr_pg_single_reivew, parent, false);
         return new ViewHolder(view);
     }
 
-    @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull RestroomReview model) {
+
+    public void onBindViewHolder(ViewHolder holder, int position) {
       /*  Glide.with(context)
                 .asBitmap()
                 .load(model.getAvatarUrl())
                 .into(holder.avatar);e
 
        */
+        RestroomReview reviewObj = reviewsList.get(position);
 
-        holder.username.setText(model.getUsername());
-        holder.date.setText(model.getTimestamp());
-        holder.rating.setRating(model.getRating());
-        holder.ratingNum.setText(""+model.getRating());
-        holder.comment.setText(model.getComment());
-        holder.helpfulnessTV.setText("Helpfulness ("+model.getHelpfulness()+")");
+        holder.username.setText(reviewObj.getUsername());
+        holder.date.setText(reviewObj.getTimestamp());
+        holder.rating.setRating(reviewObj.getRating());
+        holder.ratingNum.setText(""+reviewObj.getRating());
+        holder.comment.setText(reviewObj.getComment());
+        holder.helpfulnessTV.setText("Helpfulness ("+reviewObj.getHelpfulness()+")");
         //        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -79,33 +77,38 @@ public class RestroomReviewRecyclerViewAdaptor extends FirebaseRecyclerAdapter<R
 //            }
 //        });
         DatabaseReference dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                .getReference("Reminders/"+ model.getRestroomId());
-        final String myKey = getRef(position).getKey();
+                .getReference("Reminders/"+ reviewObj.getRestroomId());
+        String key = reviewObj.getReviewId();
         holder.helpfulnessBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(previouslyClicked){
                     holder.helpfulnessBT.setImageResource(R.drawable.baseline_thumb_up_off_alt_24);
-                    currHelpVal = model.getHelpfulness()-1;
-                    model.setHelpfulness(currHelpVal);
+                    currHelpVal = reviewObj.getHelpfulness()-1;
+                    reviewObj.setHelpfulness(currHelpVal);
                     holder.helpfulnessTV.setText("Helpfulness ("+currHelpVal+")");
-                    dbr.child(myKey).child("helpfulness").setValue(currHelpVal);
+                    dbr.child(key).child("helpfulness").setValue(currHelpVal);
                     previouslyClicked = false;
 
 
                 }
                 else{
                     holder.helpfulnessBT.setImageResource(R.drawable.baseline_thumb_up_alt_24);
-                    currHelpVal = model.getHelpfulness()+1;
-                    model.setHelpfulness(currHelpVal);
+                    currHelpVal = reviewObj.getHelpfulness()+1;
+                    reviewObj.setHelpfulness(currHelpVal);
                     holder.helpfulnessTV.setText("Helpfulness ("+currHelpVal+")");
-                    dbr.child(myKey).child("helpfulness").setValue(currHelpVal);
+                    dbr.child(key).child("helpfulness").setValue(currHelpVal);
                     previouslyClicked = true;
 
 
                 }
             }
         });
+    }
+
+    public int getItemCount()
+    {
+        return reviewsList.size();
     }
 
 

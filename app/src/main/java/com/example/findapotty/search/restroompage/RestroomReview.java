@@ -4,6 +4,7 @@ import android.widget.ImageView;
 
 public class RestroomReview {
     public String restroomId;
+    public String reviewId;
 
     private String avatarUrl;
     private String username;
@@ -17,10 +18,22 @@ public class RestroomReview {
 
     public RestroomReview() {
     }
-
-    public RestroomReview(String restroomId, String avatarUrl, String username, String userid,
-                          Float rating, String comment, String timestamp,Integer helpfulness) {
+    public RestroomReview(String restroomId, String reviewId, ImageView avatar, String username,
+                          String userid, Float rating, String comment, String timestamp, Integer helpfulness) {
         this.restroomId = restroomId;
+        this.reviewId = reviewId;
+        this.username = username;
+        this.userid = userid;
+        this.avatar = avatar;
+        this.rating = rating;
+        this.comment = comment;
+        this.timestamp = timestamp;
+        this.helpfulness = helpfulness;
+    }
+    public RestroomReview(String restroomId, String reviewId, String avatarUrl, String username,
+                          String userid, Float rating, String comment, String timestamp, Integer helpfulness) {
+        this.restroomId = restroomId;
+        this.reviewId = reviewId;
         this.avatarUrl = avatarUrl;
         this.username = username;
         this.userid = userid;
@@ -29,16 +42,12 @@ public class RestroomReview {
         this.timestamp = timestamp;
         this.helpfulness = helpfulness;
     }
-    public RestroomReview(String restroomId, ImageView avatar, String username, String userid,
-                          Float rating, String comment, String timestamp,Integer helpfulness) {
-        this.restroomId = restroomId;
-        this.username = username;
-        this.userid= userid;
-        this.avatar = avatar;
-        this.rating = rating;
-        this.comment = comment;
-        this.timestamp = timestamp;
-        this.helpfulness = helpfulness;
+    public String getReviewId() {
+        return reviewId;
+    }
+
+    public void setReviewId(String reviewId) {
+        this.reviewId = reviewId;
     }
 
     public Integer getHelpfulness() {

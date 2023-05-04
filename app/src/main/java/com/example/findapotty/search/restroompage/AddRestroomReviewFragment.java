@@ -79,7 +79,7 @@ public class AddRestroomReviewFragment extends Fragment {
            // String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
             //String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             // Create review object
-            RestroomReview rev = new RestroomReview(restroomId, avatarUrl, username, userid,
+            RestroomReview rev = new RestroomReview(restroomId, reviewId, avatarUrl, username, userid,
                     ratingRB.getRating(),
                     reviewET.getText().toString().trim(),
                     formatter.format(date),0);

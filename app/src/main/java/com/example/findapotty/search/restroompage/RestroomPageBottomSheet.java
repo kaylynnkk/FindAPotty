@@ -231,11 +231,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             applyfilters.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getContext(), "rating is "+ratingOptionPicked, Toast.LENGTH_SHORT);
-                    Toast.makeText(getContext(), "sorter is "+ sorterOptionPicked, Toast.LENGTH_SHORT);
-                    if(ratingOptionPicked == -1 & sorterOptionPicked == ""){
-                    }
-                    else if(ratingOptionPicked == -1 & sorterOptionPicked != ""){
+                    if(ratingOptionPicked == -1 & sorterOptionPicked != ""){
                         fbd = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                                 .getReference("Reviews/" + restroom.getPlaceID())
                                 .orderByChild(category);
@@ -246,11 +242,18 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                                 .orderByChild("rating")
                                 .equalTo(ratingOptionPicked);
                     }
+
                     else if(ratingOptionPicked != -1 & sorterOptionPicked != ""){
                         fbd = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                                 .getReference("Reviews/" + restroom.getPlaceID())
                                 .orderByChild(category)
                                 .equalTo(ratingOptionPicked);
+                    }
+                    else{
+                        fbd = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                                .getReference("Reviews")
+                                .child(restroom.getPlaceID())
+                                .orderByChild("helpfulness");
                     }
                     if (fbd != null) {
                         // use firebase ui to populate recycler straigther form databse

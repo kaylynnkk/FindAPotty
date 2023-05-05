@@ -31,7 +31,7 @@
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barchart"
         android:layout_width="400sp"
-        android:layout_height="600sp"
+        android:layout_height="570sp"
         android:layout_centerInParent="true">
 
 

@@ -211,5 +211,33 @@
             app:popUpTo="@+id/appStartFragment"
             app:popUpToInclusive="false" />
     </fragment>
+    <fragment
+        android:id="@+id/Trends"
+        android:name="com.example.findapotty.Trends.Trends"
+        android:label="Trends" >
+        <action
+            android:id="@+id/action_Trends_to_trendsWeeklyIntensity"
+            app:destination="@id/trendsWeeklyIntensity" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_trends"
+        android:name="com.example.findapotty.Trends.TrendsWeekly"
+        android:label="TrendsWeekly" >
+        <action
+            android:id="@+id/action_nav_trends_to_Trends"
+            app:destination="@id/Trends" />
+    </fragment>
+    <fragment
+        android:id="@+id/trendsWeeklyIntensity"
+        android:name="com.example.findapotty.Trends.TrendsWeeklyIntensity"
+        android:label="TrendsWeeklyIntensity" >
+        <action
+            android:id="@+id/action_trendsWeeklyIntensity_to_trendsYearlyIntensity"
+            app:destination="@id/trendsYearlyIntensity" />
+    </fragment>
+    <fragment
+        android:id="@+id/trendsYearlyIntensity"
+        android:name="com.example.findapotty.Trends.TrendsYearlyIntensity"
+        android:label="TrendsYearlyIntensity" />
 
 </navigation>

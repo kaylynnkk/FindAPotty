@@ -103,7 +103,8 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                 .getReference("Reviews")
                 .child(restroom.getPlaceID())
                 .orderByChild("helpfulness");
-        populateReviewSection(dbr);
+        getReviewInfo();
+        //populateReviewSection(dbr);
         initRestroomPage();
         addReviewListener();
         sortReviewListener();
@@ -160,7 +161,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(), "Sort Button Selected", Toast.LENGTH_SHORT).show();
-                populateReviewSection(dbr);
+                sortFilterBottomSheet();
             }
 
         });
@@ -213,6 +214,12 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             applyfilters.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                            .getReference("Reviews")
+                            .child(restroom.getPlaceID())
+                            .orderByChild("helpfulness");
+                    populateReviewSection(dbr,ratingOptionPicked,sorterOptionPicked);
+                    /*
                     if(ratingOptionPicked == -1 & sorterOptionPicked == ""){
                     }
                     else if(ratingOptionPicked == -1 & sorterOptionPicked != ""){
@@ -260,6 +267,8 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                         adaptor = new RestroomReviewRecyclerViewAdaptor(getContext(), spareReviewList);
                         recyclerView.setAdapter(adaptor);
                     }
+
+                     */
                     bottomSheetDialog.hide();
 
 
@@ -329,8 +338,82 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         refFavoriteRestrooms.setValue(FavoriteRestroomsManager.getInstance().getRestrooms());
     }
 
-    private void populateReviewSection(Query dbr) {
+    private void populateReviewSection(Query dbr, Integer ratingOptionPicked, String sorterOptionPicked) {
 
+
+        dbr.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                spareReviewList.clear();
+                restroomReviews.clear();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
+                    RestroomReview rrObj = postSnapshot.getValue(RestroomReview.class);
+                    spareReviewList.add(rrObj);
+                    restroomReviews.add(rrObj);
+
+                }
+                if(ratingOptionPicked == -1 & sorterOptionPicked == ""){
+                }
+                else if(ratingOptionPicked == -1 & sorterOptionPicked != ""){
+                    if (sorterOptionPicked == "Recommended"){
+                        spareReviewList.sort(Comparator.comparing(RestroomReview::getHelpfulness));
+                    }
+                    else if (sorterOptionPicked == "Most Recent to Oldest"){
+                        spareReviewList.sort(Comparator.comparing(RestroomReview::getTimestamp));
+                        Collections.sort(spareReviewList,
+                                Comparator.comparing(RestroomReview::getTimestamp).reversed());
+                    }
+                    else if (sorterOptionPicked == "Oldest to Most Recent"){
+                        spareReviewList.sort(Comparator.comparing(RestroomReview::getTimestamp));
+                    }
+                }
+                else if(ratingOptionPicked != -1 & sorterOptionPicked == "") {
+                    for (RestroomReview rr : spareReviewList) {
+                        if (!rr.getRating().equals(ratingOptionPicked)) {
+                            spareReviewList.remove(rr);
+                        }
+                    }
+                }
+
+                else if(ratingOptionPicked != -1 & sorterOptionPicked != ""){
+                    for(RestroomReview rr: restroomReviews){
+                        if (!rr.getRating().equals(ratingOptionPicked)) {
+                            spareReviewList.remove(rr);
+                        }
+                    }
+                    if (sorterOptionPicked == "Recommended"){
+                        spareReviewList.sort(Comparator.comparing(RestroomReview::getHelpfulness));
+                    }
+                    else if (sorterOptionPicked == "Most Recent to Oldest"){
+                        spareReviewList.sort(Comparator.comparing(RestroomReview::getTimestamp));
+                        Collections.sort(spareReviewList,
+                                Comparator.comparing(RestroomReview::getTimestamp).reversed());
+                    }
+                    else if (sorterOptionPicked == "Oldest to Most Recent"){
+                        spareReviewList.sort(Comparator.comparing(RestroomReview::getTimestamp));
+                    }
+
+                }
+                if (dbr != null) {
+                    // use firebas eui to populate recycler straigther form databse
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    adaptor = new RestroomReviewRecyclerViewAdaptor(getContext(), spareReviewList);
+                    recyclerView.setAdapter(adaptor);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    private void getReviewInfo() {
+        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                .getReference("Reviews")
+                .child(restroom.getPlaceID())
+                .orderByChild("helpfulness");
 
         dbr.addValueEventListener(new ValueEventListener() {
             @Override
@@ -342,7 +425,6 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 
                     RestroomReview rrObj = postSnapshot.getValue(RestroomReview.class);
                     restroomReviews.add(rrObj);
-                    spareReviewList.add(rrObj);
 
                 }
                 Log.i("ReviewList", "" + restroomReviews);
@@ -357,7 +439,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                     adaptor = new RestroomReviewRecyclerViewAdaptor(getContext(), restroomReviews);
                     recyclerView.setAdapter(adaptor);
                 }
-                sortFilterBottomSheet();
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

@@ -370,7 +370,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                     }
                 }
                 else if(ratingOptionPicked != -1 & sorterOptionPicked == "") {
-                    for (RestroomReview rr : spareReviewList) {
+                    for (RestroomReview rr : restroomReviews) {
                         if (!rr.getRating().equals(ratingOptionPicked)) {
                             spareReviewList.remove(rr);
                         }

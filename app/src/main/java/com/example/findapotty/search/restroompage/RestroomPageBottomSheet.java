@@ -28,6 +28,7 @@ import com.example.findapotty.user.User;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -79,7 +80,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         favoriteRestroom = RestroomPageBottomSheetArgs.fromBundle(getArguments()).getFavoriteRestroom();
         mdb = FirebaseDatabase.getInstance().getReference();
         refFavoriteRestrooms = mdb.child("users")
-                .child(User.getInstance().getUserId()).child("favoriteRestrooms");
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("favoriteRestrooms");
         initRestroomPage();
         initReviews();
         addReviewListener();

@@ -194,14 +194,16 @@ public class DiaryFragment extends Fragment {
                 } else {
                     // creates reference to firebase
                     DatabaseReference ref = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                            .getReference("diary_entries");
+                            .getReference().child("users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child("diary entries");
 
                    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     // create object with user inputs
                     DiaryEntry entry = new DiaryEntry(submissionDate, monthOfSubmission(),
                             pottyType, stoolColor, urineColor,notes,dayOfWeek, duration,pain, Integer.parseInt(stoolType));
                     // use userid as key
-                    ref.child(uid).setValue(entry);
+                    ref.child(ref.push().getKey()).setValue(entry);
                     // alert user that entry has been saves and go to results
                     Toast.makeText(getContext(), "Diary Entry Submitted",
                             Toast.LENGTH_LONG).show();

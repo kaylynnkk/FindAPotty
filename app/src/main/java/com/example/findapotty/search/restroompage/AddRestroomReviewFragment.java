@@ -58,10 +58,7 @@ public class AddRestroomReviewFragment extends Fragment {
         binding = FragmentAddRestroomReviewBinding.inflate(inflater, container, false);
         ratingRB = binding.rating;
         reviewET = binding.comment;
-        // initalize usernames
-        String[] nameList = {"dealfamiliar","shufflepant","farrowrichesse",
-                "cistusinstall","chamoisfresh","repentantgrow","varyactivity",
-                "billiardskeelson", "poopaboriginal", "flowerpotportray", "sneakbeaver" };
+
         binding.submit.setOnClickListener(view -> {
             //get restroom object so I can add placeid to object
             // initlaize the rest of adate thats will be use to creat object
@@ -71,13 +68,11 @@ public class AddRestroomReviewFragment extends Fragment {
                     .getReference("Reviews").child(restroomId);
             SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
             Date date = new Date();
-            String username = nameList[new Random().nextInt(11)];
-            String userid = "12345";
             String reviewId = dbr.push().getKey();
             String avatarUrl = "https://firebasestorage.googleapis.com/v0/b/findapotty.appspot.com/o/" +
                     "avatars%2Fdefault_avatar.jpg?alt=media&token=bfa281bd-bfc5-4f47-b62a-258f6698b6d6";
-           // String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-            //String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+            String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             // Create review object
             RestroomReview rev = new RestroomReview(restroomId, reviewId, avatarUrl, username, userid,
                     ratingRB.getRating(),

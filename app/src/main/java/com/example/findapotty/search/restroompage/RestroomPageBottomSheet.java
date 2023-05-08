@@ -73,7 +73,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 
     String[] ratingsList = { "5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star"};
     String[] sorterOptionsList = { "Recommended", "Most Recent to Oldest", "Oldest to Most Recent"};
-    Integer ratingOptionPicked = -1;
+    private int ratingOptionPicked = 6;
     String sorterOptionPicked = "";
 
 
@@ -186,7 +186,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
-                    ratingOptionPicked = -1;
+                    ratingOptionPicked = 6;
                 }
             });
             ArrayAdapter ad2 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, sorterOptionsList);
@@ -354,9 +354,9 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                     restroomReviews.add(rrObj);
 
                 }
-                if(ratingOptionPicked == -1 & sorterOptionPicked == ""){
+                if(ratingOptionPicked == 6 & sorterOptionPicked == ""){
                 }
-                else if(ratingOptionPicked == -1 & sorterOptionPicked != ""){
+                else if(ratingOptionPicked == 6 & sorterOptionPicked != ""){
                     if (sorterOptionPicked == "Recommended"){
                         spareReviewList.sort(Comparator.comparing(RestroomReview::getHelpfulness));
                     }
@@ -369,17 +369,17 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                         spareReviewList.sort(Comparator.comparing(RestroomReview::getTimestamp));
                     }
                 }
-                else if(ratingOptionPicked != -1 & sorterOptionPicked == "") {
+                else if(ratingOptionPicked != 6 & sorterOptionPicked == "") {
                     for (RestroomReview rr : restroomReviews) {
-                        if (!rr.getRating().equals(ratingOptionPicked)) {
+                        if (!rr.getRating().toString().contains(""+ratingOptionPicked)) {
                             spareReviewList.remove(rr);
                         }
                     }
                 }
 
-                else if(ratingOptionPicked != -1 & sorterOptionPicked != ""){
-                    for(RestroomReview rr: restroomReviews){
-                        if (!rr.getRating().equals(ratingOptionPicked)) {
+                else if(ratingOptionPicked != 6 & sorterOptionPicked != ""){
+                    for (RestroomReview rr : restroomReviews) {
+                        if (!rr.getRating().toString().contains(""+ratingOptionPicked)) {
                             spareReviewList.remove(rr);
                         }
                     }

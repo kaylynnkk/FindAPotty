@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner;
@@ -202,12 +203,16 @@ public class DiaryFragment extends Fragment {
                     // use userid as key
                     ref.child(uid).setValue(entry);
                     // alert user that entry has been saves and go to results
-                    Toast.makeText(getContext(), "DIARY ENTRY SUBMITTED",
+                    Toast.makeText(getContext(), "Diary Entry Submitted",
                             Toast.LENGTH_LONG).show();
 
-                    getActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.diary1, new ResultsFragment())
+                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    ResultsFragment fragment = new ResultsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("diary_data", entry); // Key, value
+                    fragment.setArguments(bundle);
+                    ft.replace(R.id.diary1, new ResultsFragment())
                             .addToBackStack(null)
                             .commit();
 

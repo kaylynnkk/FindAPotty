@@ -3,6 +3,7 @@ package com.example.findapotty.tunes;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findapotty.MainActivity;
 import com.example.findapotty.R;
+import com.example.findapotty.diary.ResultsFragment;
 
 import java.util.ArrayList;
 
@@ -70,9 +72,13 @@ public class SongListRecyclerAdapter extends RecyclerView.Adapter<SongListRecycl
                     MyMediaPlayer.getInstance().reset();
                     MyMediaPlayer.currentIndex = getBindingAdapterPosition();
                     // pass list of objects to next actvity and move to actviity
-                    ((MainActivity)context).getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.tunes1, new TunesPlayerFragment())
+                    FragmentTransaction ft = ((MainActivity)context).getSupportFragmentManager().beginTransaction();
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    TunesPlayerFragment fragment = new TunesPlayerFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("song_data", songsList);
+                    fragment.setArguments(bundle);
+                    ft.replace(R.id.tunes1, new TunesPlayerFragment())
                             .addToBackStack(null)
                             .commit();
                 }

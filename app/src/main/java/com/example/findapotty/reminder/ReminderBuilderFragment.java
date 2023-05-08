@@ -76,13 +76,12 @@ public class ReminderBuilderFragment extends Fragment {
                     Toast.makeText(getContext(), "All fields are required!", Toast.LENGTH_SHORT);}
                 // once all fields have an inputted add data to firebase
                 else {
-                    /*DatabaseReference ref= FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                    DatabaseReference ref= FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                             .getReference().child("reminders").push();
                     ref.child("label").setValue(label);
                     ref.child("date").setValue(date);
                     ref.child("time").setValue(time);
 
-                     */
                     // set alarm
                     //setAlarm(label, date, time);
                     resetData();

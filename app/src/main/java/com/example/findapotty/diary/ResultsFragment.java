@@ -47,10 +47,8 @@ public class ResultsFragment extends Fragment {
 
 
         // retrieve object from previous activity
-       // DiaryEntry d = (DiaryEntry) getIntent().getExtras().getSerializable("diary_data");
-        DiaryEntry d = new DiaryEntry("04-11-2023","Mar", "Both","Brown",
-                "Pale or Transparent",
-                " ",3,4,4,4);
+        Bundle bundle = getArguments();
+        DiaryEntry d = (DiaryEntry) bundle.getSerializable("diary_data");
         // call methods to populate information in the view
         waterIntakeClassifer(d);
         populateAnswers(d);

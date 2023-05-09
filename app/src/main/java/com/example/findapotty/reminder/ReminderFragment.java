@@ -24,6 +24,7 @@ import com.example.findapotty.tunes.SongListRecyclerAdapter;
 import com.example.findapotty.tunes.TunesPlayerFragment;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -52,16 +53,19 @@ public class ReminderFragment extends Fragment {
             }
         });
         dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                .getReference().child("reminders");
+                .getReference().child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("reminders");
+        if (dbr != null){
+            FirebaseRecyclerOptions<ReminderMessage> fbo
+                    = new FirebaseRecyclerOptions.Builder<ReminderMessage>()
+                    .setQuery(dbr, ReminderMessage.class)
+                    .build();
+            mRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+            reminderListAdapter = new ReminderListAdapter(fbo);
+            mRecyclerview.setAdapter(reminderListAdapter);
+        }
 
-        Log.i("ProblemFOUND", "dbr is null");
-        FirebaseRecyclerOptions<ReminderMessage> fbo
-                = new FirebaseRecyclerOptions.Builder<ReminderMessage>()
-                .setQuery(dbr, ReminderMessage.class)
-                .build();
-        mRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
-        reminderListAdapter = new ReminderListAdapter(fbo);
-        mRecyclerview.setAdapter(reminderListAdapter);
         return binding.getRoot();
 
 

@@ -214,7 +214,7 @@ public class DiaryFragment extends Fragment {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("diary_data", entry); // Key, value
                     fragment.setArguments(bundle);
-                    ft.replace(R.id.diary1, new ResultsFragment())
+                    ft.replace(R.id.diary1, fragment)
                             .addToBackStack(null)
                             .commit();
 

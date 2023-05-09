@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/action_bar_size"
     tools:context=".diary.DiaryFragment"
     android:background="#fafafa">
-
+    
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
@@ -37,9 +37,9 @@
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                card_view:cardCornerRadius="5dp"
-                app:cardElevation="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 app:cardPreventCornerOverlap="true">
 
                 <LinearLayout
@@ -82,9 +82,9 @@
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                card_view:cardCornerRadius="5dp"
-                app:cardElevation="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 app:cardPreventCornerOverlap="true">
 
                 <LinearLayout
@@ -107,7 +107,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="No Pain"
+                            android:text="NO PAIN"
                             android:textSize="18dp"
                             android:layout_margin="10dp"/>
                         <TextView
@@ -115,10 +115,10 @@
                             android:gravity="right"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Extreme Pain"
+                            android:text="EXTREME PAIN"
                             android:textSize="18dp"
                             android:textColor="@color/red"
-                            android:layout_margin="10dp"/>
+                            android:layout_marginTop="10dp"/>
                     </LinearLayout>
                     <SeekBar
                         android:id="@+id/seekBar"
@@ -138,9 +138,9 @@
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                card_view:cardCornerRadius="5dp"
-                app:cardElevation="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 app:cardPreventCornerOverlap="true">
 
                 <LinearLayout
@@ -200,8 +200,9 @@
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                card_view:cardCornerRadius="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 app:cardElevation="10dp"
                 app:cardPreventCornerOverlap="true">
 
@@ -254,8 +255,9 @@
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                card_view:cardCornerRadius="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 app:cardElevation="10dp"
                 app:cardPreventCornerOverlap="true">
 
@@ -295,8 +297,9 @@
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                card_view:cardCornerRadius="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 app:cardElevation="10dp"
                 app:cardPreventCornerOverlap="true">
 
@@ -335,8 +338,9 @@
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                card_view:cardCornerRadius="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 app:cardElevation="10dp"
                 app:cardPreventCornerOverlap="true">
 

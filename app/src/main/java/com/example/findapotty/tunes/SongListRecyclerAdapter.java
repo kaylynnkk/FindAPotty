@@ -78,7 +78,7 @@ public class SongListRecyclerAdapter extends RecyclerView.Adapter<SongListRecycl
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("song_data", songsList);
                     fragment.setArguments(bundle);
-                    ft.replace(R.id.tunes1, new TunesPlayerFragment())
+                    ft.replace(R.id.tunes1, fragment)
                             .addToBackStack(null)
                             .commit();
                 }

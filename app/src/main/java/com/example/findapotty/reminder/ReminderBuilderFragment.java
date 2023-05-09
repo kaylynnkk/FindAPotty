@@ -24,6 +24,7 @@ import com.example.findapotty.MainActivity;
 import com.example.findapotty.R;
 import com.example.findapotty.databinding.FragmentReminderbuilderBinding;
 import com.example.findapotty.tunes.TunesPlayerFragment;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -77,10 +78,12 @@ public class ReminderBuilderFragment extends Fragment {
                 // once all fields have an inputted add data to firebase
                 else {
                     DatabaseReference ref= FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                            .getReference().child("reminders").push();
-                    ref.child("label").setValue(label);
-                    ref.child("date").setValue(date);
-                    ref.child("time").setValue(time);
+                            .getReference().child("users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child("reminders");
+                    String key = ref.push().getKey();
+                    ReminderMessage rem = new ReminderMessage(key, label, date, time);
+                    ref.child(key).setValue(rem);
 
                     // set alarm
                     //setAlarm(label, date, time);
@@ -170,7 +173,7 @@ public class ReminderBuilderFragment extends Fragment {
         intent.putExtra("time", date);
         intent.putExtra("date", time);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         String dateandtime = date + " " + alertTime;
         DateFormat formatter = new SimpleDateFormat("d-M-yyyy hh:mm");
         try {

@@ -3,15 +3,24 @@ package com.example.findapotty.reminder;
 //model class is used to set and get the data from database
 
 public class ReminderMessage {
-    String label, date, time;
+    String reminderId, label, date, time;
 
     public ReminderMessage() {
     }
 
-    public ReminderMessage(String label, String date, String time) {
+    public ReminderMessage(String reminderId, String label, String date, String time) {
+        this.reminderId = reminderId;
         this.label = label;
         this.date = date;
         this.time = time;
+    }
+
+    public String getReminderId() {
+        return reminderId;
+    }
+
+    public void setReminderId(String reminderId) {
+        this.reminderId = reminderId;
     }
 
     public String getLabel() {

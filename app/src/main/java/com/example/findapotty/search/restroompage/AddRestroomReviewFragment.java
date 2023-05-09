@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,7 +48,8 @@ public class AddRestroomReviewFragment extends Fragment {
 
     private DatabaseReference dbr;
     private Button backBT, submitBT, imgBT;
-    private ImageView imgIV;
+    private ImageView rrPhotoIV;
+    private TextView nameTV;
     private RatingBar ratingRB;
     private EditText reviewET;
     private String userId, userName, imgURL;
@@ -58,7 +60,14 @@ public class AddRestroomReviewFragment extends Fragment {
         binding = FragmentAddRestroomReviewBinding.inflate(inflater, container, false);
         ratingRB = binding.rating;
         reviewET = binding.comment;
-
+        rrPhotoIV = binding.rrPgRrPhotos;
+        nameTV = binding.rrName;
+        //get restroom object so I can add placeid to object
+        // initlaize the rest of adate thats will be use to creat object
+        Restroom rr = getArguments().getParcelable("restroom_data");
+        NameTV.setText(rr.getName());
+        if (rr.getPhotoBitmap() != null) {
+            rrPhotoIV.setImageBitmap(rr.getPhotoBitmap());}
         binding.submit.setOnClickListener(view -> {
             //get restroom object so I can add placeid to object
             // initlaize the rest of adate thats will be use to creat object

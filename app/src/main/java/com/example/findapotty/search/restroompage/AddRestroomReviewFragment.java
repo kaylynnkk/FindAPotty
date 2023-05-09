@@ -65,13 +65,11 @@ public class AddRestroomReviewFragment extends Fragment {
         //get restroom object so I can add placeid to object
         // initlaize the rest of adate thats will be use to creat object
         Restroom rr = getArguments().getParcelable("restroom_data");
-        NameTV.setText(rr.getName());
+        nameTV.setText(rr.getName());
         if (rr.getPhotoBitmap() != null) {
             rrPhotoIV.setImageBitmap(rr.getPhotoBitmap());}
         binding.submit.setOnClickListener(view -> {
             //get restroom object so I can add placeid to object
-            // initlaize the rest of adate thats will be use to creat object
-            Restroom rr = getArguments().getParcelable("restroom_data");
             String restroomId = rr.getPlaceID();
             dbr =  FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                     .getReference("Reviews").child(restroomId);

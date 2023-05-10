@@ -60,7 +60,7 @@ public class AddRestroomReviewFragment extends Fragment {
         binding = FragmentAddRestroomReviewBinding.inflate(inflater, container, false);
         ratingRB = binding.rating;
         reviewET = binding.comment;
-        rrPhotoIV = binding.rrPgRrPhotos;
+        rrPhotoIV = binding.rrImg;
         nameTV = binding.rrName;
         //get restroom object so I can add placeid to object
         // initlaize the rest of adate thats will be use to creat object

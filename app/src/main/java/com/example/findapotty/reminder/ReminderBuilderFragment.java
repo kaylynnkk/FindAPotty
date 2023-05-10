@@ -52,6 +52,8 @@ public class ReminderBuilderFragment extends Fragment {
         timeBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Toast.makeText(getContext(),"Time button clicked",Toast.LENGTH_SHORT);
                 setTime();
             }
         });
@@ -86,13 +88,14 @@ public class ReminderBuilderFragment extends Fragment {
                     ref.child(key).setValue(rem);
 
                     // set alarm
-                    //setAlarm(label, date, time);
-                    resetData();
+                    setAlarm(label, date, time);
+                    resetData();/*
                     getActivity().getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.reminder2, new ReminderFragment())
                             .addToBackStack(null)
                             .commit();
+                            */
                 }
 
             }
@@ -124,6 +127,7 @@ public class ReminderBuilderFragment extends Fragment {
         dpd.show();
     }
     private void setTime() {
+        Toast.makeText(getContext(),"In setTime()",Toast.LENGTH_SHORT);
         // initialize variable for hour and minute
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
@@ -140,6 +144,7 @@ public class ReminderBuilderFragment extends Fragment {
         }, hour, minute, false);
         // shows time picker
         tmd.show();
+        Toast.makeText(getContext(),"End of setTime()",Toast.LENGTH_SHORT);
     }
     public String FormatTime(int hour, int minute) {
         // create variable to save new formated mintue

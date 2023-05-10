@@ -21,26 +21,43 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_margin="10dp"
             android:text="Tell Us About..."
             android:textColor="@color/black"
-            android:textSize="23dp"
+            android:textSize="22dp"
             android:textStyle="bold"/>
-
-        <ImageView
-            android:id="@+id/rr_pg_rr_photos"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+        <androidx.cardview.widget.CardView
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:layout_gravity="center"
-            android:background="@drawable/circle"
-            app:srcCompat="@drawable/common_google_signin_btn_text_light" />
+            app:cardCornerRadius="250dp"
+            app:cardBackgroundColor="@color/bg_toolbar_map">
+            <androidx.cardview.widget.CardView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:elevation="12dp"
+                android:id="@+id/view2"
+                app:cardCornerRadius="60dp"
+                android:layout_centerHorizontal="true">
+                <ImageView
+                    android:id="@+id/rrImg"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    app:srcCompat="@drawable/common_google_signin_btn_text_light"
+                    android:scaleType="centerCrop"/>
+            </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+
         <TextView
             android:id="@+id/rr_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:text="Restroom Name"
             android:textColor="@color/black"
-            android:textSize="20dp"
+            android:textSize="22dp"
             android:textStyle="bold"/>
 
 
@@ -81,7 +98,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="How was your experience at this restroom?"
+            android:gravity="center"
+            android:text="We value your feedback.\nHow was your experience at this restroom?"
             android:textColor="@color/black"
             android:textSize="18dp"
             android:layout_margin="10dp"/>
@@ -95,45 +113,25 @@
             android:numStars="0"
             />
 
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <!--
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="Overall Rating: "
-                            android:textColor="@color/black"
-                            android:textSize="18dp"
-                            android:textStyle="bold" />
-            -->
-
-
-        </LinearLayout>
         <EditText
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="115dp"
             android:layout_margin="10dp"
             android:background="@drawable/box"
-            android:hint=" Type Review here" />
-
+            android:hint=" Type Review Here" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginTop="120dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_gravity="right"
+            android:layout_gravity="right|bottom"
             android:clickable="true"
             android:contentDescription="submit review"
-            app:srcCompat="@drawable/baseline_check_circle_outline_24" />
-
+            app:srcCompat="@drawable/baseline_check_24" />
 
     </LinearLayout>
 </layout>

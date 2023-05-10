@@ -1,118 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@color/light_gray"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:id="@+id/reminder2"
     android:orientation="vertical"
     android:paddingTop="@dimen/action_bar_size"
     tools:context=".reminder.ReminderBuilderFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="10dp">
+    <ImageView
+        android:id="@+id/cancel"
+        android:layout_height="30dp"
+        android:layout_width="30dp"
+        app:srcCompat="@drawable/baseline_cancel_presentation_24"
+        android:scaleType="centerCrop"
+        android:layout_toRightOf="@+id/reminder_popup"
+        android:layout_alignTop="@+id/reminder_popup"/>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/reminder_popup"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardElevation="10dp"
+        app:cardPreventCornerOverlap="true"
+        card_view:cardCornerRadius="5dp">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="NEW REMINDER"
-            android:textColor="@color/black"
-            android:textSize="22dp"
-            android:textStyle="bold" />
-
-        <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            app:cardElevation="10dp"
-            app:cardPreventCornerOverlap="true"
-            card_view:cardCornerRadius="5dp">
+            android:background="@color/cardwhite"
+            android:orientation="vertical"
+            android:padding="10dp">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/cardwhite"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Choose date: "
-                        android:textColor="@color/black"
-                        android:textSize="19dp"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/date"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="20dp"
-                        android:layout_weight="0.5"
-                        android:text="Date" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Choose time:"
-                        android:textColor="@color/black"
-                        android:textSize="19dp"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/time"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="20dp"
-                        android:layout_weight="0.5"
-                        android:text="Time" />
-                </LinearLayout>
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Enter label below:"
+                    android:text="Choose date: "
                     android:textColor="@color/black"
                     android:textSize="19dp"
                     android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/label"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                <Button
+                    android:id="@+id/date"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_margin="20dp"
-                    android:background="@drawable/reminder_box"
-                    android:maxLength="20" />
+                    android:layout_weight="0.5"
+                    android:text="Date" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Choose time:"
+                    android:textColor="@color/black"
+                    android:textSize="19dp"
+                    android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/submit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:padding="10dp"
-            android:text="Submit" />
+                <Button
+                    android:id="@+id/time"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp"
+                    android:layout_weight="0.5"
+                    android:text="Time" />
+            </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:text="Enter label below:"
+                android:textColor="@color/black"
+                android:textSize="19dp"
+                android:textStyle="bold" />
 
-    </LinearLayout>
-</LinearLayout>
+            <EditText
+                android:id="@+id/label"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/reminder_box"
+                android:maxLength="20" />
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="10dp"
+                android:text="Submit" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

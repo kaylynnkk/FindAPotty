@@ -23,12 +23,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findapotty.R;
 import com.example.findapotty.databinding.FragmentReminderBinding;
 import com.example.findapotty.databinding.FragmentReminderbuilderBinding;
+import com.example.findapotty.diary.ResultsFragment;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -250,22 +252,22 @@ public class ReminderFragment extends Fragment {
 
     }
 
-    private void setAlarm(String text, String date, String time) {
+    private void setAlarm(ReminderMessage rem) {
         AlarmManager am = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
 
         Intent intent = new Intent(getContext(), AlarmBrodcast.class);
-        intent.putExtra("event", text);
-        intent.putExtra("time", date);
-        intent.putExtra("date", time);
+        intent.putExtra("event", rem.getLabel());
+        intent.putExtra("time", rem.getTime());
+        intent.putExtra("date", rem.getDate());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent,
                 PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
-        String dateandtime = date + " " + alertTime;
-        DateFormat formatter = new SimpleDateFormat("d-M-yyyy hh:mm");
+        String dateandtime = rem.getDate() + " " + alertTime;
+        DateFormat formatter = new SimpleDateFormat("MM-dd-yyyy hh:mm");
         try {
             Date date1 = formatter.parse(dateandtime);
             am.set(AlarmManager.RTC_WAKEUP, date1.getTime(), pendingIntent);
-            Toast.makeText(getContext(), "Alaram", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Alarm", Toast.LENGTH_SHORT).show();
 
         } catch (ParseException e) {
             e.printStackTrace();

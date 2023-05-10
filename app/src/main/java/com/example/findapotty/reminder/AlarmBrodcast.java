@@ -14,6 +14,7 @@ import android.widget.RemoteViews;
 import androidx.core.app.NotificationCompat;
 
 import com.example.findapotty.R;
+import com.example.findapotty.diary.DiaryEntry;
 
 public class AlarmBrodcast extends BroadcastReceiver {
     @Override
@@ -21,7 +22,7 @@ public class AlarmBrodcast extends BroadcastReceiver {
         Bundle bundle = intent.getExtras();
         String text = bundle.getString("event");
         String date = bundle.getString("date") + " " + bundle.getString("time");
-
+        DiaryEntry d = (DiaryEntry) bundle.getSerializable("diary_data");
         //Click on Notification
         Intent intent1 = new Intent(context, NotificationMessage.class);
         intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -36,7 +37,7 @@ public class AlarmBrodcast extends BroadcastReceiver {
         //here we set all the properties for the notification
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.reminder_notification_layout);
         contentView.setImageViewResource(R.id.image, R.mipmap.ic_launcher);
-        PendingIntent pendingSwitchIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        PendingIntent pendingSwitchIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         contentView.setOnClickPendingIntent(R.id.button, pendingSwitchIntent);
         contentView.setTextViewText(R.id.message, text);
         contentView.setTextViewText(R.id.date, date);

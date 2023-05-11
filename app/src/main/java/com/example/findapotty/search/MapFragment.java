@@ -141,9 +141,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         init();
         initRecyclerView();
         // add marker on long press on map
-//        addMarker();
+        addMarker();
         // restroom info page
-//        displayRestroomPage();
+        displayRestroomPage();
         googleMap.setOnMarkerClickListener((Marker marker) -> {
             scrollRcyToPosition(marker);
             return true;

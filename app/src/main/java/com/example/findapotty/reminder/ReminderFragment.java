@@ -67,14 +67,13 @@ public class ReminderFragment extends Fragment {
         binding = FragmentReminderBinding.inflate(inflater, container, false);
        mRecyclerview = binding.recyclerView;
         mCreateRem = binding.createReminder;
+        populateReminders();
         mCreateRem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onButtonShowPopupWindowClick(view, "fragment_reminderbuilder");
             }
         });
-
-        populateReminders();
 
         return binding.getRoot();
 
@@ -135,7 +134,9 @@ public class ReminderFragment extends Fragment {
         cancelBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                popupWindow.dismiss();
+                if(popupWindow.isShowing()) {
+                    popupWindow.dismiss();
+                }
             }
         });
         // when the time button is clicked the setTime method is called
@@ -179,7 +180,9 @@ public class ReminderFragment extends Fragment {
                     // set alarm
                     //setAlarm(label, date, time);
                     resetData();
-                    popupWindow.dismiss();
+                    if(popupWindow.isShowing()) {
+                        popupWindow.dismiss();
+                    }
                 }
 
             }

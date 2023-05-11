@@ -17,7 +17,7 @@ public class NotificationMessage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reminder_activity_notification_message);
         textView = findViewById(R.id.tv_message);
-        Bundle bundle = getIntent().getExtras();                                                    //call the data which is passed by another intent
+        Bundle bundle = getIntent().getExtras();
         textView.setText(bundle.getString("message"));
 
     }

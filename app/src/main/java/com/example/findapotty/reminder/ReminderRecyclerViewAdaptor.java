@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class ReminderRecyclerViewAdaptor extends RecyclerView.Adapter<ReminderRecyclerViewAdaptor.ViewHolder> {
 
-    ArrayList<ReminderMessage> remindersList = new ArrayList<>();
+    ArrayList<ReminderMessage> remindersList;
     Context context;
 
     public ReminderRecyclerViewAdaptor(Context context, ArrayList<ReminderMessage> remindersList) {
@@ -43,11 +43,10 @@ public class ReminderRecyclerViewAdaptor extends RecyclerView.Adapter<ReminderRe
                 .getReference().child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("reminders");
-        String key = reminderObj.getReminderId();
         holder.deleteIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbr.child(key).removeValue();
+                dbr.child(reminderObj.getReminderId()).removeValue();
             }
         });
     }

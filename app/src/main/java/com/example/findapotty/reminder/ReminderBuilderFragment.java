@@ -88,7 +88,7 @@ public class ReminderBuilderFragment extends Fragment {
                     ref.child(key).setValue(rem);
 
                     // set alarm
-                    setAlarm(label, date, time);
+                   // setAlarm(label, date, time);
                     resetData();/*
                     getActivity().getSupportFragmentManager()
                             .beginTransaction()
@@ -180,7 +180,7 @@ public class ReminderBuilderFragment extends Fragment {
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         String dateandtime = date + " " + alertTime;
-        DateFormat formatter = new SimpleDateFormat("d-M-yyyy hh:mm");
+        DateFormat formatter = new SimpleDateFormat("MM-dd-yyyy hh:mm");
         try {
             Date date1 = formatter.parse(dateandtime);
             am.set(AlarmManager.RTC_WAKEUP, date1.getTime(), pendingIntent);

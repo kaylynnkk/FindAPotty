@@ -22,7 +22,6 @@ public class AlarmBrodcast extends BroadcastReceiver {
         Bundle bundle = intent.getExtras();
         String text = bundle.getString("event");
         String date = bundle.getString("date") + " " + bundle.getString("time");
-        DiaryEntry d = (DiaryEntry) bundle.getSerializable("diary_data");
         //Click on Notification
         Intent intent1 = new Intent(context, NotificationMessage.class);
         intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

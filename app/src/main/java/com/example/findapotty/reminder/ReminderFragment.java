@@ -7,9 +7,9 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,26 +18,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findapotty.R;
-import com.example.findapotty.databinding.FragmentReminderBinding;
-import com.example.findapotty.databinding.FragmentReminderbuilderBinding;
-import com.example.findapotty.diary.ResultsFragment;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
@@ -46,6 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import com.example.findapotty.databinding.FragmentReminderBinding;
 
 public class ReminderFragment extends Fragment {
 
@@ -53,10 +51,11 @@ public class ReminderFragment extends Fragment {
     FloatingActionButton mCreateRem;
     private RecyclerView mRecyclerview;
     ReminderRecyclerViewAdaptor reminderRecyclerViewAdaptor;
-    DatabaseReference dbr;
-    ArrayList<ReminderMessage> remindersList = new ArrayList<>();
+    Query dbr;
+    ArrayList<ReminderMessage> remindersList = new ArrayList<ReminderMessage>();
 
     Button dateBT, timeBT, submitBT;
+    RelativeLayout dimmer;
     ImageView cancelBT;
     EditText labelET;
     String alertTime;
@@ -67,13 +66,15 @@ public class ReminderFragment extends Fragment {
         binding = FragmentReminderBinding.inflate(inflater, container, false);
        mRecyclerview = binding.recyclerView;
         mCreateRem = binding.createReminder;
-        populateReminders();
+        dimmer = binding.dimLayout;
         mCreateRem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onButtonShowPopupWindowClick(view, "fragment_reminderbuilder");
+                onButtonShowPopupWindowClick(view, "reminder_builder_popup");
+
             }
         });
+        populateReminders();
 
         return binding.getRoot();
 
@@ -88,20 +89,22 @@ public class ReminderFragment extends Fragment {
 
          */
         dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                .getReference().child("reminders");
+                .getReference("reminders");
 
         dbr.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
-                remindersList.clear();
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    remindersList.add(postSnapshot.getValue(ReminderMessage.class));
-
+                if(remindersList.size() > 0){
+                    remindersList.clear();
                 }
-
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    ReminderMessage rem = postSnapshot.getValue(ReminderMessage.class);
+                    remindersList.add(rem);
+                }
+                Log.i("ReminderList", "" + remindersList);
                 if (dbr != null) {
                     // use firebas eui to populate recycler straigther form databse
-                    mRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    mRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
                     reminderRecyclerViewAdaptor = new ReminderRecyclerViewAdaptor(getContext(), remindersList);
                     mRecyclerview.setAdapter(reminderRecyclerViewAdaptor);
                 }
@@ -136,6 +139,7 @@ public class ReminderFragment extends Fragment {
         timeBT = popupView.findViewById(R.id.time);
         submitBT = popupView.findViewById(R.id.submit);
         cancelBT = popupView.findViewById(R.id.cancel);
+
         cancelBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -188,19 +192,18 @@ public class ReminderFragment extends Fragment {
                     ref.child(key).setValue(rem);
 
                     // set alarm
-                    //setAlarm(label, date, time);
+                    setAlarm(rem);
                     labelET.setText("");
                     dateBT.setText("Date");
                     timeBT.setText("Time");
+                    if(popupWindow.isShowing()) {
+                        popupWindow.dismiss();
+                    }
+
                 }
 
             }
         });
-    }
-    private void resetData(){
-        labelET.setText("");
-        dateBT.setText("Date");
-        timeBT.setText("Time");
     }
 
     private void setDate() {
@@ -279,7 +282,7 @@ public class ReminderFragment extends Fragment {
         try {
             Date date1 = formatter.parse(dateandtime);
             am.set(AlarmManager.RTC_WAKEUP, date1.getTime(), pendingIntent);
-            Toast.makeText(getContext(), "Alarm", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Alarm Set", Toast.LENGTH_SHORT).show();
 
         } catch (ParseException e) {
             e.printStackTrace();

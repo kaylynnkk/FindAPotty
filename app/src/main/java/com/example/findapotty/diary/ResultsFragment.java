@@ -93,12 +93,22 @@ public class ResultsFragment extends Fragment {
     // retrieve data from object and set text to corresponding text view
     public void populateAnswers(DiaryEntry d){
         durationTV.setText(""+d.getDuration());
-        painRatingTV.setText(""+d.getPainRating());
+        if(d.getPainRating() == null){
+            painRatingTV.setText("0");
+        }
+        else{
+            painRatingTV.setText(""+d.getPainRating());
+        }
         pottyTypeTV.setText(""+d.getPottyType());
         stoolTypeTV.setText(""+d.getStoolType());
         stoolColorTV.setText(""+d.getStoolColor());
         urineColorTV.setText(""+d.getUrineColor());
-        notesTV.setText(""+d.getAdditionalNotes());
+        if(d.getAdditionalNotes() == ""){
+            notesTV.setText("N/A");
+        }
+        else{
+            notesTV.setText(""+d.getAdditionalNotes());
+        }
     }
     // switch statement to determine water intake classification based on peecolor
     public void waterIntakeClassifer(DiaryEntry d) {
@@ -189,7 +199,7 @@ public class ResultsFragment extends Fragment {
         }
         if(sc == "Normal" && uc == "Normal" && st == "Normal"){
             prediction1TV.setVisibility(View.VISIBLE);
-            prediction1TV.setText("No Concerns Predicted");
+            prediction1TV.setText("No Concerns");
 
         }
     }

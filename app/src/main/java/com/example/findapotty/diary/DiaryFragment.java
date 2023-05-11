@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -130,6 +131,12 @@ public class DiaryFragment extends Fragment {
 
         // when info icon is selected the method id called that makes the corresponding image to popup
         // Seperate clicklisterner to stooltype, stoolcolor, and urinecolor
+        urineColorIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onButtonShowPopupWindowClick(view, "diary_urine_color_popup_window");
+            }
+        });
         stoolTypeIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,12 +147,6 @@ public class DiaryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 onButtonShowPopupWindowClick(view, "diary_stool_color_popup_window");
-            }
-        });
-        urineColorIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onButtonShowPopupWindowClick(view, "diary_urine_color_popup_window");
             }
         });
         // when ser move seekbar to desired rating and the number is saved in vairable
@@ -193,12 +194,17 @@ public class DiaryFragment extends Fragment {
                     Toast.makeText(getContext(), "Incompatible potty type!", Toast.LENGTH_SHORT).show();
                 } else {
                     // creates reference to firebase
+                    /*
                     DatabaseReference ref = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                             .getReference().child("users")
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                             .child("diary entries");
 
-                   String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                     */
+                    DatabaseReference ref = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                            .getReference().child("diary entries");
+                   //String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    String uid = "1234";
                     // create object with user inputs
                     DiaryEntry entry = new DiaryEntry(submissionDate, monthOfSubmission(),
                             pottyType, stoolColor, urineColor,notes,dayOfWeek, duration,pain, Integer.parseInt(stoolType));

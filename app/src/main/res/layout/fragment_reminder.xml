@@ -8,6 +8,13 @@
     android:id="@+id/reminder1"
     android:paddingTop="@dimen/action_bar_size"
     tools:context=".reminder.ReminderFragment">
+    <RelativeLayout
+        android:id="@+id/dim_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#C0000000"
+        android:visibility="gone" >
+    </RelativeLayout>
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"

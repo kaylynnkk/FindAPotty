@@ -22,27 +22,31 @@ import java.util.ArrayList;
 
 public class ReminderRecyclerViewAdaptor extends RecyclerView.Adapter<ReminderRecyclerViewAdaptor.ViewHolder> {
 
-    ArrayList<ReminderMessage> remindersList;
+    ArrayList<ReminderMessage> reminders;
     Context context;
 
-    public ReminderRecyclerViewAdaptor(Context context, ArrayList<ReminderMessage> remindersList) {
+    public ReminderRecyclerViewAdaptor(Context context, ArrayList<ReminderMessage> reminders) {
         this.context = context;
-        this.remindersList = remindersList;
+        this.reminders = reminders;
     }
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ReminderMessage reminderObj = remindersList.get(position);
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        ReminderMessage reminderObj = reminders.get(position);
 
-        holder.labelTV.setText(reminderObj.getLabel());
+        holder.labelTV.setText(reminderObj.getLabel()+", ");
 
         holder.dateTV.setText(reminderObj.getDate());
 
         holder.timeTV.setText(reminderObj.getTime());
-
+/*
         DatabaseReference dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                 .getReference().child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("reminders");
+
+ */
+        DatabaseReference dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                .getReference().child("reminders");
         holder.deleteIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,7 +57,7 @@ public class ReminderRecyclerViewAdaptor extends RecyclerView.Adapter<ReminderRe
 
     @Override
     public int getItemCount() {
-        return remindersList.size();
+        return reminders.size();
     }
 
     @Override

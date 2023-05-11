@@ -135,7 +135,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
             // set address
             binding.rrPgRraddress.setText(restroom.getAddress());
 
-            binding.rrPgReviewCount.setText(restroomReviews.size()+" num Reviews");
+            binding.rrPgReviewCount.setText(restroomReviews.size()+" Reviews");
             // set photos
             if (restroom.getPhotoBitmap() != null) {
                 binding.rrPgRrPhotos.setImageBitmap(restroom.getPhotoBitmap());
@@ -226,56 +226,6 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                             .child(restroom.getPlaceID())
                             .orderByChild("helpfulness");
                     populateReviewSection(dbr,ratingOptionPicked,sorterOptionPicked);
-                    /*
-                    if(ratingOptionPicked == -1 & sorterOptionPicked == ""){
-                    }
-                    else if(ratingOptionPicked == -1 & sorterOptionPicked != ""){
-                        if (sorterOptionPicked == "Recommended"){
-                            spareReviewList.sort(Comparator.comparing(RestroomReview::getHelpfulness));
-                        }
-                        else if (sorterOptionPicked == "Most Recent to Oldest"){
-                            spareReviewList.sort(Comparator.comparing(RestroomReview::getTimestamp));
-                        }
-                        else if (sorterOptionPicked == "Oldest to Most Recent"){
-                            spareReviewList.sort(Comparator.comparing(RestroomReview::getTimestamp));
-                            Collections.sort(spareReviewList,
-                                    Comparator.comparing(RestroomReview::getTimestamp).reversed());
-                        }
-                    }
-                    else if(ratingOptionPicked != -1 & sorterOptionPicked == "") {
-                        for (RestroomReview rr : spareReviewList) {
-                            if (!rr.getRating().equals(ratingOptionPicked)) {
-                                spareReviewList.remove(rr);
-                            }
-                        }
-                    }
-
-                    else if(ratingOptionPicked != -1 & sorterOptionPicked != ""){
-                        for(RestroomReview rr: restroomReviews){
-                            if (!rr.getRating().equals(ratingOptionPicked)) {
-                                spareReviewList.remove(rr);
-                            }
-                        }
-                        if (sorterOptionPicked == "Recommended"){
-                            spareReviewList.sort(Comparator.comparing(RestroomReview::getHelpfulness));
-                        }
-                        else if (sorterOptionPicked == "Most Recent to Oldest"){
-                            spareReviewList.sort(Comparator.comparing(RestroomReview::getTimestamp));
-                        }
-                        else if (sorterOptionPicked == "Oldest to Most Recent"){
-                            spareReviewList.sort(Comparator.comparing(RestroomReview::getTimestamp));
-                            Collections.sort(spareReviewList,
-                                    Comparator.comparing(RestroomReview::getTimestamp).reversed());
-                        }
-
-                    }
-                    if (dbr != null) {
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                        adaptor = new RestroomReviewRecyclerViewAdaptor(getContext(), spareReviewList);
-                        recyclerView.setAdapter(adaptor);
-                    }
-
-                     */
                     bottomSheetDialog.hide();
 
 

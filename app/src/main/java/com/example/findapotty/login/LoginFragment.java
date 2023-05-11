@@ -69,8 +69,18 @@ public class LoginFragment extends Fragment {
             showError(binding.loginInputPassword, "Password must be at least 7 characters!");
 
         } else {
-            checkCredentials(username, password);
+            quickLogin();
+            //checkCredentials(username, password);
         }
+    }
+
+    private void quickLogin(){
+        ((MainActivity) requireActivity()).setUpNavViewHeader();
+        // save credential
+        accountViewModel.saveCredential("mg@potty.com", "1234567");
+        accountViewModel.setLoginState(true);
+        NavController controller = Navigation.findNavController(binding.getRoot());
+        controller.navigate(R.id.action_loginFragment2_to_nav_search);
     }
 
     private void checkCredentials(String username, String password) {

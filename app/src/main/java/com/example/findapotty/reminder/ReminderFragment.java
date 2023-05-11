@@ -80,10 +80,15 @@ public class ReminderFragment extends Fragment {
 
     }
     private void populateReminders() {
+        /*
         dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                 .getReference().child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("reminders");
+
+         */
+        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                .getReference().child("reminders");
 
         dbr.addValueEventListener(new ValueEventListener() {
             @Override
@@ -169,20 +174,24 @@ public class ReminderFragment extends Fragment {
                 }
                 // once all fields have an inputted add data to firebase
                 else {
+                    /*
                     DatabaseReference ref = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                             .getReference().child("users")
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                             .child("reminders");
+
+                     */
+                    DatabaseReference ref = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                            .getReference().child("reminders");
                     String key = ref.push().getKey();
                     ReminderMessage rem = new ReminderMessage(key, label, date, time);
                     ref.child(key).setValue(rem);
 
                     // set alarm
                     //setAlarm(label, date, time);
-                    resetData();
-                    if(popupWindow.isShowing()) {
-                        popupWindow.dismiss();
-                    }
+                    labelET.setText("");
+                    dateBT.setText("Date");
+                    timeBT.setText("Time");
                 }
 
             }

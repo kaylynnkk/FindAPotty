@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     app:cardBackgroundColor="#EFEFEF"
     app:cardCornerRadius="8dp"
-    app:cardElevation="8dp"
-    app:cardMaxElevation="10dp"
+    app:cardElevation="5dp"
+    app:cardMaxElevation="7dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
 
@@ -24,10 +24,11 @@
             android:textColor="@color/black"
             android:textSize="28dp"
             android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Take dog down, "
@@ -49,7 +50,7 @@
             android:textStyle="bold"
             android:paddingBottom="10dp"
             app:layout_constraintTop_toBottomOf="@+id/time"
-            app:layout_constraintStart_toEndOf="@+id/title"
+            app:layout_constraintStart_toEndOf="@+id/label"
             />
 
         <ImageView

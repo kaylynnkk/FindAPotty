@@ -69,8 +69,18 @@ public class LoginFragment extends Fragment {
             showError(binding.loginInputPassword, "Password must be at least 7 characters!");
 
         } else {
-            checkCredentials(username, password);
+            quickLogin();
+            //checkCredentials(username, password);
         }
+    }
+
+    private void quickLogin(){
+        ((MainActivity) requireActivity()).setUpNavViewHeader();
+        // save credential
+        accountViewModel.saveCredential("mg@potty.com", "1234567");
+        accountViewModel.setLoginState(true);
+        NavController controller = Navigation.findNavController(binding.getRoot());
+        controller.navigate(R.id.action_loginFragment2_to_nav_search);
     }
 
     private void checkCredentials(String username, String password) {
@@ -105,12 +115,6 @@ public class LoginFragment extends Fragment {
                                 StorageReference ref = storageRef.child(currentUser.getAvatarPath());
                                 ref.getDownloadUrl().addOnSuccessListener(uri -> {
                                     currentUser.setAvatarUrl(uri);
-                                    ((MainActivity) requireActivity()).setUpNavViewHeader();
-                                    // save credential
-                                    accountViewModel.saveCredential(username, password);
-                                    accountViewModel.setLoginState(true);
-                                    NavController controller = Navigation.findNavController(binding.getRoot());
-                                    controller.navigate(R.id.action_loginFragment2_to_nav_search);
                                 });
                                 Toast.makeText(binding.getRoot().getContext(), "Welcome " + currentUser.getUserName(),
                                         Toast.LENGTH_SHORT).show();
@@ -121,7 +125,12 @@ public class LoginFragment extends Fragment {
                             public void onCancelled(@NonNull DatabaseError error) {
                             }
                         });
-
+                        ((MainActivity) requireActivity()).setUpNavViewHeader();
+                        // save credential
+                        accountViewModel.saveCredential(username, password);
+                        accountViewModel.setLoginState(true);
+                        NavController controller = Navigation.findNavController(binding.getRoot());
+                        controller.navigate(R.id.action_loginFragment2_to_nav_search);
 
                     } else {
                         // If sign in fails, display a message to the user.

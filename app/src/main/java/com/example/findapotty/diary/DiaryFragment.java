@@ -18,12 +18,14 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner;
@@ -129,6 +131,12 @@ public class DiaryFragment extends Fragment {
 
         // when info icon is selected the method id called that makes the corresponding image to popup
         // Seperate clicklisterner to stooltype, stoolcolor, and urinecolor
+        urineColorIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onButtonShowPopupWindowClick(view, "diary_urine_color_popup_window");
+            }
+        });
         stoolTypeIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,12 +147,6 @@ public class DiaryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 onButtonShowPopupWindowClick(view, "diary_stool_color_popup_window");
-            }
-        });
-        urineColorIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onButtonShowPopupWindowClick(view, "diary_urine_color_popup_window");
             }
         });
         // when ser move seekbar to desired rating and the number is saved in vairable
@@ -192,22 +194,33 @@ public class DiaryFragment extends Fragment {
                     Toast.makeText(getContext(), "Incompatible potty type!", Toast.LENGTH_SHORT).show();
                 } else {
                     // creates reference to firebase
+                    /*
                     DatabaseReference ref = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                            .getReference("diary_entries");
+                            .getReference().child("users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child("diary entries");
 
-                   String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                     */
+                    DatabaseReference ref = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
+                            .getReference().child("diary entries");
+                   //String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    String uid = "1234";
                     // create object with user inputs
                     DiaryEntry entry = new DiaryEntry(submissionDate, monthOfSubmission(),
                             pottyType, stoolColor, urineColor,notes,dayOfWeek, duration,pain, Integer.parseInt(stoolType));
                     // use userid as key
-                    ref.child(uid).setValue(entry);
+                    ref.child(ref.push().getKey()).setValue(entry);
                     // alert user that entry has been saves and go to results
-                    Toast.makeText(getContext(), "DIARY ENTRY SUBMITTED",
+                    Toast.makeText(getContext(), "Diary Entry Submitted",
                             Toast.LENGTH_LONG).show();
 
-                    getActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.diary1, new ResultsFragment())
+                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    ResultsFragment fragment = new ResultsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("diary_data", entry); // Key, value
+                    fragment.setArguments(bundle);
+                    ft.replace(R.id.diary1, fragment)
                             .addToBackStack(null)
                             .commit();
 

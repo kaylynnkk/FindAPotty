@@ -29,7 +29,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/kaylynnkk/FindAPotty">
-    <img src="sample_images/app_icon.png" alt="Logo" width="80" height="80">
+    <img src="sample_images/app_icon.png" alt="Logo" width="100" height="100">
   </a>
 
   <h3 align="center">FindPotty</h3>
@@ -44,8 +44,9 @@
 
 <!-- TABLE OF CONTENTS -->
 - [About the project](#about-the-project)
-- [Major Features](#major-features)
+- [Features](#features)
   - [Built with](#built-with)
+  - [More features](#more-features)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
@@ -60,7 +61,7 @@
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Major Features
+## Features
 
 - locating and pinpointing nearby restrooms 
 - Add reviews and rate restroom pages
@@ -69,7 +70,7 @@
 - Training tips and reminders of important tasks 
 - A display of activities for entertainment such as a toilet feed and tunes to listen to 
 - Interactive environment with other users to discuss and share topic of events
-- [Feature details]()
+
 
 ### Built with
 
@@ -77,6 +78,8 @@
 - [![Firebase-shield]][Firebase-site]
 - [![Java-shield]][Java-site]
 
+### More features
+- [Feature details](https://derivativemarmot.github.io/blog/posts/4425dcef.html)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

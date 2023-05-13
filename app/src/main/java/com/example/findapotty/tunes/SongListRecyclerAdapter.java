@@ -1,7 +1,6 @@
 package com.example.findapotty.tunes;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,16 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findapotty.MainActivity;
 import com.example.findapotty.R;
-import com.example.findapotty.diary.ResultsFragment;
 
 import java.util.ArrayList;
+// recycler view for song list
 
 public class SongListRecyclerAdapter extends RecyclerView.Adapter<SongListRecyclerAdapter.ViewHolder>{
 
@@ -41,7 +38,7 @@ public class SongListRecyclerAdapter extends RecyclerView.Adapter<SongListRecycl
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.titleTextView.setText(songsList.get(position).getTitle());
 
-        if(MyMediaPlayer.currentIndex==position){
+        if(MusicPlayer.currentIndex==position){
             holder.titleTextView.setTextColor(Color.parseColor("#FF0000"));
         }else{
             holder.titleTextView.setTextColor(Color.parseColor("#000000"));
@@ -68,9 +65,6 @@ public class SongListRecyclerAdapter extends RecyclerView.Adapter<SongListRecycl
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // stops plays mediaplayer and starts song form begin
-                    MyMediaPlayer.getInstance().reset();
-                    MyMediaPlayer.currentIndex = getBindingAdapterPosition();
                     // pass list of objects to next actvity and move to actviity
                     FragmentTransaction ft = ((MainActivity)context).getSupportFragmentManager().beginTransaction();
                     ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);

@@ -102,16 +102,18 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         refFavoriteRestrooms = FirebaseDatabase.getInstance().getReference().child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("favoriteRestrooms");
-        /*refFavoriteRestrooms = mdb.child("users")
-               .child(User.getInstance().getUserId()).child("favoriteRestrooms");
-         */
+        // get query of database
         dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                 .getReference("Reviews")
                 .child(restroom.getPlaceID())
                 .orderByChild("helpfulness");
+        // popuate review section
         getReviewInfo();
+        // populate information in the restroom page
         initRestroomPage();
+        // initialize onclick listener for add review button
         addReviewListener();
+        // initialize onlick listener foe review sorter
         sortReviewListener();
         editPageListener();
         binding.bsrpBtnFavorite.setOnClickListener(view -> {
@@ -209,6 +211,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                 }
             });
             bottomSheetDialog.show();
+            // after getting user input for filter and sorter
             resetfilters.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -244,12 +247,6 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("restroom_data", restroom);
                 controller.navigate(R.id.action_navg_rr_pg_fragment_to_addRestroomReviewFragment, bundle);
-//                restroomReviews.add(0, new RestroomReview("https://i.redd.it/tpsnoz5bzo501.jpg", "1243r4tgg g5"));
-//                DatabaseReference mdb = FirebaseDatabase.getInstance().getReference();
-//                mdb.child("restroom_pages").child(mdb.push().getKey()).setValue(restroomReviews.get(0));
-//                adaptor.notifyItemInserted(0);
-//                recyclerView.smoothScrollToPosition(0);
-
             }
         });
     }
@@ -296,14 +293,13 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void populateReviewSection(Query dbr, Integer ratingOptionPicked, String sorterOptionPicked) {
-
-
         dbr.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
+                // empty arraylists
                 spareReviewList.clear();
                 restroomReviews.clear();
-
+                // add reviews to arraylists
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
                     RestroomReview rrObj = postSnapshot.getValue(RestroomReview.class);
@@ -311,6 +307,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                     restroomReviews.add(rrObj);
 
                 }
+                // depending on the user input the spar arraylist is modified
                 if(ratingOptionPicked == 6 & sorterOptionPicked == ""){
                 }
                 else if(ratingOptionPicked == 6 & sorterOptionPicked != ""){
@@ -353,6 +350,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                     }
 
                 }
+                // populate recycler view with new altered arraylist
                 if (dbr != null) {
                     // use firebas eui to populate recycler straigther form databse
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -367,6 +365,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         });
     }
     private void getReviewInfo() {
+        // referece to databse
         dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                 .getReference("Reviews")
                 .child(restroom.getPlaceID())
@@ -375,21 +374,24 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
         dbr.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
+                // e.pty ararylist
                 restroomReviews.clear();
                 float totalRating =0;
-
+                // add review objects to arraylist
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
                     RestroomReview rrObj = postSnapshot.getValue(RestroomReview.class);
                     restroomReviews.add(rrObj);
 
                 }
-                Log.i("ReviewList", "" + restroomReviews);
+                // get rating average
                 for(RestroomReview rr: restroomReviews){
                     totalRating += rr.getRating();
                 }
+                // set rating average and review count in view
                 binding.rrPgAvgRating.setRating(totalRating/restroomReviews.size());
                 binding.rrPgReviewCount.setText(restroomReviews.size() + " Reviews");
+                // fill recycler view with objects from arrayist
                 if (dbr != null) {
                     // use firebas eui to populate recycler straigther form databse
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

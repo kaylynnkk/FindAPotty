@@ -26,6 +26,7 @@ public class TunesFragment extends Fragment {
         binding = FragmentTunesBinding.inflate(inflater, container, false);
         recyclerView = binding.recyclerView;
         noMusicTextView = binding.noSongsText;
+        // add song onject to arrayist
         songsList.add(new Song("https://firebasestorage.googleapis.com/v0/b/findapotty." +
                 "appspot.com/o/songs%2FMorgan%20Freeman%20Reads%20Everyone%20Poops.mp3?alt=media&" +
                 "token=c34dd9e5-91e3-485e-81b9-837bf78d774b",
@@ -35,7 +36,7 @@ public class TunesFragment extends Fragment {
         if(songsList.size()==0){
             noMusicTextView.setVisibility(View.VISIBLE);
         }else{
-            //recyclerview
+            // fill recycler view with objects ni arraylsit
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(new SongListRecyclerAdapter(songsList,getContext()));
         }

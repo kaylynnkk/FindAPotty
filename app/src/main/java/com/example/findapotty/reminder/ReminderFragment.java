@@ -48,7 +48,7 @@ import com.example.findapotty.databinding.FragmentReminderBinding;
 public class ReminderFragment extends Fragment {
 
     private FragmentReminderBinding binding;
-    FloatingActionButton mCreateRem;
+    FloatingActionButton addReminderBT;
     private RecyclerView mRecyclerview;
     ReminderRecyclerViewAdaptor reminderRecyclerViewAdaptor;
     Query dbr;
@@ -65,15 +65,16 @@ public class ReminderFragment extends Fragment {
 
         binding = FragmentReminderBinding.inflate(inflater, container, false);
        mRecyclerview = binding.recyclerView;
-        mCreateRem = binding.createReminder;
-        dimmer = binding.dimLayout;
-        mCreateRem.setOnClickListener(new View.OnClickListener() {
+        addReminderBT = binding.createReminder;
+        // when button is press show popup window
+        addReminderBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onButtonShowPopupWindowClick(view, "reminder_builder_popup");
 
             }
         });
+        // show list of reminders if users have them
         populateReminders();
 
         return binding.getRoot();
@@ -81,29 +82,26 @@ public class ReminderFragment extends Fragment {
 
     }
     private void populateReminders() {
-        /*
+        // ge qurey to database
         dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                 .getReference().child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("reminders");
-
-         */
-        dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                .getReference("reminders");
-
+        // listen for data at query
         dbr.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
+                // empty arraylist
                 if(remindersList.size() > 0){
                     remindersList.clear();
                 }
+                // add objects to the arraylist
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     ReminderMessage rem = postSnapshot.getValue(ReminderMessage.class);
                     remindersList.add(rem);
                 }
-                Log.i("ReminderList", "" + remindersList);
+                // populate recyclerview from database using arraylist of remindermessage objects
                 if (dbr != null) {
-                    // use firebas eui to populate recycler straigther form databse
                     mRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
                     reminderRecyclerViewAdaptor = new ReminderRecyclerViewAdaptor(getContext(), remindersList);
                     mRecyclerview.setAdapter(reminderRecyclerViewAdaptor);
@@ -117,29 +115,27 @@ public class ReminderFragment extends Fragment {
         });
     }
     public void onButtonShowPopupWindowClick(View view, String layoutName) {
-        // pass string layoutname to inflater
-        int layoutID = getResources().getIdentifier(layoutName,
+        // get target layout that will be the popup
+        int popupLayout = getResources().getIdentifier(layoutName,
                 "layout", getActivity().getPackageName());
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)
                 getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(layoutID, null);
-        // create the popup window
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        // lets taps outside the popup also dismiss it
-        boolean focusable = true;
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+        View popupView = inflater.inflate(popupLayout, null);
+        // size the popup
+        int w = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int h= LinearLayout.LayoutParams.WRAP_CONTENT;
+        // create popup object
+        final PopupWindow popupWindow = new PopupWindow(popupView, w, h, true);
         // show the popup window
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-        // dismiss the popup window when touched
-
+        // get view in the popuplayout
         labelET = popupView.findViewById(R.id.label);
         dateBT = popupView.findViewById(R.id.date);
         timeBT = popupView.findViewById(R.id.time);
         submitBT = popupView.findViewById(R.id.submit);
         cancelBT = popupView.findViewById(R.id.cancel);
-
+        // if cancel button is clicked popup is dismissed
         cancelBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,24 +174,22 @@ public class ReminderFragment extends Fragment {
                 }
                 // once all fields have an inputted add data to firebase
                 else {
-                    /*
+                    // get reference to database
                     DatabaseReference ref = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                             .getReference().child("users")
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                             .child("reminders");
-
-                     */
-                    DatabaseReference ref = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                            .getReference().child("reminders");
+                    // create key from reminder object
                     String key = ref.push().getKey();
+                    // create reminder object
                     ReminderMessage rem = new ReminderMessage(key, label, date, time);
+                    // add to database
                     ref.child(key).setValue(rem);
-
-                    // set alarm
-                    setAlarm(rem);
+                    // reset values
                     labelET.setText("");
                     dateBT.setText("Date");
                     timeBT.setText("Time");
+                    // dismiss popup
                     if(popupWindow.isShowing()) {
                         popupWindow.dismiss();
                     }
@@ -224,7 +218,6 @@ public class ReminderFragment extends Fragment {
         dpd.show();
     }
     private void setTime() {
-        Toast.makeText(getContext(),"In setTime()",Toast.LENGTH_SHORT);
         // initialize variable for hour and minute
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
@@ -241,7 +234,6 @@ public class ReminderFragment extends Fragment {
         }, hour, minute, false);
         // shows time picker
         tmd.show();
-        Toast.makeText(getContext(),"End of setTime()",Toast.LENGTH_SHORT);
     }
     public String FormatTime(int hour, int minute) {
         // create variable to save new formated mintue
@@ -263,29 +255,6 @@ public class ReminderFragment extends Fragment {
             return "12" + ":" + newMin + " PM";
         } else {
             return (hour - 12) + ":" + newMin + " PM";
-        }
-
-    }
-
-    private void setAlarm(ReminderMessage rem) {
-        AlarmManager am = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-
-        Intent intent = new Intent(getContext(), AlarmBrodcast.class);
-        intent.putExtra("event", rem.getLabel());
-        intent.putExtra("time", rem.getTime());
-        intent.putExtra("date", rem.getDate());
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent,
-                PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
-        String dateandtime = rem.getDate() + " " + alertTime;
-        DateFormat formatter = new SimpleDateFormat("MM-dd-yyyy hh:mm");
-        try {
-            Date date1 = formatter.parse(dateandtime);
-            am.set(AlarmManager.RTC_WAKEUP, date1.getTime(), pendingIntent);
-            Toast.makeText(getContext(), "Alarm Set", Toast.LENGTH_SHORT).show();
-
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
 
     }

@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.findapotty.R;
 import com.example.findapotty.databinding.FragmentTunesplayerBinding;
-import com.example.findapotty.diary.DiaryEntry;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class TunesPlayerFragment extends Fragment {
     ImageView pausePlay,nextBtn,previousBtn,musicIcon;
     ArrayList<Song> songsList;
     Song currentSong;
-    MediaPlayer mediaPlayer = MyMediaPlayer.getInstance();
+    MediaPlayer mediaPlayer = MusicPlayer.getInstance();
     int x=0;
     private FragmentTunesplayerBinding binding;
 
@@ -42,24 +41,27 @@ public class TunesPlayerFragment extends Fragment {
         nextBtn = binding.next;
         previousBtn = binding.prev;
         musicIcon = binding.musicIcon;
-
+        // title mmoves
         titleTv.setSelected(true);
-
+        // get object info from previous page
         Bundle bundle = getArguments();
         songsList = (ArrayList<Song>) bundle.getSerializable("song_data");
-
-        setResourcesWithMusic();
-
+        // Music player info
+        setViewsInMusicPlayer();
+        //player song
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if(mediaPlayer!=null){
+                    //seekbar is moving with song
                     seekBar.setProgress(mediaPlayer.getCurrentPosition());
+                    // time is changing with song
                     currentTimeTv.setText(convertToMMSS(mediaPlayer.getCurrentPosition()+""));
                     totalTimeTv.setText(convertToMMSS(String.valueOf(
                             Integer.parseInt(currentSong.getDuration())
                             - Integer.parseInt(String.valueOf(mediaPlayer.getCurrentPosition()))
                             )));
+                    // icons changed basd on if song is playing or not
                     if(mediaPlayer.isPlaying()){
                         pausePlay.setImageResource(R.drawable.ic_baseline_pause_circle_outline_24);
                         musicIcon.setRotation(x++);
@@ -72,7 +74,7 @@ public class TunesPlayerFragment extends Fragment {
                 new Handler().postDelayed(this,100);
             }
         });
-
+        // seekbar that follows the prgress of song
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -80,7 +82,6 @@ public class TunesPlayerFragment extends Fragment {
                     mediaPlayer.seekTo(progress);
                 }
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
 
@@ -95,9 +96,9 @@ public class TunesPlayerFragment extends Fragment {
 
         return binding.getRoot();
     }
-
-    void setResourcesWithMusic(){
-        currentSong = songsList.get(MyMediaPlayer.currentIndex);
+    //set all music siaply info
+    void setViewsInMusicPlayer(){
+        currentSong = songsList.get(MusicPlayer.currentIndex);
         titleTv.setText(currentSong.getTitle());
         totalTimeTv.setText(convertToMMSS(currentSong.getDuration()));
         pausePlay.setOnClickListener(v-> pausePlay());
@@ -107,7 +108,7 @@ public class TunesPlayerFragment extends Fragment {
         playMusic();
     }
 
-
+    //make the song play
     private void playMusic(){
 
         mediaPlayer.reset();
@@ -121,24 +122,25 @@ public class TunesPlayerFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
+    // if forward button is clicke go to next song
     private void playNextSong(){
 
-        if(MyMediaPlayer.currentIndex== songsList.size()-1)
+        if(MusicPlayer.currentIndex== songsList.size()-1)
             return;
-        MyMediaPlayer.currentIndex +=1;
+        MusicPlayer.currentIndex +=1;
         mediaPlayer.reset();
-        setResourcesWithMusic();
+        setViewsInMusicPlayer();
 
     }
-
+    // if prev button is clicked go to previous song
     private void playPreviousSong(){
-        if(MyMediaPlayer.currentIndex== 0)
+        if(MusicPlayer.currentIndex== 0)
             return;
-        MyMediaPlayer.currentIndex -=1;
+        MusicPlayer.currentIndex -=1;
         mediaPlayer.reset();
-        setResourcesWithMusic();
+        setViewsInMusicPlayer();
     }
+    // if pause button is click sotp music player
 
     private void pausePlay(){
         if(mediaPlayer.isPlaying())
@@ -146,8 +148,7 @@ public class TunesPlayerFragment extends Fragment {
         else
             mediaPlayer.start();
     }
-
-
+    // format song length info so its readble to users
     public static String convertToMMSS(String duration){
         Long millis = Long.parseLong(duration);
         return String.format("%02d:%02d",

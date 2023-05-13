@@ -180,7 +180,7 @@ public class DiaryFragment extends Fragment {
                 String notes = notesET.getText().toString().trim();
                 // if date or time string has not changed from none then user hasnt entered an input
                 // if label string is empty user hasnt entered na input
-                // prompt user to enter tinput for date and time
+                // prompt user to enter input for date and time
                 if (duration.equals(0)) {
                     Toast.makeText(getContext(), "Potty time can't be 0 minutes!", Toast.LENGTH_SHORT).show();
                 } else if (pottyTypeRG.getCheckedRadioButtonId() == -1) {
@@ -192,19 +192,14 @@ public class DiaryFragment extends Fragment {
                 } else if((pottyType.equals("Pee")  && !(stoolType.equals("0") || stoolColor.equals("")))
                         || (pottyType.equals("Poop") & !urineColor.isEmpty())){
                     Toast.makeText(getContext(), "Incompatible potty type!", Toast.LENGTH_SHORT).show();
+                    // if there is no problem with the user input to the  answers than data is saved
+                    // in database
                 } else {
                     // creates reference to firebase
-                    /*
+                    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     DatabaseReference ref = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                             .getReference().child("users")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .child("diary entries");
-
-                     */
-                    DatabaseReference ref = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                            .getReference().child("diary entries");
-                   //String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    String uid = "1234";
+                            .child(uid).child("diary entries");
                     // create object with user inputs
                     DiaryEntry entry = new DiaryEntry(submissionDate, monthOfSubmission(),
                             pottyType, stoolColor, urineColor,notes,dayOfWeek, duration,pain, Integer.parseInt(stoolType));
@@ -213,18 +208,16 @@ public class DiaryFragment extends Fragment {
                     // alert user that entry has been saves and go to results
                     Toast.makeText(getContext(), "Diary Entry Submitted",
                             Toast.LENGTH_LONG).show();
-
+                    // move from diary entry page to diary results
                     FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                     ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     ResultsFragment fragment = new ResultsFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("diary_data", entry); // Key, value
+                    bundle.putSerializable("diary_data", entry);
                     fragment.setArguments(bundle);
                     ft.replace(R.id.diary1, fragment)
                             .addToBackStack(null)
                             .commit();
-
-
                 }
 
             }
@@ -233,6 +226,7 @@ public class DiaryFragment extends Fragment {
         return root;
     }
     // convert month of submission from integer to abbreviations
+    // for eaiser retreival in potty trends
     public String monthOfSubmission(){
         Integer month = c.get(Calendar.MONTH);
         switch (month) {
@@ -266,22 +260,21 @@ public class DiaryFragment extends Fragment {
         }
     }
     public void onButtonShowPopupWindowClick(View view, String layoutName) {
-        // pass string layoutname to inflater
-        int layoutID =getResources().getIdentifier(layoutName,
+        // get target layout that will be the popup
+        int popupLayout = getResources().getIdentifier(layoutName,
                 "layout", getActivity().getPackageName());
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)
                 getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(layoutID, null);
-        // create the popup window
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        // lets taps outside the popup also dismiss it
-        boolean focusable = true;
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+        View popupView = inflater.inflate(popupLayout, null);
+        // size the popup
+        int w = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int h= LinearLayout.LayoutParams.WRAP_CONTENT;
+        // create popup object
+        final PopupWindow popupWindow = new PopupWindow(popupView, w, h, true);
         // show the popup window
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-        // dismiss the popup window when touched
+        // dismiss the popup window when touched inside the popupp
         popupView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

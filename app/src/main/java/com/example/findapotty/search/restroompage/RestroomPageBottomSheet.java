@@ -325,7 +325,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
                 }
                 else if(ratingOptionPicked != 6 & sorterOptionPicked == "") {
                     for (RestroomReview rr : restroomReviews) {
-                        if (!rr.getRating().toString().contains(""+ratingOptionPicked)) {
+                        if (!rr.getRating().toString().contains(ratingOptionPicked+".")) {
                             spareReviewList.remove(rr);
                         }
                     }
@@ -333,7 +333,7 @@ public class RestroomPageBottomSheet extends BottomSheetDialogFragment {
 
                 else if(ratingOptionPicked != 6 & sorterOptionPicked != ""){
                     for (RestroomReview rr : restroomReviews) {
-                        if (!rr.getRating().toString().contains(""+ratingOptionPicked)) {
+                        if (!rr.getRating().toString().contains(ratingOptionPicked+".")) {
                             spareReviewList.remove(rr);
                         }
                     }

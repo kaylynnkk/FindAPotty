@@ -65,6 +65,9 @@ public class SongListRecyclerAdapter extends RecyclerView.Adapter<SongListRecycl
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // stops plays mediaplayer and starts song form begin
+                    MusicPlayer.getInstance().reset();
+                    MusicPlayer.currentIndex = getBindingAdapterPosition();
                     // pass list of objects to next actvity and move to actviity
                     FragmentTransaction ft = ((MainActivity)context).getSupportFragmentManager().beginTransaction();
                     ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);

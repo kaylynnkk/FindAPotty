@@ -87,7 +87,7 @@ public class RestroomReviewRecyclerViewAdaptor extends RecyclerView.Adapter<Rest
                     holder.helpfulnessBT.setImageResource(R.drawable.baseline_thumb_up_alt_24);
                     currHelpVal = reviewObj.getHelpfulness()+1;
                     reviewObj.setHelpfulness(currHelpVal);
-                    holder.helpfulnessTV.setText("Helpfulness ("+currHelpVal+")");
+                    holder.helpfulnessTV.setText("Helpfulness ("+Math.abs(currHelpVal)+")");
                     dbr.child(key).child("helpfulness").setValue(currHelpVal);
                     previouslyClicked = true;
 

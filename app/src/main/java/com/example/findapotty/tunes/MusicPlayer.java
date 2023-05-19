@@ -2,7 +2,7 @@ package com.example.findapotty.tunes;
 
 import android.media.MediaPlayer;
 
-public class MyMediaPlayer {
+public class MusicPlayer {
     static MediaPlayer instance;
 
     public static MediaPlayer getInstance(){

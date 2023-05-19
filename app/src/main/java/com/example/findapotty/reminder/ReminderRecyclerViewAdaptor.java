@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+// adaptor for recyclerview in reminder page
 
 public class ReminderRecyclerViewAdaptor extends RecyclerView.Adapter<ReminderRecyclerViewAdaptor.ViewHolder> {
 
@@ -38,15 +39,12 @@ public class ReminderRecyclerViewAdaptor extends RecyclerView.Adapter<ReminderRe
         holder.dateTV.setText(reminderObj.getDate());
 
         holder.timeTV.setText(reminderObj.getTime());
-/*
+
         DatabaseReference dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
                 .getReference().child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("reminders");
 
- */
-        DatabaseReference dbr = FirebaseDatabase.getInstance("https://findapotty-main.firebaseio.com/")
-                .getReference().child("reminders");
         holder.deleteIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

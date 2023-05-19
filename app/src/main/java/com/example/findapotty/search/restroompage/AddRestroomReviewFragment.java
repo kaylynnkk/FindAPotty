@@ -89,10 +89,7 @@ public class AddRestroomReviewFragment extends Fragment {
             dbr.child(reviewId).setValue(rev);
             // Pop up to alert user that review has been submitted
             Toast.makeText(getContext(), "Review Submitted Successfully", Toast.LENGTH_SHORT).show();
-            // leave write review activity and start display review activity
-            /*NavController controller = NavHostFragment.findNavController(AddRestroomReviewFragment.this);
-            controller.navigate(R.id.action_addRestroomReviewFragment_to_navg_rr_pg_fragment);
-             */
+
         });
 
         return binding.getRoot();
